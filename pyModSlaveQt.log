@@ -1,0 +1,153 @@
+Testing... Logger
+2012-04-23 10:46:22,755 - modbus_tk - INFO - Testing... Logger
+2012-04-23 10:48:27,483	INFO	pyModSlaveQt.main	MainThread	Testing... Logger
+2012-04-23 10:49:19,956	INFO	pyModSlaveQt.main	MainThread	Testing... Logger
+2012-04-23 10:49:36,641	INFO	modbus._run_server	Thread-1	modbus_tk.modbus_tcp.TcpServer has stopped
+2012-04-23 10:49:40,628	INFO	modbus_rtu.__init__	MainThread	RtuServer COM1 is opened
+2012-04-23 10:49:42,878	INFO	modbus._run_server	Thread-4	modbus_tk.modbus_rtu.RtuServer has stopped
+2012-04-23 10:59:16,776	INFO	pyModSlaveQt._start_stop	MainThread	Starting RTU server
+2012-04-23 10:59:16,783	INFO	modbus_rtu.__init__	MainThread	RtuServer COM1 is opened
+2012-04-23 10:59:18,326	INFO	pyModSlaveQt._start_stop	MainThread	Stop server
+2012-04-23 10:59:18,332	INFO	modbus._run_server	Thread-1	modbus_tk.modbus_rtu.RtuServer has stopped
+2012-04-23 10:59:27,780	INFO	pyModSlaveQt._start_stop	MainThread	Starting TCP server
+2012-04-23 10:59:35,502	INFO	pyModSlaveQt._start_stop	MainThread	Stop server
+2012-04-23 10:59:36,030	INFO	modbus._run_server	Thread-4	modbus_tk.modbus_tcp.TcpServer has stopped
+2012-04-23 11:12:42,934	INFO	pyModSlaveQt._start_stop	MainThread	Starting RTU server
+2012-04-23 11:12:42,941	INFO	modbus_rtu.__init__	MainThread	RtuServer COM1 is opened
+2012-04-23 11:12:46,302	INFO	pyModSlaveQt._start_stop	MainThread	Stop server
+2012-04-23 11:12:46,305	INFO	modbus._run_server	Thread-1	modbus_tk.modbus_rtu.RtuServer has stopped
+2012-04-23 11:12:50,239	INFO	pyModSlaveQt._start_stop	MainThread	Starting TCP server
+2012-04-23 11:13:00,671	INFO	pyModSlaveQt._start_stop	MainThread	Stop server
+2012-04-23 11:13:01,413	INFO	modbus._run_server	Thread-4	modbus_tk.modbus_tcp.TcpServer has stopped
+2012-04-23 11:31:47,924	INFO	pyModSlaveQt._start_stop	MainThread	Starting RTU server
+2012-04-23 11:31:47,930	INFO	modbus_rtu.__init__	MainThread	RtuServer COM1 is opened
+2012-04-23 11:31:48,941	INFO	pyModSlaveQt._start_stop	MainThread	Stop server
+2012-04-23 11:31:48,948	INFO	modbus._run_server	Thread-1	modbus_tk.modbus_rtu.RtuServer has stopped
+2012-04-23 11:31:50,898	INFO	pyModSlaveQt._start_stop	MainThread	Starting TCP server
+2012-04-23 11:31:51,744	INFO	pyModSlaveQt._start_stop	MainThread	Stop server
+2012-04-23 11:31:52,105	INFO	modbus._run_server	Thread-4	modbus_tk.modbus_tcp.TcpServer has stopped
+2012-04-23 11:33:26,621	INFO	pyModSlaveQt._start_stop	MainThread	Starting RTU server
+2012-04-23 11:33:26,625	INFO	modbus_rtu.__init__	MainThread	RtuServer COM1 is opened
+2012-04-23 11:33:29,095	INFO	pyModSlaveQt._start_stop	MainThread	Stop server
+2012-04-23 11:33:29,108	INFO	modbus._run_server	Thread-1	modbus_tk.modbus_rtu.RtuServer has stopped
+2012-04-23 11:33:32,615	INFO	pyModSlaveQt._start_stop	MainThread	Starting TCP server
+2012-04-23 11:33:34,072	INFO	pyModSlaveQt._start_stop	MainThread	Stop server
+2012-04-23 11:33:34,743	INFO	modbus._run_server	Thread-4	modbus_tk.modbus_tcp.TcpServer has stopped
+2012-04-23 11:35:02,619	INFO	pyModSlaveQt._start_stop	MainThread	Starting RTU server
+2012-04-23 11:35:02,627	INFO	modbus_rtu.__init__	MainThread	RtuServer COM1 is opened
+2012-04-23 11:35:06,160	INFO	pyModSlaveQt._start_stop	MainThread	Stop server
+2012-04-23 11:35:06,163	INFO	modbus._run_server	Thread-1	modbus_tk.modbus_rtu.RtuServer has stopped
+2012-04-23 11:35:09,243	INFO	pyModSlaveQt._start_stop	MainThread	Starting TCP server
+2012-04-23 11:35:14,831	INFO	pyModSlaveQt._start_stop	MainThread	Stop server
+2012-04-23 11:35:15,453	INFO	modbus._run_server	Thread-4	modbus_tk.modbus_tcp.TcpServer has stopped
+2012-04-23 11:41:43,983	INFO	pyModSlaveQt._start_stop	MainThread	Starting RTU server
+2012-04-23 11:41:43,986	INFO	ModSlaveSim.ModServerFactory	MainThread	Build RTU Server - Port: 0, Baudrate: 9600, Bytesize: 8, Parity: N, Stopbits : 1
+2012-04-23 11:41:43,989	INFO	modbus_rtu.__init__	MainThread	RtuServer COM1 is opened
+2012-04-23 11:41:44,026	INFO	ModSlaveSim.start	MainThread	Slave sim started
+2012-04-23 11:41:56,937	INFO	pyModSlaveQt._start_stop	MainThread	Stop server
+2012-04-23 11:41:56,940	INFO	ModSlaveSim.stop	MainThread	Slave sim stopped
+2012-04-23 11:41:56,943	INFO	modbus._run_server	Thread-1	modbus_tk.modbus_rtu.RtuServer has stopped
+2012-04-23 11:42:01,434	INFO	pyModSlaveQt._start_stop	MainThread	Starting TCP server
+2012-04-23 11:42:01,438	INFO	ModSlaveSim.ModServerFactory	MainThread	Build TCP Server - Port: 502
+2012-04-23 11:42:01,464	INFO	ModSlaveSim.start	MainThread	Slave sim started
+2012-04-23 11:42:03,114	INFO	pyModSlaveQt._start_stop	MainThread	Stop server
+2012-04-23 11:42:03,117	INFO	ModSlaveSim.stop	MainThread	Slave sim stopped
+2012-04-23 11:42:03,607	INFO	modbus._run_server	Thread-4	modbus_tk.modbus_tcp.TcpServer has stopped
+2012-04-24 15:42:16,552	INFO	pyModSlaveQt._start_stop	MainThread	Starting RTU server
+2012-04-24 15:42:16,578	INFO	ModSlaveSim.ModServerFactory	MainThread	Build RTU Server - Port: 1, Baudrate: 9600, Bytesize: 8, Parity: N, Stopbits : 1
+2012-04-24 15:42:16,586	INFO	modbus_rtu.__init__	MainThread	RtuServer COM2 is opened
+2012-04-24 15:42:16,618	INFO	ModSlaveSim.start	MainThread	Slave sim started
+2012-04-24 16:19:01,388	DEBUG	modbus.handle_request	Thread-1	Modbus Error: Exception code = 2
+2012-04-24 16:21:06,186	DEBUG	modbus.handle_request	Thread-1	Modbus Error: Exception code = 2
+2012-04-24 16:23:17,530	DEBUG	modbus.handle_request	Thread-1	Modbus Error: Exception code = 2
+2012-04-24 16:24:28,421	DEBUG	modbus.handle_request	Thread-1	Modbus Error: Exception code = 2
+2012-04-24 16:25:40,196	INFO	pyModSlaveQt._start_stop	MainThread	Stop server
+2012-04-24 16:25:40,197	INFO	ModSlaveSim.stop	MainThread	Slave sim stopped
+2012-04-24 16:25:40,201	INFO	modbus._run_server	Thread-1	modbus_tk.modbus_rtu.RtuServer has stopped
+2012-04-24 16:25:44,496	INFO	pyModSlaveQt._start_stop	MainThread	Starting TCP server
+2012-04-24 16:25:44,499	INFO	ModSlaveSim.ModServerFactory	MainThread	Build TCP Server - Port: 502
+2012-04-24 16:25:44,526	INFO	ModSlaveSim.start	MainThread	Slave sim started
+2012-04-24 16:25:52,183	INFO	modbus_tcp._do_run	Thread-4	('127.0.0.1', 49210) is connected with socket 1172...
+2012-04-24 16:26:32,431	ERROR	modbus.handle_request	Thread-4	handle request failed: Slave 2 doesn't exist
+2012-04-24 16:27:46,151	ERROR	modbus.handle_request	Thread-4	handle request failed: Slave 2 doesn't exist
+2012-04-24 16:28:00,473	INFO	modbus_tcp._do_run	Thread-4	1172 is disconnected
+2012-04-24 16:28:36,447	INFO	pyModSlaveQt._start_stop	MainThread	Stop server
+2012-04-24 16:28:36,451	INFO	ModSlaveSim.stop	MainThread	Slave sim stopped
+2012-04-24 16:28:36,572	INFO	modbus._run_server	Thread-4	modbus_tk.modbus_tcp.TcpServer has stopped
+2012-04-24 16:31:24,733	INFO	pyModSlaveQt._start_stop	MainThread	Starting TCP server
+2012-04-24 16:31:24,736	INFO	ModSlaveSim.ModServerFactory	MainThread	Build TCP Server - Port: 502
+2012-04-24 16:31:24,757	INFO	ModSlaveSim.start	MainThread	Slave sim started
+2012-04-24 16:31:28,276	INFO	modbus_tcp._do_run	Thread-1	('127.0.0.1', 49217) is connected with socket 1104...
+2012-04-24 16:33:02,755	INFO	modbus_tcp._do_run	Thread-1	1104 is disconnected
+2012-04-24 16:33:07,776	INFO	pyModSlaveQt._start_stop	MainThread	Stop server
+2012-04-24 16:33:07,778	INFO	ModSlaveSim.stop	MainThread	Slave sim stopped
+2012-04-24 16:33:07,792	INFO	modbus._run_server	Thread-1	modbus_tk.modbus_tcp.TcpServer has stopped
+2012-04-25 09:33:03,773	INFO	pyModSlaveQt._start_stop	MainThread	Starting RTU server
+2012-04-25 09:33:03,842	INFO	ModSlaveSim.ModServerFactory	MainThread	Build RTU Server - Port: 0, Baudrate: 9600, Bytesize: 8, Parity: N, Stopbits : 1
+2012-04-25 09:33:03,862	INFO	modbus_rtu.__init__	MainThread	RtuServer COM1 is opened
+2012-04-25 09:33:03,913	INFO	ModSlaveSim.start	MainThread	Slave sim started
+2012-04-25 09:33:31,079	INFO	pyModSlaveQt._start_stop	MainThread	Stop server
+2012-04-25 09:33:31,095	INFO	ModSlaveSim.stop	MainThread	Slave sim stopped
+2012-04-25 09:33:31,121	INFO	modbus._run_server	Thread-1	modbus_tk.modbus_rtu.RtuServer has stopped
+2012-04-25 09:33:36,671	INFO	pyModSlaveQt._start_stop	MainThread	Starting RTU server
+2012-04-25 09:33:36,690	INFO	ModSlaveSim.ModServerFactory	MainThread	Build RTU Server - Port: 1, Baudrate: 9600, Bytesize: 8, Parity: N, Stopbits : 1
+2012-04-25 09:33:36,710	INFO	modbus_rtu.__init__	MainThread	RtuServer COM2 is opened
+2012-04-25 09:33:36,730	INFO	ModSlaveSim.start	MainThread	Slave sim started
+2012-04-25 17:14:28,815	INFO	pyModSlaveQt._start_stop	MainThread	Stop server
+2012-04-25 17:14:28,895	INFO	ModSlaveSim.stop	MainThread	Slave sim stopped
+2012-04-25 17:14:28,926	INFO	modbus._run_server	Thread-4	modbus_tk.modbus_rtu.RtuServer has stopped
+2012-04-25 17:14:47,864	INFO	pyModSlaveQt._start_stop	MainThread	Starting RTU server
+2012-04-25 17:14:47,894	INFO	ModSlaveSim.ModServerFactory	MainThread	Build RTU Server - Port: 1, Baudrate: 9600, Bytesize: 8, Parity: N, Stopbits : 1
+2012-04-25 17:14:47,934	INFO	modbus_rtu.__init__	MainThread	RtuServer COM2 is opened
+2012-04-25 17:14:47,953	INFO	ModSlaveSim.start	MainThread	Slave sim started
+2012-04-25 17:15:05,157	INFO	pyModSlaveQt._start_stop	MainThread	Stop server
+2012-04-25 17:15:05,167	INFO	ModSlaveSim.stop	MainThread	Slave sim stopped
+2012-04-25 17:15:05,197	INFO	modbus._run_server	Thread-7	modbus_tk.modbus_rtu.RtuServer has stopped
+2012-04-26 14:51:14,605	INFO	pyModSlaveQt._start_stop	MainThread	Starting RTU server
+2012-04-26 14:51:14,714	INFO	ModSlaveSim.ModServerFactory	MainThread	Build RTU Server - Port: 1, Baudrate: 9600, Bytesize: 8, Parity: N, Stopbits : 1
+2012-04-26 14:51:14,775	INFO	modbus_rtu.__init__	MainThread	RtuServer COM2 is opened
+2012-04-26 14:51:14,825	INFO	ModSlaveSim.start	MainThread	Slave sim started
+2012-04-26 16:07:05,253	INFO	pyModSlaveQt._start_stop	MainThread	Stop server
+2012-04-26 16:07:05,263	INFO	ModSlaveSim.stop	MainThread	Slave sim stopped
+2012-04-26 16:07:05,283	INFO	modbus._run_server	Thread-1	modbus_tk.modbus_rtu.RtuServer has stopped
+2012-04-26 16:07:08,657	INFO	pyModSlaveQt._start_stop	MainThread	Starting TCP server
+2012-04-26 16:07:08,667	INFO	ModSlaveSim.ModServerFactory	MainThread	Build TCP Server - Port: 502
+2012-04-26 16:07:08,677	INFO	ModSlaveSim.start	MainThread	Slave sim started
+2012-04-26 16:07:12,295	INFO	modbus_tcp._do_run	Thread-4	('127.0.0.1', 49205) is connected with socket 1156...
+2012-04-26 16:07:53,443	INFO	modbus_tcp._do_run	Thread-4	1156 is disconnected
+2012-04-26 16:14:57,236	INFO	modbus_tcp._do_run	Thread-4	('127.0.0.1', 49208) is connected with socket 1000...
+2012-04-26 16:16:57,062	WARNING	modbus_tcp._do_run	Thread-4	Error while processing data on socket 1000: [Errno 10054] An existing connection was forcibly closed by the remote host
+2012-04-26 16:20:01,375	INFO	modbus_tcp._do_run	Thread-4	('127.0.0.1', 49209) is connected with socket 1000...
+2012-04-26 16:22:02,171	INFO	modbus_tcp._do_run	Thread-4	1000 is disconnected
+2012-04-26 16:22:17,470	INFO	pyModSlaveQt._start_stop	MainThread	Stop server
+2012-04-26 16:22:17,490	INFO	ModSlaveSim.stop	MainThread	Slave sim stopped
+2012-04-26 16:22:18,221	INFO	modbus._run_server	Thread-4	modbus_tk.modbus_tcp.TcpServer has stopped
+2012-04-27 13:02:13,628	INFO	pyModSlaveQt._start_stop	MainThread	Starting RTU server
+2012-04-27 13:02:13,757	INFO	ModSlaveSim.ModServerFactory	MainThread	Build RTU Server - Port: 1, Baudrate: 9600, Bytesize: 8, Parity: N, Stopbits : 1
+2012-04-27 13:02:13,798	INFO	modbus_rtu.__init__	MainThread	RtuServer COM2 is opened
+2012-04-27 13:02:13,848	INFO	ModSlaveSim.start	MainThread	Slave sim started
+2012-04-27 17:13:49,490	INFO	pyModSlaveQt._start_stop	MainThread	Stop server
+2012-04-27 17:13:49,700	INFO	ModSlaveSim.stop	MainThread	Slave sim stopped
+2012-04-27 17:13:49,720	INFO	modbus._run_server	Thread-1	modbus_tk.modbus_rtu.RtuServer has stopped
+2012-05-04 12:57:27,575	INFO	pyModSlaveQt._start_stop	MainThread	Starting RTU server
+2012-05-04 12:57:27,644	INFO	ModSlaveSim.ModServerFactory	MainThread	Build RTU Server - Port: 1, Baudrate: 9600, Bytesize: 8, Parity: N, Stopbits : 1
+2012-05-04 12:57:27,654	INFO	modbus_rtu.__init__	MainThread	RtuServer COM2 is opened
+2012-05-04 12:57:27,664	INFO	ModSlaveSim.start	MainThread	Slave sim started
+2012-05-04 12:59:38,026	INFO	pyModSlaveQt._start_stop	MainThread	Stop server
+2012-05-04 12:59:38,076	INFO	ModSlaveSim.stop	MainThread	Slave sim stopped
+2012-05-04 12:59:38,107	INFO	modbus._run_server	Thread-1	modbus_tk.modbus_rtu.RtuServer has stopped
+2012-05-14 09:26:45,440	INFO	pyModSlaveQt._start_stop	MainThread	Starting TCP server
+2012-05-14 09:26:45,470	INFO	ModSlaveSim.ModServerFactory	MainThread	Build TCP Server - Port: 502
+2012-05-14 09:26:45,490	INFO	ModSlaveSim.start	MainThread	Slave sim started
+2012-05-14 09:27:43,411	INFO	modbus_tcp._do_run	Thread-1	('127.0.0.1', 49168) is connected with socket 976...
+2012-05-14 09:30:09,759	WARNING	modbus_tcp._do_run	Thread-1	Error while processing data on socket 976: [Errno 10054] An existing connection was forcibly closed by the remote host
+2012-05-14 09:30:12,243	INFO	pyModSlaveQt._start_stop	MainThread	Stop server
+2012-05-14 09:30:12,263	INFO	ModSlaveSim.stop	MainThread	Slave sim stopped
+2012-05-14 09:30:12,785	INFO	modbus._run_server	Thread-1	modbus_tk.modbus_tcp.TcpServer has stopped
+2012-05-30 10:40:26,081	INFO	pyModSlaveQt._start_stop	MainThread	Starting RTU server
+2012-05-30 10:40:26,138	INFO	ModSlaveSim.ModServerFactory	MainThread	Build RTU Server - Port: 0, Baudrate: 9600, Bytesize: 8, Parity: N, Stopbits : 1
+2012-05-30 10:40:26,154	INFO	modbus_rtu.__init__	MainThread	RtuServer COM1 is opened
+2012-05-30 10:40:26,259	INFO	ModSlaveSim.start	MainThread	Slave sim started
+2012-05-30 10:40:59,108	INFO	pyModSlaveQt._start_stop	MainThread	Stop server
+2012-05-30 10:40:59,145	INFO	ModSlaveSim.stop	MainThread	Slave sim stopped
+2012-05-30 10:40:59,164	INFO	modbus._run_server	Thread-1	modbus_tk.modbus_rtu.RtuServer has stopped
