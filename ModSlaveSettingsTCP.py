@@ -57,4 +57,9 @@ class ModSlaveSettingsTCPWindow(QtGui.QDialog):
     def _cancel_pressed(self):
         """new values are rejected"""
         self._set_values()
+
+    def showEvent(self,QShowEvent):
+        """set values for controls"""
+        self._set_values()
+
 #-------------------------------------------------------------------------------

@@ -25,8 +25,8 @@ class ModSlaveSettingsRTUWindow(QtGui.QDialog):
         self.rtu_port = 0
         self.baud_rate = 9600
         self.byte_size = 8
-        self.parity = "None"
-        self.stop_bits = 1
+        self.parity = 'None'
+        self.stop_bits = '1'
         self.setupUI()
 
     def setupUI(self):
@@ -69,4 +69,9 @@ class ModSlaveSettingsRTUWindow(QtGui.QDialog):
     def _cancel_pressed(self):
         """new values are rejected"""
         self._set_values()
+
+    def showEvent(self,QShowEvent):
+        """set values for controls"""
+        self._set_values()
+
 #-------------------------------------------------------------------------------

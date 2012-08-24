@@ -14,6 +14,8 @@ import sys
 from PyQt4 import QtGui,QtCore
 #add logging capability
 import logging
+#config file parser
+import ConfigParser
 
 from Ui_mainwindow import Ui_MainWindow
 from ModSlaveAbout import ModSlaveAboutWindow
@@ -37,6 +39,8 @@ class ModSlaveMainWindow(QtGui.QMainWindow):
         self.svr = None#Server
         self._svr_args = []
         self.slv = None#Slave
+        self._time_interval = 1000#interval for simulation in msec
+        self._params_file_name = 'pyModSlaveQt.ini'
         self.setupUI()
 
     def setupUI(self):
@@ -67,6 +71,7 @@ class ModSlaveMainWindow(QtGui.QMainWindow):
         self.ui.actionSettings.triggered.connect(self._settings_show)
         self.ui.btStartStop.clicked.connect(self._start_stop)
         self.ui.cmbModbusMode.currentIndexChanged.connect(self._update_status_bar)
+        self.ui.spInterval.valueChanged.connect(self._spInterval_value_changed)
         #show window
         self._update_status_bar()
         self.show()
@@ -85,6 +90,10 @@ class ModSlaveMainWindow(QtGui.QMainWindow):
         """open general settings dialog"""
         self._settings_dlg.exec_()
         self._update_status_bar()
+
+    def _spInterval_value_changed(self,value):
+        """sim interval value changed"""
+        self._time_interval = value
 
     def _update_status_bar(self):
         """update status bar"""
@@ -168,6 +177,68 @@ class ModSlaveMainWindow(QtGui.QMainWindow):
         #update user interface
         self._update_ui()
         self._update_status_bar()
+
+    def _load_params(self):
+        logger.info("Load params")
+        config_tcp_defaut = {'TCP_Port':'502'}
+        config_rtu_defaut = {'RTU_Port':'0', 'Baud':'9600', 'DataBits':'8', 'StopBits':'1', 'Parity':'None'}
+        config_var_defaut = {'Coils':'0', 'Inputs':'0', 'InputRegs':'0', 'HoldRegs':'0', 'TimeInterval':'1000'}
+        config_default = {}
+        config_default.update(config_tcp_defaut)
+        config_default.update(config_rtu_defaut)
+        config_default.update(config_var_defaut)
+        config = ConfigParser.RawConfigParser(config_default)
+        if not(config.read(self._params_file_name)):#if file does not exist exit
+            logger.error("Parameters file does not exist")
+            return
+        #TCP Settings
+        self._settingsTCP_dlg.tcp_port = config.getint('TCP', 'TCP_Port')
+        #RTU Settings
+        self._settingsRTU_dlg.rtu_port = config.getint('RTU', 'RTU_Port')
+        self._settingsRTU_dlg.baud_rate = config.getint('RTU', 'Baud')
+        self._settingsRTU_dlg.byte_size = config.getint('RTU', 'DataBits')
+        self._settingsRTU_dlg.stop_bits = config.get('RTU', 'StopBits')
+        self._settingsRTU_dlg.parity = config.get('RTU', 'Parity')
+        #Var Settings
+        self._settings_dlg.coils = config.getint('Var', 'Coils')
+        self._settings_dlg.inputs = config.getint('Var', 'Inputs')
+        self._settings_dlg.input_regs = config.getint('Var', 'InputRegs')
+        self._settings_dlg.hold_regs = config.getint('Var', 'HoldRegs')
+        self._time_interval = config.getint('Var', 'TimeInterval')
+
+    def _save_params(self):
+        logger.info("Save params")
+        config = ConfigParser.RawConfigParser()
+        #TCP Settings
+        config.add_section('TCP')
+        config.set('TCP','TCP_Port',self._settingsTCP_dlg.tcp_port)
+        #RTU Settings
+        config.add_section('RTU')
+        config.set('RTU','RTU_Port',self._settingsRTU_dlg.rtu_port)
+        config.set('RTU','Baud',self._settingsRTU_dlg.baud_rate)
+        config.set('RTU','DataBits',self._settingsRTU_dlg.byte_size)
+        config.set('RTU','StopBits',self._settingsRTU_dlg.stop_bits)
+        config.set('RTU','Parity',self._settingsRTU_dlg.parity)
+        #Var Settings
+        config.add_section('Var')
+        config.set('Var','Coils',self._settings_dlg.coils)
+        config.set('Var','Inputs',self._settings_dlg.inputs)
+        config.set('Var','InputRegs',self._settings_dlg.input_regs)
+        config.set('Var','HoldRegs',self._settings_dlg.hold_regs)
+        config.set('Var','TimeInterval',self._time_interval)
+        #Save Settings
+        config_file = open(self._params_file_name, 'wb')
+        config.write(config_file)
+
+    def showEvent(self,QShowEvent):
+        """set values for controls"""
+        self._load_params()
+        self.ui.spInterval.setValue(self._time_interval)
+
+    def closeEvent(self,QCloseEvent):
+        """window is closing"""
+        self._save_params()
+
 #-------------------------------------------------------------------------------
 
 #-------------------------------------------------------------------------------

@@ -41,8 +41,12 @@ def ModServerFactory(args):
         logger.info("Build RTU Server - Port: {0}, Baudrate: {1}, Bytesize: {2}, Parity: {3}, Stopbits : {4}"
                     .format(args[1],args[2],args[3],args[4],args[5]))
         try:
-            __modServer = modbus_rtu.RtuServer(serial.Serial(port=int(args[1]), baudrate=int(args[2]),bytesize=int(args[3]),
-                                                        parity=args[4], stopbits=int(args[5]), xonxoff=0))
+            __modServer = modbus_rtu.RtuServer(serial.Serial(port=int(args[1]),
+                                                        baudrate=int(args[2]),
+                                                        bytesize=int(args[3]),
+                                                        parity=args[4],
+                                                        stopbits=float(args[5]),
+                                                        xonxoff=0))
         except Exception,msg:
             logger.error("Error while building RTU Server : {0}".format(msg))
     else:
