@@ -7,11 +7,27 @@
     <x>0</x>
     <y>0</y>
     <width>360</width>
-    <height>192</height>
+    <height>200</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>360</width>
+    <height>200</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>360</width>
+    <height>200</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>Modbus Slave</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="icons/pyModSlaveQt.qrc">
+    <normaloff>:/img/Bus.png</normaloff>:/img/Bus.png</iconset>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -198,8 +214,15 @@
     </property>
     <addaction name="actionAbout"/>
    </widget>
+   <widget class="QMenu" name="menuData">
+    <property name="title">
+     <string>Data</string>
+    </property>
+    <addaction name="actionIO_Data"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuOptions"/>
+   <addaction name="menuData"/>
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
@@ -281,6 +304,51 @@
    </property>
    <property name="iconVisibleInMenu">
     <bool>true</bool>
+   </property>
+  </action>
+  <action name="actionCoils">
+   <property name="icon">
+    <iconset resource="icons/pyModSlaveQt.qrc">
+     <normaloff>:/img/DO.png</normaloff>:/img/DO.png</iconset>
+   </property>
+   <property name="text">
+    <string>Coils</string>
+   </property>
+  </action>
+  <action name="actionDigital_Inputs">
+   <property name="icon">
+    <iconset resource="icons/pyModSlaveQt.qrc">
+     <normaloff>:/img/DI.png</normaloff>:/img/DI.png</iconset>
+   </property>
+   <property name="text">
+    <string>Digital Inputs</string>
+   </property>
+  </action>
+  <action name="actionHolding_Registers">
+   <property name="icon">
+    <iconset resource="icons/pyModSlaveQt.qrc">
+     <normaloff>:/img/AO.png</normaloff>:/img/AO.png</iconset>
+   </property>
+   <property name="text">
+    <string>Holding Registers</string>
+   </property>
+  </action>
+  <action name="actionAnalog_Inputs">
+   <property name="icon">
+    <iconset resource="icons/pyModSlaveQt.qrc">
+     <normaloff>:/img/AI.png</normaloff>:/img/AI.png</iconset>
+   </property>
+   <property name="text">
+    <string>Analog Inputs</string>
+   </property>
+  </action>
+  <action name="actionIO_Data">
+   <property name="icon">
+    <iconset resource="icons/pyModSlaveQt.qrc">
+     <normaloff>:/img/IO.png</normaloff>:/img/IO.png</iconset>
+   </property>
+   <property name="text">
+    <string>IO Data</string>
    </property>
   </action>
  </widget>

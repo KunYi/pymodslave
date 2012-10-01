@@ -13,7 +13,7 @@
 from PyQt4 import QtGui,QtCore
 from Ui_about import Ui_About
 
-_VERSION = "0.3.0"
+_VERSION = "0.3.1"
 
 #-------------------------------------------------------------------------------
 class ModSlaveAboutWindow(QtGui.QDialog):
