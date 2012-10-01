@@ -4,7 +4,7 @@
 from distutils.core import setup
 
 setup(name='pyModSlaveQt',
-      version='0.3.0',
+      version='0.3.1',
       description='Python ModBus TCP/RTU Slave',
       author='ElBar',
       author_email='',
