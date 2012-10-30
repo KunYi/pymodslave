@@ -53,20 +53,20 @@ class ModSlaveMBDataWindow(QtGui.QMainWindow):
         #table views models
         #coils
         self.ui.tvCoilsData.setModel(self.coils.model)
-        self.coils.model.dataChanged.connect(self._models_data_changed)
+        self.connect(self.coils, QtCore.SIGNAL("update_view"), self._models_data_changed)
         self._sim_coils_changed()
         #discrete inputs
         self.ui.tvDiscreteInputsData.setModel(self.dis_inputs.model)
-        self.dis_inputs.model.dataChanged.connect(self._models_data_changed)
+        self.connect(self.dis_inputs, QtCore.SIGNAL("update_view"), self._models_data_changed)
         self._sim_dis_inputs_changed()
         #input regs
         self.ui.tvInputRegistersData.setModel(self.input_regs.model)
-        self.input_regs.model.dataChanged.connect(self._models_data_changed)
+        self.connect(self.input_regs, QtCore.SIGNAL("update_view"), self._models_data_changed)
         self.input_regs.set_data_type(self.ui.cmbInputRegsType.currentIndex())
         self._sim_input_regs_changed()
         #holding regs
         self.ui.tvHoldingRegistersData.setModel(self.hold_regs.model)
-        self.hold_regs.model.dataChanged.connect(self._models_data_changed)
+        self.connect(self.hold_regs, QtCore.SIGNAL("update_view"), self._models_data_changed)
         self.hold_regs.set_data_type(self.ui.cmbHoldRegsType.currentIndex())
         self._sim_hold_regs_changed()
         #update table views

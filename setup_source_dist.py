@@ -9,6 +9,5 @@ setup(name='pyModSlaveQt',
       author='ElBar',
       author_email='',
       url='',
-      package_dir = {''},
       license='LGPL'
       )

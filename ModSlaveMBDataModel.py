@@ -13,26 +13,29 @@
 from PyQt4 import QtGui,QtCore
 
 #-------------------------------------------------------------------------------
-class ModSlaveMBDataModel(object):
+class ModSlaveMBDataModel(QtCore.QObject):
+
 
     def __init__(self, no_of_items = 10, data_type = 0):#data type > 0 : decimal, 1 : hex
-        self.__no_of_items = no_of_items
-        self.__no_of_model_items = ((no_of_items - 1) // 10 + 1) * 10
+        super(ModSlaveMBDataModel,self).__init__()
+        self._no_of_items = no_of_items
+        self._no_of_model_items = ((no_of_items - 1) // 10 + 1) * 10
         self.model = QtGui.QStandardItemModel((no_of_items - 1) // 10 + 1, 10)
         self.model.setHorizontalHeaderLabels(("0","1","2","3","4","5","6","7","8","9"))
         self.model.setVerticalHeaderLabels(["%02d"%(x*10) for x in range((no_of_items - 1) // 10 + 1)])
         self._data = None
         self._data_type = data_type
-        #simulate values
+        # simulate values
         self.sim = False
+
 
     def update_model(self, data):
         self._data = data
-        for i in range(self.__no_of_model_items):
+        for i in range(self._no_of_model_items):
             row = i //10
             col = i % 10
             idx = self.model.index(row, col, QtCore.QModelIndex())
-            if (i >= self.__no_of_items):#not used cells
+            if (i >= self._no_of_items):#not used cells
                 self.model.setData(idx, "x", QtCore.Qt.DisplayRole)
                 self.model.setData(idx, QtGui.QBrush(QtCore.Qt.red), QtCore.Qt.ForegroundRole)
                 self.model.setData(idx, QtGui.QBrush(QtCore.Qt.lightGray), QtCore.Qt.BackgroundRole)
@@ -44,6 +47,8 @@ class ModSlaveMBDataModel(object):
                     self.model.setData(idx, "Address : {0}".format(i), QtCore.Qt.ToolTipRole)
                 else:#hex
                     self.model.setData(idx,"%X"%self._data[i], QtCore.Qt.DisplayRole)
+        # emit SIGNAL for updating UI
+        self.emit(QtCore.SIGNAL("update_view"))
 
     def set_data_type(self, dt):
         self._data_type = dt

@@ -1,4 +1,4 @@
-#Usage : python setup*.py py2exe
+#Usage : python setup*.py py2exe --includes sip
 
 from distutils.core import setup
 import py2exe
@@ -7,10 +7,10 @@ setup(
     # The first three parameters are not required, if at least a
     # 'version' is given, then a versioninfo resource is built from
     # them and added to the executables.
-    version = "0.3.0",
+    version = "0.3.1",
     description = "pyModSlave stand alone exe",
     name = "pyModSlaveQt",
 
     # targets to build
-    console = ["pyModSlaveQt.py"],
+    windows= ["pyModSlaveQt.py"],
     )

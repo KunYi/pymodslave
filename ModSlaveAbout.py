@@ -13,7 +13,8 @@
 from PyQt4 import QtGui,QtCore
 from Ui_about import Ui_About
 
-_VERSION = "0.3.1"
+_VERSION = "0.3.2"
+_URL = "<a href = ""http://sourceforge.net/projects/pymodslave"">Sourceforge Project Home Page</a>"
 
 #-------------------------------------------------------------------------------
 class ModSlaveAboutWindow(QtGui.QDialog):
@@ -28,4 +29,5 @@ class ModSlaveAboutWindow(QtGui.QDialog):
         self.ui=Ui_About()
         self.ui.setupUi(self)
         self.ui.lblVersion.setText("pyModSlave v{0}".format(_VERSION))
+        self.ui.lblURL.setText(_URL)
 #-------------------------------------------------------------------------------

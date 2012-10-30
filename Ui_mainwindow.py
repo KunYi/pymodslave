@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'mainwindow.ui'
 #
-# Created: Thu Sep 27 15:42:41 2012
+# Created: Tue Oct 30 15:42:52 2012
 #      by: PyQt4 UI code generator 4.9.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -76,7 +76,7 @@ class Ui_MainWindow(object):
         self.btStartStop.setObjectName(_fromUtf8("btStartStop"))
         self.gridLayoutCmds.addWidget(self.btStartStop, 0, 0, 1, 1)
         self.spInterval = QtGui.QSpinBox(self.centralWidget)
-        self.spInterval.setMinimum(500)
+        self.spInterval.setMinimum(1000)
         self.spInterval.setMaximum(10000)
         self.spInterval.setSingleStep(500)
         self.spInterval.setProperty("value", 5000)
