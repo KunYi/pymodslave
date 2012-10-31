@@ -4,10 +4,10 @@
 from distutils.core import setup
 
 setup(name='pyModSlaveQt',
-      version='0.3.1',
+      version='0.3.2',
       description='Python ModBus TCP/RTU Slave',
       author='ElBar',
       author_email='',
-      url='',
+      url='http://sourceforge.net/projects/pymodslave',
       license='LGPL'
       )
