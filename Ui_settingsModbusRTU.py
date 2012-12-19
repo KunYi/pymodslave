@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'c:\Projects\python\pyModSlaveQt\ui\settingsmodbusrtu.ui'
+# Form implementation generated from reading ui file 'settingsmodbusrtu.ui'
 #
-# Created: Mon Apr 23 13:16:33 2012
+# Created: Fri Dec 07 10:52:24 2012
 #      by: PyQt4 UI code generator 4.9.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -104,10 +104,10 @@ class Ui_SettingsModbusRTU(object):
     def retranslateUi(self, SettingsModbusRTU):
         SettingsModbusRTU.setWindowTitle(QtGui.QApplication.translate("SettingsModbusRTU", "Modbus RTU Settings", None, QtGui.QApplication.UnicodeUTF8))
         self.lblPort.setText(QtGui.QApplication.translate("SettingsModbusRTU", "Serial port", None, QtGui.QApplication.UnicodeUTF8))
-        self.cmbPort.setItemText(0, QtGui.QApplication.translate("SettingsModbusRTU", "0", None, QtGui.QApplication.UnicodeUTF8))
-        self.cmbPort.setItemText(1, QtGui.QApplication.translate("SettingsModbusRTU", "1", None, QtGui.QApplication.UnicodeUTF8))
-        self.cmbPort.setItemText(2, QtGui.QApplication.translate("SettingsModbusRTU", "2", None, QtGui.QApplication.UnicodeUTF8))
-        self.cmbPort.setItemText(3, QtGui.QApplication.translate("SettingsModbusRTU", "3", None, QtGui.QApplication.UnicodeUTF8))
+        self.cmbPort.setItemText(0, QtGui.QApplication.translate("SettingsModbusRTU", "1", None, QtGui.QApplication.UnicodeUTF8))
+        self.cmbPort.setItemText(1, QtGui.QApplication.translate("SettingsModbusRTU", "2", None, QtGui.QApplication.UnicodeUTF8))
+        self.cmbPort.setItemText(2, QtGui.QApplication.translate("SettingsModbusRTU", "3", None, QtGui.QApplication.UnicodeUTF8))
+        self.cmbPort.setItemText(3, QtGui.QApplication.translate("SettingsModbusRTU", "4", None, QtGui.QApplication.UnicodeUTF8))
         self.cmbBaud.setItemText(0, QtGui.QApplication.translate("SettingsModbusRTU", "1200", None, QtGui.QApplication.UnicodeUTF8))
         self.cmbBaud.setItemText(1, QtGui.QApplication.translate("SettingsModbusRTU", "2400", None, QtGui.QApplication.UnicodeUTF8))
         self.cmbBaud.setItemText(2, QtGui.QApplication.translate("SettingsModbusRTU", "4800", None, QtGui.QApplication.UnicodeUTF8))

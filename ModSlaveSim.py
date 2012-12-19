@@ -10,6 +10,7 @@
 #-------------------------------------------------------------------------------
 #!/usr/bin/env python
 
+from PyQt4 import QtCore
 #add logging capability
 import logging
 #repeated timer
@@ -26,7 +27,7 @@ import serial
 #data model
 from ModSlaveMBDataModel import ModSlaveMBDataModel
 #logger
-logger = modbus_tk.utils.create_logger("console")
+logger = logging.getLogger("dummy")
 
 #-------------------------------------------------------------------------------
 def ModServerFactory(args):
@@ -58,12 +59,13 @@ def ModServerFactory(args):
 #-------------------------------------------------------------------------------
 
 #-------------------------------------------------------------------------------
-class ModSlaveSim(object):
+class ModSlaveSim(QtCore.QObject):
+    """ Simulate modbus data """
 
     def __init__(self,modServer,slaveAddress,timeIntervalSim,
                     no_coils = 50, no_dis_inputs = 50,
                     no_input_regs = 50, no_hold_regs = 50):
-
+        super(ModSlaveSim,self).__init__()
         self._modServer = modServer
         self._no_coils = no_coils
         self._no_dis_inputs = no_dis_inputs
@@ -71,9 +73,13 @@ class ModSlaveSim(object):
         self._no_hold_regs = no_hold_regs
         # data models
         self.coils_data_model = ModSlaveMBDataModel(no_coils)
+        self.connect(self.coils_data_model, QtCore.SIGNAL("update_data"), self.set_coils_data)
         self.dis_inputs_data_model = ModSlaveMBDataModel(no_dis_inputs)
+        self.connect(self.dis_inputs_data_model, QtCore.SIGNAL("update_data"), self.set_dis_inputs_data)
         self.input_regs_data_model = ModSlaveMBDataModel(no_input_regs)
+        self.connect(self.input_regs_data_model, QtCore.SIGNAL("update_data"), self.set_input_regs_data)
         self.hold_regs_data_model = ModSlaveMBDataModel(no_hold_regs)
+        self.connect(self.hold_regs_data_model, QtCore.SIGNAL("update_data"), self.set_hold_regs_data)
 
         try:
             #add slave
@@ -107,38 +113,50 @@ class ModSlaveSim(object):
         if (self.coils_data_model.sim):
             for i in range(0,self._no_coils):
                 block0.append(random.randrange(0,2,1))
-            self.slave.set_values('0',0,block0)
+            self.set_coils_data(block0)
         #discrete inputs
         if (self.dis_inputs_data_model.sim):
             for i in range(0,self._no_dis_inputs):
                 block1.append(random.randrange(0,2,1))
-            self.slave.set_values('1',0,block1)
+            self.set_dis_inputs_data(block1)
         #input registers
         if (self.input_regs_data_model.sim):
             for i in range(0,self._no_input_regs):
                 block3.append(random.randrange(0,65535,1))
-            self.slave.set_values('3',0,block3)
+            self.set_input_regs_data(block3)
         #holding registers
         if (self.hold_regs_data_model.sim):
             for i in range(0,self._no_hold_regs):
                 block4.append(random.randrange(0,65535,1))
-            self.slave.set_values('4',0,block4)
+            self.set_hold_regs_data(block4)
         #update model data
-        self.coils_data_model.update_model(self.coils_data())
-        self.dis_inputs_data_model.update_model(self.dis_inputs_data())
-        self.input_regs_data_model.update_model(self.input_regs_data())
-        self.hold_regs_data_model.update_model(self.hold_regs_data())
+        self.coils_data_model.update_model(self.get_coils_data())
+        self.dis_inputs_data_model.update_model(self.get_dis_inputs_data())
+        self.input_regs_data_model.update_model(self.get_input_regs_data())
+        self.hold_regs_data_model.update_model(self.get_hold_regs_data())
 
-    def coils_data(self):
+    def get_coils_data(self):
         return self.slave.get_values('0',0,self._no_coils)
 
-    def dis_inputs_data(self):
+    def set_coils_data(self, data):
+        self.slave.set_values('0',0,data)
+
+    def get_dis_inputs_data(self):
         return self.slave.get_values('1',0,self._no_dis_inputs)
 
-    def input_regs_data(self):
+    def set_dis_inputs_data(self, data):
+        self.slave.set_values('1',0,data)
+
+    def get_input_regs_data(self):
         return self.slave.get_values('3',0,self._no_input_regs)
 
-    def hold_regs_data(self):
+    def set_input_regs_data(self, data):
+        self.slave.set_values('3',0,data)
+
+    def get_hold_regs_data(self):
         return self.slave.get_values('4',0,self._no_hold_regs)
+
+    def set_hold_regs_data(self, data):
+        self.slave.set_values('4',0,data)
 
 #-------------------------------------------------------------------------------

@@ -56,12 +56,39 @@
         <x>6</x>
         <y>5</y>
         <width>452</width>
-        <height>357</height>
+        <height>364</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout">
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout">
+         <item>
+          <widget class="QPushButton" name="pbResetDO">
+           <property name="minimumSize">
+            <size>
+             <width>48</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>48</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="toolTip">
+            <string>Reset</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normalon>:/img/refresh-16.png</normalon>
+            </iconset>
+           </property>
+          </widget>
+         </item>
          <item>
           <widget class="QCheckBox" name="chkSimCoils">
            <property name="text">
@@ -98,12 +125,39 @@
         <x>6</x>
         <y>5</y>
         <width>452</width>
-        <height>357</height>
+        <height>364</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <item>
+          <widget class="QPushButton" name="pbResetDI">
+           <property name="minimumSize">
+            <size>
+             <width>48</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>48</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="toolTip">
+            <string>Reset</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normalon>:/img/refresh-16.png</normalon>
+            </iconset>
+           </property>
+          </widget>
+         </item>
          <item>
           <widget class="QCheckBox" name="chkSimDisInputs">
            <property name="text">
@@ -149,12 +203,39 @@
         <x>6</x>
         <y>5</y>
         <width>452</width>
-        <height>360</height>
+        <height>364</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_3">
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_3">
+         <item>
+          <widget class="QPushButton" name="pbResetAO">
+           <property name="minimumSize">
+            <size>
+             <width>48</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>48</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="toolTip">
+            <string>Reset</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normalon>:/img/refresh-16.png</normalon>
+            </iconset>
+           </property>
+          </widget>
+         </item>
          <item>
           <widget class="QCheckBox" name="chkSimHoldRegs">
            <property name="text">
@@ -169,7 +250,7 @@
            </property>
            <item>
             <property name="text">
-             <string>Decimal</string>
+             <string>Unsigned Integer</string>
             </property>
            </item>
            <item>
@@ -208,12 +289,39 @@
         <x>6</x>
         <y>5</y>
         <width>452</width>
-        <height>360</height>
+        <height>364</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_4">
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_4">
+         <item>
+          <widget class="QPushButton" name="pbResetAI">
+           <property name="minimumSize">
+            <size>
+             <width>48</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>48</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="toolTip">
+            <string>Reset</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normalon>:/img/refresh-16.png</normalon>
+            </iconset>
+           </property>
+          </widget>
+         </item>
          <item>
           <widget class="QCheckBox" name="chkSimInputRegs">
            <property name="text">
@@ -228,7 +336,7 @@
            </property>
            <item>
             <property name="text">
-             <string>Decimal</string>
+             <string>Unsigned Integer</string>
             </property>
            </item>
            <item>

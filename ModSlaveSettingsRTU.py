@@ -22,7 +22,7 @@ class ModSlaveSettingsRTUWindow(QtGui.QDialog):
     def __init__(self):
         super(ModSlaveSettingsRTUWindow,self).__init__()
         #init value
-        self.rtu_port = 0
+        self.rtu_port = 1
         self.baud_rate = 9600
         self.byte_size = 8
         self.parity = 'None'
@@ -49,7 +49,7 @@ class ModSlaveSettingsRTUWindow(QtGui.QDialog):
 
     def _get_values(self):
         """get param values from ui"""
-        self.rtu_port = self.ui.cmbPort.currentText()
+        self.rtu_port = int(self.ui.cmbPort.currentText())
         self.baud_rate = self.ui.cmbBaud.currentText()
         self.byte_size = self.ui.cmbDataBits.currentText()
         self.parity = self.ui.cmbParity.currentText()
@@ -58,13 +58,13 @@ class ModSlaveSettingsRTUWindow(QtGui.QDialog):
     def _OK_pressed(self):
         """new values are accepted"""
         port = str(self.ui.cmbPort.currentText())
-        if (port.isdigit() and int(port) >= 0 and int(port) < 15):#port must be an integer
+        if (port.isdigit() and int(port) >= 1 and int(port) <= 16):#port must be an integer
             self._get_values()
         else:
-            self.rtu_port = 0
+            self.rtu_port = 1
             self._set_values()
             self._get_values()
-            Utils.errorMessageBox("Port must be an integer between 0 an 15")
+            Utils.errorMessageBox("Port must be an integer between 1 and 16")
 
     def _cancel_pressed(self):
         """new values are rejected"""

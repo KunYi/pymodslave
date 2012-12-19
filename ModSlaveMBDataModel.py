@@ -1,5 +1,5 @@
 #-------------------------------------------------------------------------------
-# Name:        module1
+# Name:        ModSlaveMBDataModel
 # Purpose:
 #
 # Author:      elbar
@@ -14,7 +14,7 @@ from PyQt4 import QtGui,QtCore
 
 #-------------------------------------------------------------------------------
 class ModSlaveMBDataModel(QtCore.QObject):
-
+    """ Modbus data model """
 
     def __init__(self, no_of_items = 10, data_type = 0):#data type > 0 : decimal, 1 : hex
         super(ModSlaveMBDataModel,self).__init__()
@@ -27,7 +27,6 @@ class ModSlaveMBDataModel(QtCore.QObject):
         self._data_type = data_type
         # simulate values
         self.sim = False
-
 
     def update_model(self, data):
         self._data = data
@@ -53,5 +52,41 @@ class ModSlaveMBDataModel(QtCore.QObject):
     def set_data_type(self, dt):
         self._data_type = dt
         self.update_model(self._data)
+
+    def reset_data(self):
+        _new_data = []
+        for i in range(self._no_of_model_items):
+            row = i //10
+            col = i % 10
+            if (i < self._no_of_items):
+                 idx = self.model.index(row, col, QtCore.QModelIndex())
+                 self.model.setData(idx, 0, QtCore.Qt.DisplayRole)
+                 self.model.setData(idx, "Address : {0}".format(i), QtCore.Qt.ToolTipRole)
+                 _new_data.append(0)
+        # emit SIGNAL for updating UI
+        self.emit(QtCore.SIGNAL("update_view"))
+        self.update_data(_new_data)
+        self.update_model(_new_data)
+
+    def update_item(self):
+        _new_data = []
+        for i in range(self._no_of_model_items):
+            row = i //10
+            col = i % 10
+            if (i < self._no_of_items):
+                 idx = self.model.index(row, col, QtCore.QModelIndex())
+                 value = str((self.model.data(idx, QtCore.Qt.EditRole)).toString())
+            if (self._data_type == 0): # decimal
+                 _new_data.append(int(value, 10))
+            elif(self._data_type == 1): #hex
+                _new_data.append(int(value, 16))
+        # emit SIGNAL for updating UI
+        self.emit(QtCore.SIGNAL("update_view"))
+        self.update_data(_new_data)
+        self.update_model(_new_data)
+
+    def update_data(self, data):
+        # emit SIGNAL for updating modbus data
+        self.emit(QtCore.SIGNAL("update_data"), data)
 
 #-------------------------------------------------------------------------------
