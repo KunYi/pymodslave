@@ -13,6 +13,10 @@
 from PyQt4 import QtGui,QtCore
 from Ui_settings import Ui_Settings
 
+#add logging capability
+import logging
+logger = logging.getLogger("modbus_tk")
+
 #-------------------------------------------------------------------------------
 class ModSlaveSettingsWindow(QtGui.QDialog):
     """ Class wrapper for general settings ui """
@@ -38,6 +42,7 @@ class ModSlaveSettingsWindow(QtGui.QDialog):
 
     def _set_values(self):
         """set param values to ui"""
+        logger.info("Set param values to UI")
         self.ui.sbNoOfCoils.setValue(self.coils)
         self.ui.sbNoOfDigInputs.setValue(self.inputs)
         self.ui.sbNoOfInputRegs.setValue(self.input_regs)
@@ -45,6 +50,7 @@ class ModSlaveSettingsWindow(QtGui.QDialog):
 
     def _get_values(self):
         """get param values from ui"""
+        logger.info("Get param values from UI")
         self.coils = self.ui.sbNoOfCoils.value()
         self.inputs = self.ui.sbNoOfDigInputs.value()
         self.input_regs = self.ui.sbNoOfInputRegs.value()

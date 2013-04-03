@@ -250,7 +250,7 @@
            </property>
            <item>
             <property name="text">
-             <string>Unsigned Integer</string>
+             <string>Decimal</string>
             </property>
            </item>
            <item>
@@ -336,7 +336,7 @@
            </property>
            <item>
             <property name="text">
-             <string>Unsigned Integer</string>
+             <string>Decimal</string>
             </property>
            </item>
            <item>

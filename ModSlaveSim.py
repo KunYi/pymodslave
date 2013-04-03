@@ -11,8 +11,6 @@
 #!/usr/bin/env python
 
 from PyQt4 import QtCore
-#add logging capability
-import logging
 #repeated timer
 import RepeatTimer as rt
 import random
@@ -26,25 +24,27 @@ import modbus_tk.modbus_rtu as modbus_rtu
 import serial
 #data model
 from ModSlaveMBDataModel import ModSlaveMBDataModel
-#logger
-logger = logging.getLogger("dummy")
+#add logging capability
+import logging
+logger = logging.getLogger("modbus_tk")
+
 
 #-------------------------------------------------------------------------------
 def ModServerFactory(args):
 
-    __modServer = None
+    _modServer = None
 
     if args[0]=='-tcp':
         logger.info("Build TCP Server - Port: {0}".format(args[1]))
         try :
-            __modServer = modbus_tcp.TcpServer(int(args[1]))
+            _modServer = modbus_tcp.TcpServer(int(args[1]))
         except Exception,msg:
             logger.error("Error while building TCP Server : {0}".format(msg))
     elif args[0]=='-rtu':
         logger.info("Build RTU Server - Port: {0}, Baudrate: {1}, Bytesize: {2}, Parity: {3}, Stopbits : {4}"
                     .format(args[1],args[2],args[3],args[4],args[5]))
         try:
-            __modServer = modbus_rtu.RtuServer(serial.Serial(port=int(args[1]),
+            _modServer = modbus_rtu.RtuServer(serial.Serial(port=int(args[1]),
                                                         baudrate=int(args[2]),
                                                         bytesize=int(args[3]),
                                                         parity=args[4],
@@ -55,7 +55,7 @@ def ModServerFactory(args):
     else:
         logger.error("Wrong arguments")
 
-    return __modServer
+    return _modServer
 #-------------------------------------------------------------------------------
 
 #-------------------------------------------------------------------------------

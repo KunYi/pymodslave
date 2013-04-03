@@ -17,7 +17,7 @@ def errorMessageBox(msg):
 
     QtGui.QMessageBox.critical(None,"Error",msg,QtGui.QMessageBox.Ok,QtGui.QMessageBox.NoButton)
 
-def set_up_logger(logger,file_name):
+def set_up_logger_file(logger,file_name):
 
     fh = logging.FileHandler(file_name)
     frm = logging.Formatter("%(asctime)s\t%(levelname)s\t%(module)s.%(funcName)s\t%(threadName)s\t%(message)s")

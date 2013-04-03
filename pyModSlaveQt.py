@@ -28,7 +28,8 @@ import ModSlaveSim as simSlave
 import Utils
 
 #logger
-logger = modbus_tk.utils.create_logger("dummy")
+logger = modbus_tk.utils.create_logger("console")
+Utils.set_up_logger_file(logger,'pyModSlaveQt.log')
 
 #-------------------------------------------------------------------------------
 class ModSlaveMainWindow(QtGui.QMainWindow):
@@ -258,8 +259,6 @@ class ModSlaveMainWindow(QtGui.QMainWindow):
 #-------------------------------------------------------------------------------
 def main():
 
-    #set-up logger
-    Utils.set_up_logger(logger,'pyModSlaveQt.log')
     #create qt application
     app=QtGui.QApplication(sys.argv)
     #load main window

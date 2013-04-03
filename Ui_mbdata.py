@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'mbdata.ui'
 #
-# Created: Fri Dec 07 10:53:13 2012
+# Created: Wed Apr 03 14:32:30 2013
 #      by: PyQt4 UI code generator 4.9.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -172,12 +172,12 @@ class Ui_MBData(object):
         self.tabIOs.setTabText(self.tabIOs.indexOf(self.tabDiscreteInputs), QtGui.QApplication.translate("MBData", "Discrete Inputs", None, QtGui.QApplication.UnicodeUTF8))
         self.pbResetAO.setToolTip(QtGui.QApplication.translate("MBData", "Reset", None, QtGui.QApplication.UnicodeUTF8))
         self.chkSimHoldRegs.setText(QtGui.QApplication.translate("MBData", "Sim", None, QtGui.QApplication.UnicodeUTF8))
-        self.cmbHoldRegsType.setItemText(0, QtGui.QApplication.translate("MBData", "Unsigned Integer", None, QtGui.QApplication.UnicodeUTF8))
+        self.cmbHoldRegsType.setItemText(0, QtGui.QApplication.translate("MBData", "Decimal", None, QtGui.QApplication.UnicodeUTF8))
         self.cmbHoldRegsType.setItemText(1, QtGui.QApplication.translate("MBData", "Hex", None, QtGui.QApplication.UnicodeUTF8))
         self.tabIOs.setTabText(self.tabIOs.indexOf(self.tabHoldingRegisters), QtGui.QApplication.translate("MBData", "Holding Registers", None, QtGui.QApplication.UnicodeUTF8))
         self.pbResetAI.setToolTip(QtGui.QApplication.translate("MBData", "Reset", None, QtGui.QApplication.UnicodeUTF8))
         self.chkSimInputRegs.setText(QtGui.QApplication.translate("MBData", "Sim", None, QtGui.QApplication.UnicodeUTF8))
-        self.cmbInputRegsType.setItemText(0, QtGui.QApplication.translate("MBData", "Unsigned Integer", None, QtGui.QApplication.UnicodeUTF8))
+        self.cmbInputRegsType.setItemText(0, QtGui.QApplication.translate("MBData", "Decimal", None, QtGui.QApplication.UnicodeUTF8))
         self.cmbInputRegsType.setItemText(1, QtGui.QApplication.translate("MBData", "Hex", None, QtGui.QApplication.UnicodeUTF8))
         self.tabIOs.setTabText(self.tabIOs.indexOf(self.tabInputRegisters), QtGui.QApplication.translate("MBData", "Input Registers", None, QtGui.QApplication.UnicodeUTF8))
 

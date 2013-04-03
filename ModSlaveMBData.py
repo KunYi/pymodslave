@@ -15,6 +15,10 @@ from Ui_mbdata import Ui_MBData
 from ModSlaveMBDataModel import ModSlaveMBDataModel
 from ModSlaveMBDataItemDelegate import ModSlaveMBDataItemDelegate
 
+#add logging capability
+import logging
+logger = logging.getLogger("modbus_tk")
+
 #-------------------------------------------------------------------------------
 class ModSlaveMBDataWindow(QtGui.QMainWindow):
     """ Class wrapper for modbus data """
@@ -135,15 +139,19 @@ class ModSlaveMBDataWindow(QtGui.QMainWindow):
             (self.ui.tvHoldingRegistersData.itemDelegate()).set_data_type(self.ui.cmbHoldRegsType.currentIndex())
 
     def _reset_DO(self):
+        logger.info("Reset DO")
         self.coils.reset_data()
 
     def _reset_DI(self):
+        logger.info("Reset DI")
         self.dis_inputs.reset_data()
 
     def _reset_AO(self):
+        logger.info("Reset AO")
         self.hold_regs.reset_data()
 
     def _reset_AI(self):
+        logger.info("Reset AI")
         self.input_regs.reset_data()
 
 #-------------------------------------------------------------------------------
