@@ -108,7 +108,8 @@ class ModSlaveMainWindow(QtGui.QMainWindow):
     def _update_status_bar(self):
         """update status bar"""
         if (self.ui.cmbModbusMode.currentText() == "TCP"):#TCP server
-            msg = "TCP : {0}".format(self._settingsTCP_dlg.tcp_port)
+            msg = "TCP : {0}:{1}".format(self._settingsTCP_dlg.tcp_ip,
+                                        self._settingsTCP_dlg.tcp_port)
         elif (self.ui.cmbModbusMode.currentText() == "RTU"):#RTU server
             msg = "RTU : {0}, {1}, {2}, {3}, {4}".format(self._settingsRTU_dlg.rtu_port,
                                                     self._settingsRTU_dlg.baud_rate,
@@ -148,6 +149,7 @@ class ModSlaveMainWindow(QtGui.QMainWindow):
                 logger.info("Starting TCP server")
                 self._svr_args.append("-tcp")
                 self._svr_args.append(self._settingsTCP_dlg.tcp_port)
+                self._svr_args.append(self._settingsTCP_dlg.tcp_ip)
             elif (self.ui.cmbModbusMode.currentText() == "RTU"): # RTU server params
                 logger.info("Starting RTU server")
                 self._svr_args.append("-rtu")
@@ -194,7 +196,7 @@ class ModSlaveMainWindow(QtGui.QMainWindow):
 
     def _load_params(self):
         logger.info("Load params")
-        config_tcp_defaut = {'TCP_Port':'502'}
+        config_tcp_defaut = {'TCP_Port':'502', 'TCP_IP':'127.000.000.001'}
         config_rtu_defaut = {'RTU_Port':'0', 'Baud':'9600', 'DataBits':'8', 'StopBits':'1', 'Parity':'None'}
         config_var_defaut = {'Coils':'0', 'DisInputs':'0', 'InputRegs':'0', 'HoldRegs':'0', 'TimeInterval':'1000'}
         config_default = {}
@@ -207,6 +209,7 @@ class ModSlaveMainWindow(QtGui.QMainWindow):
             return
         #TCP Settings
         self._settingsTCP_dlg.tcp_port = config.getint('TCP', 'TCP_Port')
+        self._settingsTCP_dlg.tcp_ip = config.get('TCP', 'TCP_IP')
         #RTU Settings
         self._settingsRTU_dlg.rtu_port = config.getint('RTU', 'RTU_Port')
         self._settingsRTU_dlg.baud_rate = config.getint('RTU', 'Baud')
@@ -226,6 +229,7 @@ class ModSlaveMainWindow(QtGui.QMainWindow):
         #TCP Settings
         config.add_section('TCP')
         config.set('TCP','TCP_Port',self._settingsTCP_dlg.tcp_port)
+        config.set('TCP','TCP_IP',self._settingsTCP_dlg.tcp_ip)
         #RTU Settings
         config.add_section('RTU')
         config.set('RTU','RTU_Port',self._settingsRTU_dlg.rtu_port)

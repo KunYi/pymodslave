@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'c:\Projects\python\pyModSlaveQt\ui\settingsmodbustcp.ui'
+# Form implementation generated from reading ui file 'settingsmodbustcp.ui'
 #
-# Created: Wed Apr 18 10:08:28 2012
+# Created: Mon Apr 29 12:28:19 2013
 #      by: PyQt4 UI code generator 4.9.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -17,9 +17,9 @@ except AttributeError:
 class Ui_SettingsModbusTCP(object):
     def setupUi(self, SettingsModbusTCP):
         SettingsModbusTCP.setObjectName(_fromUtf8("SettingsModbusTCP"))
-        SettingsModbusTCP.resize(180, 80)
-        SettingsModbusTCP.setMinimumSize(QtCore.QSize(180, 80))
-        SettingsModbusTCP.setMaximumSize(QtCore.QSize(180, 80))
+        SettingsModbusTCP.resize(180, 90)
+        SettingsModbusTCP.setMinimumSize(QtCore.QSize(180, 90))
+        SettingsModbusTCP.setMaximumSize(QtCore.QSize(180, 90))
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(_fromUtf8(":/img/network-16.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         SettingsModbusTCP.setWindowIcon(icon)
@@ -30,10 +30,16 @@ class Ui_SettingsModbusTCP(object):
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
         self.leTCPPort = QtGui.QLineEdit(SettingsModbusTCP)
         self.leTCPPort.setObjectName(_fromUtf8("leTCPPort"))
-        self.gridLayout.addWidget(self.leTCPPort, 0, 1, 1, 1)
+        self.gridLayout.addWidget(self.leTCPPort, 1, 1, 1, 1)
         self.lblTCPPort = QtGui.QLabel(SettingsModbusTCP)
         self.lblTCPPort.setObjectName(_fromUtf8("lblTCPPort"))
-        self.gridLayout.addWidget(self.lblTCPPort, 0, 0, 1, 1)
+        self.gridLayout.addWidget(self.lblTCPPort, 1, 0, 1, 1)
+        self.lblIP = QtGui.QLabel(SettingsModbusTCP)
+        self.lblIP.setObjectName(_fromUtf8("lblIP"))
+        self.gridLayout.addWidget(self.lblIP, 0, 0, 1, 1)
+        self.leIP = QtGui.QLineEdit(SettingsModbusTCP)
+        self.leIP.setObjectName(_fromUtf8("leIP"))
+        self.gridLayout.addWidget(self.leIP, 0, 1, 1, 1)
         self.verticalLayout.addLayout(self.gridLayout)
         self.buttonBox = QtGui.QDialogButtonBox(SettingsModbusTCP)
         self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
@@ -51,5 +57,7 @@ class Ui_SettingsModbusTCP(object):
         SettingsModbusTCP.setWindowTitle(QtGui.QApplication.translate("SettingsModbusTCP", "Modbus TCP Settings", None, QtGui.QApplication.UnicodeUTF8))
         self.leTCPPort.setText(QtGui.QApplication.translate("SettingsModbusTCP", "502", None, QtGui.QApplication.UnicodeUTF8))
         self.lblTCPPort.setText(QtGui.QApplication.translate("SettingsModbusTCP", "TCP Port", None, QtGui.QApplication.UnicodeUTF8))
+        self.lblIP.setText(QtGui.QApplication.translate("SettingsModbusTCP", "IP", None, QtGui.QApplication.UnicodeUTF8))
+        self.leIP.setInputMask(QtGui.QApplication.translate("SettingsModbusTCP", "999.999.999.999;_", None, QtGui.QApplication.UnicodeUTF8))
 
 import pyModSlaveQt_rc

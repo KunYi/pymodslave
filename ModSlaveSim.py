@@ -35,9 +35,9 @@ def ModServerFactory(args):
     _modServer = None
 
     if args[0]=='-tcp':
-        logger.info("Build TCP Server - Port: {0}".format(args[1]))
+        logger.info("Build TCP Server - {0}:{1}".format(args[2],args[1]))
         try :
-            _modServer = modbus_tcp.TcpServer(int(args[1]))
+            _modServer = modbus_tcp.TcpServer(int(args[1]), args[2])
         except Exception,msg:
             logger.error("Error while building TCP Server : {0}".format(msg))
     elif args[0]=='-rtu':
