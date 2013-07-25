@@ -15,7 +15,6 @@ from Ui_settings import Ui_Settings
 
 #add logging capability
 import logging
-logger = logging.getLogger("modbus_tk")
 
 #-------------------------------------------------------------------------------
 class ModSlaveSettingsWindow(QtGui.QDialog):
@@ -28,6 +27,8 @@ class ModSlaveSettingsWindow(QtGui.QDialog):
         self.inputs = 50
         self.input_regs = 50
         self.hold_regs = 50
+        self.max_no_of_bus_monitor_lines = 50
+        self._logger = logging.getLogger("modbus_tk")
         self.setupUI()
 
     def setupUI(self):
@@ -42,19 +43,21 @@ class ModSlaveSettingsWindow(QtGui.QDialog):
 
     def _set_values(self):
         """set param values to ui"""
-        logger.info("Set param values to UI")
+        self._logger.info("Set param values to UI")
         self.ui.sbNoOfCoils.setValue(self.coils)
         self.ui.sbNoOfDigInputs.setValue(self.inputs)
         self.ui.sbNoOfInputRegs.setValue(self.input_regs)
         self.ui.sbNoOfHoldingRegs.setValue(self.hold_regs)
+        self.ui.sbMaxNoOfBusMonitorLines.setValue(self.max_no_of_bus_monitor_lines)
 
     def _get_values(self):
         """get param values from ui"""
-        logger.info("Get param values from UI")
+        self._logger.info("Get param values from UI")
         self.coils = self.ui.sbNoOfCoils.value()
         self.inputs = self.ui.sbNoOfDigInputs.value()
         self.input_regs = self.ui.sbNoOfInputRegs.value()
         self.hold_regs = self.ui.sbNoOfHoldingRegs.value()
+        self.max_no_of_bus_monitor_lines = self.ui.sbMaxNoOfBusMonitorLines.value()
 
     def _OK_pressed(self):
         """new values are accepted"""

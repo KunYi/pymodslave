@@ -16,7 +16,6 @@ from Ui_settingsModbusTCP import Ui_SettingsModbusTCP
 import Utils
 #add logging capability
 import logging
-logger = logging.getLogger("modbus_tk")
 
 #-------------------------------------------------------------------------------
 class ModSlaveSettingsTCPWindow(QtGui.QDialog):
@@ -27,6 +26,7 @@ class ModSlaveSettingsTCPWindow(QtGui.QDialog):
         #init value
         self.tcp_port = 502
         self.tcp_ip = '127.000.000.001'
+        self._logger = logging.getLogger("modbus_tk")
         self.setupUI()
 
     def setupUI(self):
@@ -41,13 +41,13 @@ class ModSlaveSettingsTCPWindow(QtGui.QDialog):
 
     def _set_values(self):
         """set param values to ui"""
-        logger.info("Set param values to UI")
+        self._logger.info("Set param values to UI")
         self.ui.leTCPPort.setText(str(self.tcp_port))
         self.ui.leIP.setText(str(self.tcp_ip))
 
     def _get_values(self):
         """get param values from ui"""
-        logger.info("Get param values from UI")
+        self._logger.info("Get param values from UI")
         self.tcp_port = int(self.ui.leTCPPort.text())
         self.tcp_ip = self.ui.leIP.text()
 
@@ -65,7 +65,7 @@ class ModSlaveSettingsTCPWindow(QtGui.QDialog):
         else:
             self._set_values()
             self._get_values()
-            logger.error("Wrong IP address")
+            self._logger.error("Wrong IP address")
             Utils.errorMessageBox("Wrong IP address")
         port = str(self.ui.leTCPPort.text())
         if (port.isdigit() and int(port) > 0 and int(port) < 65535):#port must be an integer
@@ -74,7 +74,7 @@ class ModSlaveSettingsTCPWindow(QtGui.QDialog):
             self.tcp_port = 502
             self._set_values()
             self._get_values()
-            logger.error("Port must be an integer between 1 and 65535")
+            self._logger.error("Port must be an integer between 1 and 65535")
             Utils.errorMessageBox("Port must be an integer between 1 an 65535")
 
     def _cancel_pressed(self):

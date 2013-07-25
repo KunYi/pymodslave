@@ -14,13 +14,13 @@ import threading
 
 #add logging capability
 import logging
-logger = logging.getLogger("modbus_tk")
 
 #-------------------------------------------------------------------------------
 class RepeatTimer(threading.Thread):
 
     def __init__(self, interval, function, iterations=0, args=[], kwargs={}):
         threading.Thread.__init__(self)
+        self._logger = logging.getLogger("modbus_tk")
         self.interval = interval
         self.function = function
         self.iterations = iterations
@@ -30,13 +30,13 @@ class RepeatTimer(threading.Thread):
 
     def run(self):
         count = 0
-        logger.info("Start timer")
+        self._logger.info("Start timer")
         while not self.finished.is_set() and (self.iterations <= 0 or count < self.iterations):
             self.finished.wait(self.interval)
             if not self.finished.is_set():
                 self.function(*self.args, **self.kwargs)
                 count += 1
-        logger.info("Stop timer")
+        self._logger.info("Stop timer")
 
     def cancel(self):
         self.finished.set()

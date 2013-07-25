@@ -17,7 +17,6 @@ from ModSlaveMBDataItemDelegate import ModSlaveMBDataItemDelegate
 
 #add logging capability
 import logging
-logger = logging.getLogger("modbus_tk")
 
 #-------------------------------------------------------------------------------
 class ModSlaveMBDataWindow(QtGui.QMainWindow):
@@ -30,6 +29,7 @@ class ModSlaveMBDataWindow(QtGui.QMainWindow):
         self.dis_inputs = None
         self.input_regs = None
         self.hold_regs = None
+        self._logger = logging.getLogger("modbus_tk")
         #setu UI
         self.setupUI()
 
@@ -139,19 +139,19 @@ class ModSlaveMBDataWindow(QtGui.QMainWindow):
             (self.ui.tvHoldingRegistersData.itemDelegate()).set_data_type(self.ui.cmbHoldRegsType.currentIndex())
 
     def _reset_DO(self):
-        logger.info("Reset DO")
+        self._logger.info("Reset DO")
         self.coils.reset_data()
 
     def _reset_DI(self):
-        logger.info("Reset DI")
+        self._logger.info("Reset DI")
         self.dis_inputs.reset_data()
 
     def _reset_AO(self):
-        logger.info("Reset AO")
+        self._logger.info("Reset AO")
         self.hold_regs.reset_data()
 
     def _reset_AI(self):
-        logger.info("Reset AI")
+        self._logger.info("Reset AI")
         self.input_regs.reset_data()
 
 #-------------------------------------------------------------------------------

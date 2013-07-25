@@ -16,7 +16,6 @@ from Ui_settingsModbusRTU import Ui_SettingsModbusRTU
 import Utils
 #add logging capability
 import logging
-logger = logging.getLogger("modbus_tk")
 
 #-------------------------------------------------------------------------------
 class ModSlaveSettingsRTUWindow(QtGui.QDialog):
@@ -30,6 +29,7 @@ class ModSlaveSettingsRTUWindow(QtGui.QDialog):
         self.byte_size = 8
         self.parity = 'None'
         self.stop_bits = '1'
+        self._logger = logging.getLogger("modbus_tk")
         self.setupUI()
 
     def setupUI(self):
@@ -44,7 +44,7 @@ class ModSlaveSettingsRTUWindow(QtGui.QDialog):
 
     def _set_values(self):
         """set param values to ui"""
-        logger.info("Set param values to UI")
+        self._logger.info("Set param values to UI")
         self.ui.cmbPort.setEditText(str(self.rtu_port))
         self.ui.cmbBaud.setCurrentIndex(self.ui.cmbBaud.findText(str(self.baud_rate)))
         self.ui.cmbDataBits.setCurrentIndex(self.ui.cmbDataBits.findText(str(self.byte_size)))
@@ -53,7 +53,7 @@ class ModSlaveSettingsRTUWindow(QtGui.QDialog):
 
     def _get_values(self):
         """get param values from ui"""
-        logger.info("Get param values from UI")
+        self._logger.info("Get param values from UI")
         self.rtu_port = int(self.ui.cmbPort.currentText())
         self.baud_rate = self.ui.cmbBaud.currentText()
         self.byte_size = self.ui.cmbDataBits.currentText()
@@ -69,7 +69,7 @@ class ModSlaveSettingsRTUWindow(QtGui.QDialog):
             self.rtu_port = 1
             self._set_values()
             self._get_values()
-            logger.error("Port must be an integer between 1 and 16")
+            self._logger.error("Port must be an integer between 1 and 16")
             Utils.errorMessageBox("Port must be an integer between 1 and 16")
 
     def _cancel_pressed(self):

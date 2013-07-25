@@ -10,51 +10,59 @@ ShowFileExtensions=FALSE
 ClassName=TProjectFilesNode
 
 [Project\ChildNodes\Node0\ChildNodes\Node0]
-ClassName=TProjectFileNode
-FileName=C:\Projects\python\pyModSlaveQt\ModSlaveAbout.py
+ClassName=TProjectFolderNode
+Name=Tests
 
 [Project\ChildNodes\Node0\ChildNodes\Node1]
 ClassName=TProjectFileNode
-FileName=C:\Projects\python\pyModSlaveQt\ModSlaveMBData.py
+FileName=C:\Projects\python\pyModSlaveQt\ModSlaveAbout.py
 
 [Project\ChildNodes\Node0\ChildNodes\Node2]
 ClassName=TProjectFileNode
-FileName=C:\Projects\python\pyModSlaveQt\ModSlaveMBDataItemDelegate.py
+FileName=C:\Projects\python\pyModSlaveQt\ModSlaveBusMonitor.py
 
 [Project\ChildNodes\Node0\ChildNodes\Node3]
 ClassName=TProjectFileNode
-FileName=C:\Projects\python\pyModSlaveQt\ModSlaveMBDataModel.py
+FileName=C:\Projects\python\pyModSlaveQt\ModSlaveMBData.py
 
 [Project\ChildNodes\Node0\ChildNodes\Node4]
 ClassName=TProjectFileNode
-FileName=C:\Projects\python\pyModSlaveQt\ModSlaveSettings.py
+FileName=C:\Projects\python\pyModSlaveQt\ModSlaveMBDataItemDelegate.py
 
 [Project\ChildNodes\Node0\ChildNodes\Node5]
 ClassName=TProjectFileNode
-FileName=C:\Projects\python\pyModSlaveQt\ModSlaveSettingsRTU.py
+FileName=C:\Projects\python\pyModSlaveQt\ModSlaveMBDataModel.py
 
 [Project\ChildNodes\Node0\ChildNodes\Node6]
 ClassName=TProjectFileNode
-FileName=C:\Projects\python\pyModSlaveQt\ModSlaveSettingsTCP.py
+FileName=C:\Projects\python\pyModSlaveQt\ModSlaveSettings.py
 
 [Project\ChildNodes\Node0\ChildNodes\Node7]
 ClassName=TProjectFileNode
-FileName=C:\Projects\python\pyModSlaveQt\ModSlaveSim.py
+FileName=C:\Projects\python\pyModSlaveQt\ModSlaveSettingsRTU.py
 
 [Project\ChildNodes\Node0\ChildNodes\Node8]
 ClassName=TProjectFileNode
-FileName=C:\Projects\python\pyModSlaveQt\pyModSlaveQt.py
+FileName=C:\Projects\python\pyModSlaveQt\ModSlaveSettingsTCP.py
 
 [Project\ChildNodes\Node0\ChildNodes\Node9]
 ClassName=TProjectFileNode
-FileName=C:\Projects\python\pyModSlaveQt\RepeatTimer.py
+FileName=C:\Projects\python\pyModSlaveQt\ModSlaveSim.py
 
 [Project\ChildNodes\Node0\ChildNodes\Node10]
+ClassName=TProjectFileNode
+FileName=C:\Projects\python\pyModSlaveQt\pyModSlaveQt.py
+
+[Project\ChildNodes\Node0\ChildNodes\Node11]
+ClassName=TProjectFileNode
+FileName=C:\Projects\python\pyModSlaveQt\RepeatTimer.py
+
+[Project\ChildNodes\Node0\ChildNodes\Node12]
 ClassName=TProjectFileNode
 FileName=C:\Projects\python\pyModSlaveQt\Utils.py
 
 [Project\ChildNodes\Node0\ChildNodes]
-Count=11
+Count=13
 
 [Project\ChildNodes\Node1]
 ClassName=TProjectRunConfiguationsNode

@@ -26,11 +26,11 @@ import serial
 from ModSlaveMBDataModel import ModSlaveMBDataModel
 #add logging capability
 import logging
-logger = logging.getLogger("modbus_tk")
-
 
 #-------------------------------------------------------------------------------
 def ModServerFactory(args):
+
+    logger = logging.getLogger("modbus_tk")
 
     _modServer = None
 
@@ -71,6 +71,7 @@ class ModSlaveSim(QtCore.QObject):
         self._no_dis_inputs = no_dis_inputs
         self._no_input_regs = no_input_regs
         self._no_hold_regs = no_hold_regs
+        self._logger = logging.getLogger("modbus_tk")
         # data models
         self.coils_data_model = ModSlaveMBDataModel(no_coils)
         self.connect(self.coils_data_model, QtCore.SIGNAL("update_data"), self.set_coils_data)
@@ -93,14 +94,14 @@ class ModSlaveSim(QtCore.QObject):
             self._timer=rt.RepeatTimer(timeIntervalSim,self._simBlockValues,0)
             self._simBlockValues()
         except Exception,msg:
-    		logger.error("Slave Init Error : {0}".format(msg))
+    		self._logger.error("Slave Init Error : {0}".format(msg))
 
     def start(self):
-        logger.info("Slave sim started")
+        self._logger.info("Slave sim started")
         self._timer.start()
 
     def stop(self):
-        logger.info("Slave sim stopped")
+        self._logger.info("Slave sim stopped")
         self._timer.cancel()
 
     def _simBlockValues(self):
