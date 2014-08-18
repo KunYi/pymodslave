@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Project SYSTEM "Project-4.6.dtd">
+<!-- eric4 project file for project pyModSlaveQt -->
+<!-- Saved: 2014-08-18, 15:02:56 -->
+<!-- Copyright (C) 2014 elbar,  -->
+<Project version="4.6">
+  <Language>en</Language>
+  <ProgLanguage mixed="0">Python</ProgLanguage>
+  <ProjectType>Qt4</ProjectType>
+  <Description>Modbus Slave Qt</Description>
+  <Version>0.3.6</Version>
+  <Author>elbar</Author>
+  <Email></Email>
+  <Sources>
+    <Source>pyModSlaveQt.py</Source>
+    <Source>ModSlaveAbout.py</Source>
+    <Source>ModSlaveBusMonitor.py</Source>
+    <Source>ModSlaveMBData.py</Source>
+    <Source>ModSlaveMBDataItemDelegate.py</Source>
+    <Source>ModSlaveMBDataModel.py</Source>
+    <Source>ModSlaveSettings.py</Source>
+    <Source>ModSlaveSettingsRTU.py</Source>
+    <Source>ModSlaveSettingsTCP.py</Source>
+    <Source>ModSlaveSim.py</Source>
+    <Source>pyModSlaveQt_rc.py</Source>
+    <Source>RepeatTimer.py</Source>
+    <Source>setup_py2exe_dist.py</Source>
+    <Source>setup_source_dist.py</Source>
+    <Source>Ui_about.py</Source>
+    <Source>Ui_busmonitor.py</Source>
+    <Source>Ui_mainwindow.py</Source>
+    <Source>Ui_mbdata.py</Source>
+    <Source>Ui_settings.py</Source>
+    <Source>Ui_settingsModbusRTU.py</Source>
+    <Source>Ui_settingsModbusTCP.py</Source>
+    <Source>Utils.py</Source>
+    <Source>__init__.py</Source>
+  </Sources>
+  <Forms>
+    <Form>ui/about.ui</Form>
+    <Form>ui/busmonitor.ui</Form>
+    <Form>ui/mainwindow.ui</Form>
+    <Form>ui/mbdata.ui</Form>
+    <Form>ui/settings.ui</Form>
+    <Form>ui/settingsmodbusrtu.ui</Form>
+    <Form>ui/settingsmodbustcp.ui</Form>
+  </Forms>
+  <Translations>
+  </Translations>
+  <Resources>
+    <Resource>ui/icons/pyModSlaveQt.qrc</Resource>
+  </Resources>
+  <Interfaces>
+  </Interfaces>
+  <Others>
+  </Others>
+  <MainScript>pyModSlaveQt.py</MainScript>
+  <Vcs>
+    <VcsType>None</VcsType>
+  </Vcs>
+  <FiletypeAssociations>
+    <FiletypeAssociation pattern="*.ui" type="FORMS" />
+    <FiletypeAssociation pattern="*.idl" type="INTERFACES" />
+    <FiletypeAssociation pattern="*.qm" type="TRANSLATIONS" />
+    <FiletypeAssociation pattern="*.ptl" type="SOURCES" />
+    <FiletypeAssociation pattern="*.pyw" type="SOURCES" />
+    <FiletypeAssociation pattern="*.ui.h" type="FORMS" />
+    <FiletypeAssociation pattern="*.ts" type="TRANSLATIONS" />
+    <FiletypeAssociation pattern="*.py" type="SOURCES" />
+    <FiletypeAssociation pattern="*.qrc" type="RESOURCES" />
+  </FiletypeAssociations>
+</Project>
