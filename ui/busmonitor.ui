@@ -56,6 +56,9 @@
           <bold>true</bold>
          </font>
         </property>
+        <property name="layoutDirection">
+         <enum>Qt::LeftToRight</enum>
+        </property>
         <property name="text">
          <string>Raw Data</string>
         </property>
@@ -129,7 +132,7 @@
   <action name="actionClear">
    <property name="icon">
     <iconset resource="icons/pyModSlaveQt.qrc">
-     <normaloff>:/img/remove-16.png</normaloff>:/img/remove-16.png</iconset>
+     <normaloff>:/img/edit-clear-16.png</normaloff>:/img/edit-clear-16.png</iconset>
    </property>
    <property name="text">
     <string>Clear</string>
@@ -144,7 +147,7 @@
   <action name="actionExit">
    <property name="icon">
     <iconset resource="icons/pyModSlaveQt.qrc">
-     <normaloff>:/img/close16.png</normaloff>:/img/close16.png</iconset>
+     <normaloff>:/img/Close-16.png</normaloff>:/img/Close-16.png</iconset>
    </property>
    <property name="text">
     <string>Exit</string>
@@ -163,22 +166,6 @@
    </property>
    <property name="toolTip">
     <string>Save</string>
-   </property>
-  </action>
-  <action name="actionStart_Stop">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="icon">
-    <iconset resource="icons/pyModSlaveQt.qrc">
-     <normaloff>:/img/run-16.png</normaloff>
-     <normalon>:/img/stop-16.png</normalon>:/img/run-16.png</iconset>
-   </property>
-   <property name="text">
-    <string>Start-Stop</string>
-   </property>
-   <property name="toolTip">
-    <string>Start-Stop Monitor</string>
    </property>
   </action>
  </widget>

@@ -6,20 +6,20 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>360</width>
-    <height>170</height>
+    <width>500</width>
+    <height>600</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>360</width>
-    <height>170</height>
+    <width>500</width>
+    <height>600</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>360</width>
-    <height>170</height>
+    <width>500</width>
+    <height>600</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -81,7 +81,7 @@
          </spacer>
         </item>
         <item row="0" column="2">
-         <widget class="QLabel" name="lblSlaveID">
+         <widget class="QLabel" name="lblSlave">
           <property name="text">
            <string>Slave ID</string>
           </property>
@@ -199,8 +199,8 @@
           </property>
           <property name="icon">
            <iconset resource="icons/pyModSlaveQt.qrc">
-            <normaloff>:/img/run-16.png</normaloff>
-            <normalon>:/img/stop-16.png</normalon>:/img/run-16.png</iconset>
+            <normaloff>:/img/plug-disconnect-16.png</normaloff>
+            <normalon>:/img/plug-connect-16.png</normalon>:/img/plug-disconnect-16.png</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -246,6 +246,464 @@
       </widget>
      </widget>
     </item>
+    <item>
+     <widget class="QTabWidget" name="tabIOs">
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <widget class="QWidget" name="tabCoils">
+       <attribute name="icon">
+        <iconset resource="icons/pyModSlaveQt.qrc">
+         <normaloff>:/img/DO.png</normaloff>:/img/DO.png</iconset>
+       </attribute>
+       <attribute name="title">
+        <string>Coils</string>
+       </attribute>
+       <widget class="QWidget" name="verticalLayoutWidget">
+        <property name="geometry">
+         <rect>
+          <x>6</x>
+          <y>5</y>
+          <width>461</width>
+          <height>391</height>
+         </rect>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_2">
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout">
+           <item>
+            <widget class="QPushButton" name="pbResetDO">
+             <property name="minimumSize">
+              <size>
+               <width>48</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>48</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="toolTip">
+              <string>Reset</string>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="icon">
+              <iconset resource="icons/pyModSlaveQt.qrc">
+               <normaloff>:/img/edit-clear-16.png</normaloff>:/img/edit-clear-16.png</iconset>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QSpinBox" name="sbNoOfCoils">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>50</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>75</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="minimum">
+              <number>1</number>
+             </property>
+             <property name="maximum">
+              <number>500</number>
+             </property>
+             <property name="singleStep">
+              <number>10</number>
+             </property>
+             <property name="value">
+              <number>50</number>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QCheckBox" name="chkSimCoils">
+             <property name="text">
+              <string>Sim</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="QTableView" name="tvCoilsData">
+           <property name="minimumSize">
+            <size>
+             <width>450</width>
+             <height>330</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="tabDiscreteInputs">
+       <attribute name="icon">
+        <iconset resource="icons/pyModSlaveQt.qrc">
+         <normaloff>:/img/DI.png</normaloff>:/img/DI.png</iconset>
+       </attribute>
+       <attribute name="title">
+        <string>Discrete Inputs</string>
+       </attribute>
+       <widget class="QWidget" name="verticalLayoutWidget_2">
+        <property name="geometry">
+         <rect>
+          <x>6</x>
+          <y>5</y>
+          <width>461</width>
+          <height>391</height>
+         </rect>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_3">
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_2">
+           <item>
+            <widget class="QPushButton" name="pbResetDI">
+             <property name="minimumSize">
+              <size>
+               <width>48</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>48</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="toolTip">
+              <string>Reset</string>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="icon">
+              <iconset resource="icons/pyModSlaveQt.qrc">
+               <normaloff>:/img/edit-clear-16.png</normaloff>:/img/edit-clear-16.png</iconset>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QSpinBox" name="sbNoOfDigInputs">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>50</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>75</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="minimum">
+              <number>1</number>
+             </property>
+             <property name="maximum">
+              <number>500</number>
+             </property>
+             <property name="singleStep">
+              <number>10</number>
+             </property>
+             <property name="value">
+              <number>50</number>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QCheckBox" name="chkSimDisInputs">
+             <property name="text">
+              <string>Sim</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="QTableView" name="tvDiscreteInputsData">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>450</width>
+             <height>330</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>16777215</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="tabHoldingRegisters">
+       <attribute name="icon">
+        <iconset resource="icons/pyModSlaveQt.qrc">
+         <normaloff>:/img/AO.png</normaloff>:/img/AO.png</iconset>
+       </attribute>
+       <attribute name="title">
+        <string>Holding Registers</string>
+       </attribute>
+       <widget class="QWidget" name="verticalLayoutWidget_3">
+        <property name="geometry">
+         <rect>
+          <x>6</x>
+          <y>5</y>
+          <width>461</width>
+          <height>391</height>
+         </rect>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_4">
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_3">
+           <item>
+            <widget class="QPushButton" name="pbResetAO">
+             <property name="minimumSize">
+              <size>
+               <width>48</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>48</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="toolTip">
+              <string>Reset</string>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="icon">
+              <iconset resource="icons/pyModSlaveQt.qrc">
+               <normaloff>:/img/edit-clear-16.png</normaloff>:/img/edit-clear-16.png</iconset>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QSpinBox" name="sbNoOfHoldingRegs">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>50</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>75</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="minimum">
+              <number>1</number>
+             </property>
+             <property name="maximum">
+              <number>500</number>
+             </property>
+             <property name="singleStep">
+              <number>10</number>
+             </property>
+             <property name="value">
+              <number>50</number>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QCheckBox" name="chkSimHoldRegs">
+             <property name="text">
+              <string>Sim</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QComboBox" name="cmbHoldRegsType">
+             <property name="maxVisibleItems">
+              <number>2</number>
+             </property>
+             <item>
+              <property name="text">
+               <string>Decimal</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Hex</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="QTableView" name="tvHoldingRegistersData">
+           <property name="minimumSize">
+            <size>
+             <width>450</width>
+             <height>330</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="tabInputRegisters">
+       <attribute name="icon">
+        <iconset resource="icons/pyModSlaveQt.qrc">
+         <normaloff>:/img/AI.png</normaloff>:/img/AI.png</iconset>
+       </attribute>
+       <attribute name="title">
+        <string>Input Registers</string>
+       </attribute>
+       <widget class="QWidget" name="verticalLayoutWidget_4">
+        <property name="geometry">
+         <rect>
+          <x>6</x>
+          <y>5</y>
+          <width>461</width>
+          <height>391</height>
+         </rect>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_5">
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_4">
+           <item>
+            <widget class="QPushButton" name="pbResetAI">
+             <property name="minimumSize">
+              <size>
+               <width>48</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>48</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="toolTip">
+              <string>Reset</string>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="icon">
+              <iconset resource="icons/pyModSlaveQt.qrc">
+               <normaloff>:/img/edit-clear-16.png</normaloff>:/img/edit-clear-16.png</iconset>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QSpinBox" name="sbNoOfInputRegs">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>50</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>75</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="minimum">
+              <number>1</number>
+             </property>
+             <property name="maximum">
+              <number>500</number>
+             </property>
+             <property name="singleStep">
+              <number>10</number>
+             </property>
+             <property name="value">
+              <number>50</number>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QCheckBox" name="chkSimInputRegs">
+             <property name="text">
+              <string>Sim</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QComboBox" name="cmbInputRegsType">
+             <property name="maxVisibleItems">
+              <number>2</number>
+             </property>
+             <item>
+              <property name="text">
+               <string>Decimal</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Hex</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="QTableView" name="tvInputRegistersData">
+           <property name="minimumSize">
+            <size>
+             <width>450</width>
+             <height>330</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </widget>
+     </widget>
+    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menuBar">
@@ -253,7 +711,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>360</width>
+     <width>500</width>
      <height>21</height>
     </rect>
    </property>
@@ -278,18 +736,24 @@
     </property>
     <addaction name="actionAbout"/>
    </widget>
-   <widget class="QMenu" name="menuData">
+   <widget class="QMenu" name="menuView">
     <property name="title">
-     <string>Data</string>
+     <string>View</string>
     </property>
-    <addaction name="actionIO_Data"/>
+    <addaction name="actionLog"/>
     <addaction name="actionBus_Monitor"/>
     <addaction name="separator"/>
+   </widget>
+   <widget class="QMenu" name="menuCommands">
+    <property name="title">
+     <string>Commands</string>
+    </property>
     <addaction name="actionReset_Counters"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuOptions"/>
-   <addaction name="menuData"/>
+   <addaction name="menuCommands"/>
+   <addaction name="menuView"/>
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
@@ -304,7 +768,7 @@
   <action name="actionExit">
    <property name="icon">
     <iconset resource="icons/pyModSlaveQt.qrc">
-     <normaloff>:/img/close16.png</normaloff>:/img/close16.png</iconset>
+     <normaloff>:/img/exit-16.png</normaloff>:/img/exit-16.png</iconset>
    </property>
    <property name="text">
     <string>Exit</string>
@@ -316,7 +780,7 @@
   <action name="actionSerial_RTU">
    <property name="icon">
     <iconset resource="icons/pyModSlaveQt.qrc">
-     <normaloff>:/img/edit-16.png</normaloff>:/img/edit-16.png</iconset>
+     <normaloff>:/img/serial-pot-16.png</normaloff>:/img/serial-pot-16.png</iconset>
    </property>
    <property name="text">
     <string>Modbus RTU...</string>
@@ -328,7 +792,7 @@
   <action name="actionTCP">
    <property name="icon">
     <iconset resource="icons/pyModSlaveQt.qrc">
-     <normaloff>:/img/network-16.png</normaloff>:/img/network-16.png</iconset>
+     <normaloff>:/img/ethernet-port-16.png</normaloff>:/img/ethernet-port-16.png</iconset>
    </property>
    <property name="text">
     <string>Modbus TCP...</string>
@@ -340,7 +804,7 @@
   <action name="actionAbout">
    <property name="icon">
     <iconset resource="icons/pyModSlaveQt.qrc">
-     <normaloff>:/img/info16.png</normaloff>:/img/info16.png</iconset>
+     <normaloff>:/img/info-sign-16.png</normaloff>:/img/info-sign-16.png</iconset>
    </property>
    <property name="text">
     <string>About...</string>
@@ -397,19 +861,10 @@
     <string>Analog Inputs</string>
    </property>
   </action>
-  <action name="actionIO_Data">
-   <property name="icon">
-    <iconset resource="icons/pyModSlaveQt.qrc">
-     <normaloff>:/img/IO.png</normaloff>:/img/IO.png</iconset>
-   </property>
-   <property name="text">
-    <string>IO Data</string>
-   </property>
-  </action>
   <action name="actionBus_Monitor">
    <property name="icon">
     <iconset resource="icons/pyModSlaveQt.qrc">
-     <normaloff>:/img/view-16.png</normaloff>:/img/view-16.png</iconset>
+     <normaloff>:/img/TV-16.png</normaloff>:/img/TV-16.png</iconset>
    </property>
    <property name="text">
     <string>Bus Monitor</string>
@@ -418,10 +873,19 @@
   <action name="actionReset_Counters">
    <property name="icon">
     <iconset resource="icons/pyModSlaveQt.qrc">
-     <normaloff>:/img/trash-16.png</normaloff>:/img/trash-16.png</iconset>
+     <normaloff>:/img/reset-16.png</normaloff>:/img/reset-16.png</iconset>
    </property>
    <property name="text">
     <string>Reset Counters</string>
+   </property>
+  </action>
+  <action name="actionLog">
+   <property name="icon">
+    <iconset resource="icons/pyModSlaveQt.qrc">
+     <normaloff>:/img/text-x-log-16.png</normaloff>:/img/text-x-log-16.png</iconset>
+   </property>
+   <property name="text">
+    <string>Log</string>
    </property>
   </action>
  </widget>
