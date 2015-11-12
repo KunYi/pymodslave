@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'busmonitor.ui'
 #
-# Created: Tue Jul 23 13:23:43 2013
-#      by: PyQt4 UI code generator 4.9.1
+# Created: Thu Nov 12 20:31:06 2015
+#      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -12,7 +12,16 @@ from PyQt4 import QtCore, QtGui
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
-    _fromUtf8 = lambda s: s
+    def _fromUtf8(s):
+        return s
+
+try:
+    _encoding = QtGui.QApplication.UnicodeUTF8
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig, _encoding)
+except AttributeError:
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig)
 
 class Ui_BusMonitor(object):
     def setupUi(self, BusMonitor):
@@ -37,6 +46,7 @@ class Ui_BusMonitor(object):
         font.setBold(True)
         font.setWeight(75)
         self.lblRawData.setFont(font)
+        self.lblRawData.setLayoutDirection(QtCore.Qt.LeftToRight)
         self.lblRawData.setObjectName(_fromUtf8("lblRawData"))
         self.verticalLayout_2.addWidget(self.lblRawData)
         self.lstRawData = QtGui.QListView(self.centralwidget)
@@ -69,13 +79,13 @@ class Ui_BusMonitor(object):
         BusMonitor.addToolBar(QtCore.Qt.TopToolBarArea, self.toolBar)
         self.actionClear = QtGui.QAction(BusMonitor)
         icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap(_fromUtf8(":/img/remove-16.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon1.addPixmap(QtGui.QPixmap(_fromUtf8(":/img/edit-clear-16.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.actionClear.setIcon(icon1)
         self.actionClear.setIconVisibleInMenu(True)
         self.actionClear.setObjectName(_fromUtf8("actionClear"))
         self.actionExit = QtGui.QAction(BusMonitor)
         icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap(_fromUtf8(":/img/close16.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon2.addPixmap(QtGui.QPixmap(_fromUtf8(":/img/Close-16.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.actionExit.setIcon(icon2)
         self.actionExit.setObjectName(_fromUtf8("actionExit"))
         self.actionSave = QtGui.QAction(BusMonitor)
@@ -83,29 +93,20 @@ class Ui_BusMonitor(object):
         icon3.addPixmap(QtGui.QPixmap(_fromUtf8(":/img/save-16.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.actionSave.setIcon(icon3)
         self.actionSave.setObjectName(_fromUtf8("actionSave"))
-        self.actionStart_Stop = QtGui.QAction(BusMonitor)
-        self.actionStart_Stop.setCheckable(True)
-        icon4 = QtGui.QIcon()
-        icon4.addPixmap(QtGui.QPixmap(_fromUtf8(":/img/run-16.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        icon4.addPixmap(QtGui.QPixmap(_fromUtf8(":/img/stop-16.png")), QtGui.QIcon.Normal, QtGui.QIcon.On)
-        self.actionStart_Stop.setIcon(icon4)
-        self.actionStart_Stop.setObjectName(_fromUtf8("actionStart_Stop"))
 
         self.retranslateUi(BusMonitor)
         QtCore.QMetaObject.connectSlotsByName(BusMonitor)
 
     def retranslateUi(self, BusMonitor):
-        BusMonitor.setWindowTitle(QtGui.QApplication.translate("BusMonitor", "Bus Monitor", None, QtGui.QApplication.UnicodeUTF8))
-        self.lblRawData.setText(QtGui.QApplication.translate("BusMonitor", "Raw Data", None, QtGui.QApplication.UnicodeUTF8))
-        self.lblPDU.setText(QtGui.QApplication.translate("BusMonitor", "PDU", None, QtGui.QApplication.UnicodeUTF8))
-        self.toolBar.setWindowTitle(QtGui.QApplication.translate("BusMonitor", "toolBar", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionClear.setText(QtGui.QApplication.translate("BusMonitor", "Clear", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionClear.setToolTip(QtGui.QApplication.translate("BusMonitor", "Clear", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionExit.setText(QtGui.QApplication.translate("BusMonitor", "Exit", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionExit.setToolTip(QtGui.QApplication.translate("BusMonitor", "Exit", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionSave.setText(QtGui.QApplication.translate("BusMonitor", "Save", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionSave.setToolTip(QtGui.QApplication.translate("BusMonitor", "Save", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionStart_Stop.setText(QtGui.QApplication.translate("BusMonitor", "Start-Stop", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionStart_Stop.setToolTip(QtGui.QApplication.translate("BusMonitor", "Start-Stop Monitor", None, QtGui.QApplication.UnicodeUTF8))
+        BusMonitor.setWindowTitle(_translate("BusMonitor", "Bus Monitor", None))
+        self.lblRawData.setText(_translate("BusMonitor", "Raw Data", None))
+        self.lblPDU.setText(_translate("BusMonitor", "PDU", None))
+        self.toolBar.setWindowTitle(_translate("BusMonitor", "toolBar", None))
+        self.actionClear.setText(_translate("BusMonitor", "Clear", None))
+        self.actionClear.setToolTip(_translate("BusMonitor", "Clear", None))
+        self.actionExit.setText(_translate("BusMonitor", "Exit", None))
+        self.actionExit.setToolTip(_translate("BusMonitor", "Exit", None))
+        self.actionSave.setText(_translate("BusMonitor", "Save", None))
+        self.actionSave.setToolTip(_translate("BusMonitor", "Save", None))
 
 import pyModSlaveQt_rc

@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'settingsmodbusrtu.ui'
 #
-# Created: Fri Dec 07 10:52:24 2012
-#      by: PyQt4 UI code generator 4.9.1
+# Created: Thu Nov 12 20:31:54 2015
+#      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -12,7 +12,16 @@ from PyQt4 import QtCore, QtGui
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
-    _fromUtf8 = lambda s: s
+    def _fromUtf8(s):
+        return s
+
+try:
+    _encoding = QtGui.QApplication.UnicodeUTF8
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig, _encoding)
+except AttributeError:
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig)
 
 class Ui_SettingsModbusRTU(object):
     def setupUi(self, SettingsModbusRTU):
@@ -102,31 +111,31 @@ class Ui_SettingsModbusRTU(object):
         QtCore.QMetaObject.connectSlotsByName(SettingsModbusRTU)
 
     def retranslateUi(self, SettingsModbusRTU):
-        SettingsModbusRTU.setWindowTitle(QtGui.QApplication.translate("SettingsModbusRTU", "Modbus RTU Settings", None, QtGui.QApplication.UnicodeUTF8))
-        self.lblPort.setText(QtGui.QApplication.translate("SettingsModbusRTU", "Serial port", None, QtGui.QApplication.UnicodeUTF8))
-        self.cmbPort.setItemText(0, QtGui.QApplication.translate("SettingsModbusRTU", "1", None, QtGui.QApplication.UnicodeUTF8))
-        self.cmbPort.setItemText(1, QtGui.QApplication.translate("SettingsModbusRTU", "2", None, QtGui.QApplication.UnicodeUTF8))
-        self.cmbPort.setItemText(2, QtGui.QApplication.translate("SettingsModbusRTU", "3", None, QtGui.QApplication.UnicodeUTF8))
-        self.cmbPort.setItemText(3, QtGui.QApplication.translate("SettingsModbusRTU", "4", None, QtGui.QApplication.UnicodeUTF8))
-        self.cmbBaud.setItemText(0, QtGui.QApplication.translate("SettingsModbusRTU", "1200", None, QtGui.QApplication.UnicodeUTF8))
-        self.cmbBaud.setItemText(1, QtGui.QApplication.translate("SettingsModbusRTU", "2400", None, QtGui.QApplication.UnicodeUTF8))
-        self.cmbBaud.setItemText(2, QtGui.QApplication.translate("SettingsModbusRTU", "4800", None, QtGui.QApplication.UnicodeUTF8))
-        self.cmbBaud.setItemText(3, QtGui.QApplication.translate("SettingsModbusRTU", "9600", None, QtGui.QApplication.UnicodeUTF8))
-        self.cmbBaud.setItemText(4, QtGui.QApplication.translate("SettingsModbusRTU", "19200", None, QtGui.QApplication.UnicodeUTF8))
-        self.cmbBaud.setItemText(5, QtGui.QApplication.translate("SettingsModbusRTU", "38400", None, QtGui.QApplication.UnicodeUTF8))
-        self.cmbBaud.setItemText(6, QtGui.QApplication.translate("SettingsModbusRTU", "57600", None, QtGui.QApplication.UnicodeUTF8))
-        self.cmbBaud.setItemText(7, QtGui.QApplication.translate("SettingsModbusRTU", "115200", None, QtGui.QApplication.UnicodeUTF8))
-        self.lblBaud.setText(QtGui.QApplication.translate("SettingsModbusRTU", "Baud", None, QtGui.QApplication.UnicodeUTF8))
-        self.lblDataBits.setText(QtGui.QApplication.translate("SettingsModbusRTU", "Data Bits", None, QtGui.QApplication.UnicodeUTF8))
-        self.cmbDataBits.setItemText(0, QtGui.QApplication.translate("SettingsModbusRTU", "7", None, QtGui.QApplication.UnicodeUTF8))
-        self.cmbDataBits.setItemText(1, QtGui.QApplication.translate("SettingsModbusRTU", "8", None, QtGui.QApplication.UnicodeUTF8))
-        self.lblStopBits.setText(QtGui.QApplication.translate("SettingsModbusRTU", "Stop Bits", None, QtGui.QApplication.UnicodeUTF8))
-        self.cmbStopBits.setItemText(0, QtGui.QApplication.translate("SettingsModbusRTU", "1", None, QtGui.QApplication.UnicodeUTF8))
-        self.cmbStopBits.setItemText(1, QtGui.QApplication.translate("SettingsModbusRTU", "1.5", None, QtGui.QApplication.UnicodeUTF8))
-        self.cmbStopBits.setItemText(2, QtGui.QApplication.translate("SettingsModbusRTU", "2", None, QtGui.QApplication.UnicodeUTF8))
-        self.lblParity.setText(QtGui.QApplication.translate("SettingsModbusRTU", "Parity", None, QtGui.QApplication.UnicodeUTF8))
-        self.cmbParity.setItemText(0, QtGui.QApplication.translate("SettingsModbusRTU", "None", None, QtGui.QApplication.UnicodeUTF8))
-        self.cmbParity.setItemText(1, QtGui.QApplication.translate("SettingsModbusRTU", "Odd", None, QtGui.QApplication.UnicodeUTF8))
-        self.cmbParity.setItemText(2, QtGui.QApplication.translate("SettingsModbusRTU", "Even", None, QtGui.QApplication.UnicodeUTF8))
+        SettingsModbusRTU.setWindowTitle(_translate("SettingsModbusRTU", "Modbus RTU Settings", None))
+        self.lblPort.setText(_translate("SettingsModbusRTU", "Serial port", None))
+        self.cmbPort.setItemText(0, _translate("SettingsModbusRTU", "1", None))
+        self.cmbPort.setItemText(1, _translate("SettingsModbusRTU", "2", None))
+        self.cmbPort.setItemText(2, _translate("SettingsModbusRTU", "3", None))
+        self.cmbPort.setItemText(3, _translate("SettingsModbusRTU", "4", None))
+        self.cmbBaud.setItemText(0, _translate("SettingsModbusRTU", "1200", None))
+        self.cmbBaud.setItemText(1, _translate("SettingsModbusRTU", "2400", None))
+        self.cmbBaud.setItemText(2, _translate("SettingsModbusRTU", "4800", None))
+        self.cmbBaud.setItemText(3, _translate("SettingsModbusRTU", "9600", None))
+        self.cmbBaud.setItemText(4, _translate("SettingsModbusRTU", "19200", None))
+        self.cmbBaud.setItemText(5, _translate("SettingsModbusRTU", "38400", None))
+        self.cmbBaud.setItemText(6, _translate("SettingsModbusRTU", "57600", None))
+        self.cmbBaud.setItemText(7, _translate("SettingsModbusRTU", "115200", None))
+        self.lblBaud.setText(_translate("SettingsModbusRTU", "Baud", None))
+        self.lblDataBits.setText(_translate("SettingsModbusRTU", "Data Bits", None))
+        self.cmbDataBits.setItemText(0, _translate("SettingsModbusRTU", "7", None))
+        self.cmbDataBits.setItemText(1, _translate("SettingsModbusRTU", "8", None))
+        self.lblStopBits.setText(_translate("SettingsModbusRTU", "Stop Bits", None))
+        self.cmbStopBits.setItemText(0, _translate("SettingsModbusRTU", "1", None))
+        self.cmbStopBits.setItemText(1, _translate("SettingsModbusRTU", "1.5", None))
+        self.cmbStopBits.setItemText(2, _translate("SettingsModbusRTU", "2", None))
+        self.lblParity.setText(_translate("SettingsModbusRTU", "Parity", None))
+        self.cmbParity.setItemText(0, _translate("SettingsModbusRTU", "None", None))
+        self.cmbParity.setItemText(1, _translate("SettingsModbusRTU", "Odd", None))
+        self.cmbParity.setItemText(2, _translate("SettingsModbusRTU", "Even", None))
 
 import pyModSlaveQt_rc

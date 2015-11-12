@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'about.ui'
 #
-# Created: Tue Oct 30 15:56:02 2012
-#      by: PyQt4 UI code generator 4.9.1
+# Created: Thu Nov 12 20:30:39 2015
+#      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -12,7 +12,16 @@ from PyQt4 import QtCore, QtGui
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
-    _fromUtf8 = lambda s: s
+    def _fromUtf8(s):
+        return s
+
+try:
+    _encoding = QtGui.QApplication.UnicodeUTF8
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig, _encoding)
+except AttributeError:
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig)
 
 class Ui_About(object):
     def setupUi(self, About):
@@ -48,8 +57,8 @@ class Ui_About(object):
         QtCore.QMetaObject.connectSlotsByName(About)
 
     def retranslateUi(self, About):
-        About.setWindowTitle(QtGui.QApplication.translate("About", "About", None, QtGui.QApplication.UnicodeUTF8))
-        self.lblVersion.setText(QtGui.QApplication.translate("About", "pyModSlave", None, QtGui.QApplication.UnicodeUTF8))
-        self.lblURL.setText(QtGui.QApplication.translate("About", "http://", None, QtGui.QApplication.UnicodeUTF8))
+        About.setWindowTitle(_translate("About", "About", None))
+        self.lblVersion.setText(_translate("About", "pyModSlave", None))
+        self.lblURL.setText(_translate("About", "http://", None))
 
 import pyModSlaveQt_rc

@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'settingsmodbustcp.ui'
 #
-# Created: Mon Apr 29 12:28:19 2013
-#      by: PyQt4 UI code generator 4.9.1
+# Created: Thu Nov 12 20:32:03 2015
+#      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -12,7 +12,16 @@ from PyQt4 import QtCore, QtGui
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
-    _fromUtf8 = lambda s: s
+    def _fromUtf8(s):
+        return s
+
+try:
+    _encoding = QtGui.QApplication.UnicodeUTF8
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig, _encoding)
+except AttributeError:
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig)
 
 class Ui_SettingsModbusTCP(object):
     def setupUi(self, SettingsModbusTCP):
@@ -54,10 +63,10 @@ class Ui_SettingsModbusTCP(object):
         QtCore.QMetaObject.connectSlotsByName(SettingsModbusTCP)
 
     def retranslateUi(self, SettingsModbusTCP):
-        SettingsModbusTCP.setWindowTitle(QtGui.QApplication.translate("SettingsModbusTCP", "Modbus TCP Settings", None, QtGui.QApplication.UnicodeUTF8))
-        self.leTCPPort.setText(QtGui.QApplication.translate("SettingsModbusTCP", "502", None, QtGui.QApplication.UnicodeUTF8))
-        self.lblTCPPort.setText(QtGui.QApplication.translate("SettingsModbusTCP", "TCP Port", None, QtGui.QApplication.UnicodeUTF8))
-        self.lblIP.setText(QtGui.QApplication.translate("SettingsModbusTCP", "IP", None, QtGui.QApplication.UnicodeUTF8))
-        self.leIP.setInputMask(QtGui.QApplication.translate("SettingsModbusTCP", "999.999.999.999;_", None, QtGui.QApplication.UnicodeUTF8))
+        SettingsModbusTCP.setWindowTitle(_translate("SettingsModbusTCP", "Modbus TCP Settings", None))
+        self.leTCPPort.setText(_translate("SettingsModbusTCP", "502", None))
+        self.lblTCPPort.setText(_translate("SettingsModbusTCP", "TCP Port", None))
+        self.lblIP.setText(_translate("SettingsModbusTCP", "IP", None))
+        self.leIP.setInputMask(_translate("SettingsModbusTCP", "999.999.999.999;_", None))
 
 import pyModSlaveQt_rc

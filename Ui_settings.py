@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'settings.ui'
 #
-# Created: Tue Jul 23 15:08:31 2013
-#      by: PyQt4 UI code generator 4.9.1
+# Created: Thu Nov 12 20:31:43 2015
+#      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -12,19 +12,28 @@ from PyQt4 import QtCore, QtGui
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
-    _fromUtf8 = lambda s: s
+    def _fromUtf8(s):
+        return s
+
+try:
+    _encoding = QtGui.QApplication.UnicodeUTF8
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig, _encoding)
+except AttributeError:
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig)
 
 class Ui_Settings(object):
     def setupUi(self, Settings):
         Settings.setObjectName(_fromUtf8("Settings"))
-        Settings.resize(240, 200)
+        Settings.resize(240, 69)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Maximum, QtGui.QSizePolicy.Maximum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(Settings.sizePolicy().hasHeightForWidth())
         Settings.setSizePolicy(sizePolicy)
-        Settings.setMinimumSize(QtCore.QSize(240, 200))
-        Settings.setMaximumSize(QtCore.QSize(240, 200))
+        Settings.setMinimumSize(QtCore.QSize(240, 20))
+        Settings.setMaximumSize(QtCore.QSize(240, 69))
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(_fromUtf8(":/img/options-16.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         Settings.setWindowIcon(icon)
@@ -32,89 +41,14 @@ class Ui_Settings(object):
         self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
         self.gridLayout = QtGui.QGridLayout()
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
-        self.sbNoOfCoils = QtGui.QSpinBox(Settings)
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Fixed)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.sbNoOfCoils.sizePolicy().hasHeightForWidth())
-        self.sbNoOfCoils.setSizePolicy(sizePolicy)
-        self.sbNoOfCoils.setMinimumSize(QtCore.QSize(50, 0))
-        self.sbNoOfCoils.setMaximumSize(QtCore.QSize(75, 16777215))
-        self.sbNoOfCoils.setMinimum(1)
-        self.sbNoOfCoils.setMaximum(500)
-        self.sbNoOfCoils.setSingleStep(10)
-        self.sbNoOfCoils.setProperty("value", 50)
-        self.sbNoOfCoils.setObjectName(_fromUtf8("sbNoOfCoils"))
-        self.gridLayout.addWidget(self.sbNoOfCoils, 0, 2, 1, 1)
-        self.lblNoOfInputRegs = QtGui.QLabel(Settings)
-        self.lblNoOfInputRegs.setObjectName(_fromUtf8("lblNoOfInputRegs"))
-        self.gridLayout.addWidget(self.lblNoOfInputRegs, 2, 1, 1, 1)
-        self.sbNoOfInputRegs = QtGui.QSpinBox(Settings)
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Fixed)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.sbNoOfInputRegs.sizePolicy().hasHeightForWidth())
-        self.sbNoOfInputRegs.setSizePolicy(sizePolicy)
-        self.sbNoOfInputRegs.setMinimumSize(QtCore.QSize(50, 0))
-        self.sbNoOfInputRegs.setMaximumSize(QtCore.QSize(75, 16777215))
-        self.sbNoOfInputRegs.setMinimum(1)
-        self.sbNoOfInputRegs.setMaximum(500)
-        self.sbNoOfInputRegs.setSingleStep(10)
-        self.sbNoOfInputRegs.setProperty("value", 50)
-        self.sbNoOfInputRegs.setObjectName(_fromUtf8("sbNoOfInputRegs"))
-        self.gridLayout.addWidget(self.sbNoOfInputRegs, 2, 2, 1, 1)
-        self.lblCoils = QtGui.QLabel(Settings)
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Fixed)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.lblCoils.sizePolicy().hasHeightForWidth())
-        self.lblCoils.setSizePolicy(sizePolicy)
-        self.lblCoils.setMinimumSize(QtCore.QSize(132, 0))
-        self.lblCoils.setMaximumSize(QtCore.QSize(16777215, 16777215))
-        self.lblCoils.setObjectName(_fromUtf8("lblCoils"))
-        self.gridLayout.addWidget(self.lblCoils, 0, 1, 1, 1)
-        self.sbNoOfDigInputs = QtGui.QSpinBox(Settings)
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Fixed)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.sbNoOfDigInputs.sizePolicy().hasHeightForWidth())
-        self.sbNoOfDigInputs.setSizePolicy(sizePolicy)
-        self.sbNoOfDigInputs.setMinimumSize(QtCore.QSize(50, 0))
-        self.sbNoOfDigInputs.setMaximumSize(QtCore.QSize(75, 16777215))
-        self.sbNoOfDigInputs.setMinimum(1)
-        self.sbNoOfDigInputs.setMaximum(500)
-        self.sbNoOfDigInputs.setSingleStep(10)
-        self.sbNoOfDigInputs.setProperty("value", 50)
-        self.sbNoOfDigInputs.setObjectName(_fromUtf8("sbNoOfDigInputs"))
-        self.gridLayout.addWidget(self.sbNoOfDigInputs, 1, 2, 1, 1)
-        self.lblNoOfHoldingRegs = QtGui.QLabel(Settings)
-        self.lblNoOfHoldingRegs.setObjectName(_fromUtf8("lblNoOfHoldingRegs"))
-        self.gridLayout.addWidget(self.lblNoOfHoldingRegs, 3, 1, 1, 1)
-        self.lblNoOfDigInputs = QtGui.QLabel(Settings)
-        self.lblNoOfDigInputs.setObjectName(_fromUtf8("lblNoOfDigInputs"))
-        self.gridLayout.addWidget(self.lblNoOfDigInputs, 1, 1, 1, 1)
-        self.sbNoOfHoldingRegs = QtGui.QSpinBox(Settings)
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Fixed)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.sbNoOfHoldingRegs.sizePolicy().hasHeightForWidth())
-        self.sbNoOfHoldingRegs.setSizePolicy(sizePolicy)
-        self.sbNoOfHoldingRegs.setMinimumSize(QtCore.QSize(50, 0))
-        self.sbNoOfHoldingRegs.setMaximumSize(QtCore.QSize(75, 16777215))
-        self.sbNoOfHoldingRegs.setMinimum(1)
-        self.sbNoOfHoldingRegs.setMaximum(500)
-        self.sbNoOfHoldingRegs.setSingleStep(10)
-        self.sbNoOfHoldingRegs.setProperty("value", 50)
-        self.sbNoOfHoldingRegs.setObjectName(_fromUtf8("sbNoOfHoldingRegs"))
-        self.gridLayout.addWidget(self.sbNoOfHoldingRegs, 3, 2, 1, 1)
-        self.lblMaxNoOfBusMonitorLines = QtGui.QLabel(Settings)
-        self.lblMaxNoOfBusMonitorLines.setObjectName(_fromUtf8("lblMaxNoOfBusMonitorLines"))
-        self.gridLayout.addWidget(self.lblMaxNoOfBusMonitorLines, 4, 1, 1, 1)
         self.sbMaxNoOfBusMonitorLines = QtGui.QSpinBox(Settings)
         self.sbMaxNoOfBusMonitorLines.setMaximum(100)
         self.sbMaxNoOfBusMonitorLines.setProperty("value", 50)
         self.sbMaxNoOfBusMonitorLines.setObjectName(_fromUtf8("sbMaxNoOfBusMonitorLines"))
-        self.gridLayout.addWidget(self.sbMaxNoOfBusMonitorLines, 4, 2, 1, 1)
+        self.gridLayout.addWidget(self.sbMaxNoOfBusMonitorLines, 0, 2, 1, 1)
+        self.lblMaxNoOfBusMonitorLines = QtGui.QLabel(Settings)
+        self.lblMaxNoOfBusMonitorLines.setObjectName(_fromUtf8("lblMaxNoOfBusMonitorLines"))
+        self.gridLayout.addWidget(self.lblMaxNoOfBusMonitorLines, 0, 1, 1, 1)
         self.verticalLayout.addLayout(self.gridLayout)
         self.buttonBox = QtGui.QDialogButtonBox(Settings)
         self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
@@ -128,11 +62,7 @@ class Ui_Settings(object):
         QtCore.QMetaObject.connectSlotsByName(Settings)
 
     def retranslateUi(self, Settings):
-        Settings.setWindowTitle(QtGui.QApplication.translate("Settings", "Settings", None, QtGui.QApplication.UnicodeUTF8))
-        self.lblNoOfInputRegs.setText(QtGui.QApplication.translate("Settings", "No Of Input Registers", None, QtGui.QApplication.UnicodeUTF8))
-        self.lblCoils.setText(QtGui.QApplication.translate("Settings", "No Of Coils", None, QtGui.QApplication.UnicodeUTF8))
-        self.lblNoOfHoldingRegs.setText(QtGui.QApplication.translate("Settings", "No Of Holding Registers", None, QtGui.QApplication.UnicodeUTF8))
-        self.lblNoOfDigInputs.setText(QtGui.QApplication.translate("Settings", "No Of Digital Inputs", None, QtGui.QApplication.UnicodeUTF8))
-        self.lblMaxNoOfBusMonitorLines.setText(QtGui.QApplication.translate("Settings", "Max No of Bus Monitor Lines", None, QtGui.QApplication.UnicodeUTF8))
+        Settings.setWindowTitle(_translate("Settings", "Settings", None))
+        self.lblMaxNoOfBusMonitorLines.setText(_translate("Settings", "Max No of Bus Monitor Lines", None))
 
 import pyModSlaveQt_rc
