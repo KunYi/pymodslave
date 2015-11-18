@@ -11,6 +11,8 @@
 #!/usr/bin/env python
 
 import sys
+import os
+import subprocess
 from PyQt4 import QtGui,QtCore
 import logging # add logging capability
 import ConfigParser # config file parser
@@ -20,7 +22,8 @@ from ModSlaveAbout import ModSlaveAboutWindow
 from ModSlaveSettingsRTU import ModSlaveSettingsRTUWindow
 from ModSlaveSettingsTCP import ModSlaveSettingsTCPWindow
 from ModSlaveSettings import ModSlaveSettingsWindow
-from ModSlaveMBData import ModSlaveMBDataWindow
+from ModSlaveMBData import ModSlaveMBData
+from ModSlaveMBDataModel import ModSlaveMBDataModel
 from ModSlaveBusMonitor import ModSlaveBusMonitorWindow
 
 #modbus toolkit
@@ -42,12 +45,16 @@ class ModSlaveMainWindow(QtGui.QMainWindow):
         self.svr = None # Server
         self._svr_args = []
         self.slv = None # Slave
-        self._time_interval = 1000 # interval for simulation in msec
+        self._coils = None
+        self._inputs = None
+        self._input_regs = None
+        self._hold_regs = None
+        self._time_interval = None # interval for simulation in msec
         self._params_file_name = 'pyModSlaveQt.ini'
         self._logger = logging.getLogger("modbus_tk")
-        self.setupUI()
+        self._setupUI()
 
-    def setupUI(self):
+    def _setupUI(self):
         #create window from ui
         self.ui=Ui_MainWindow()
         self.ui.setupUi(self)
@@ -56,8 +63,9 @@ class ModSlaveMainWindow(QtGui.QMainWindow):
         self.ui.mainToolBar.addAction(self.ui.actionTCP)
         self.ui.mainToolBar.addAction(self.ui.actionSettings)
         self.ui.mainToolBar.addSeparator()
-        self.ui.mainToolBar.addAction(self.ui.actionIO_Data)
+        self.ui.mainToolBar.addAction(self.ui.actionLog)
         self.ui.mainToolBar.addAction(self.ui.actionBus_Monitor)
+        self.ui.mainToolBar.addSeparator()
         self.ui.mainToolBar.addAction(self.ui.actionReset_Counters)
         self.ui.mainToolBar.addSeparator()
         self.ui.mainToolBar.addAction(self.ui.actionAbout)
@@ -66,7 +74,7 @@ class ModSlaveMainWindow(QtGui.QMainWindow):
         pm = QtGui.QPixmap()
         self.status_ind = QtGui.QLabel(self.ui.centralWidget)
         self.status_ind.setFixedSize(16,16)
-        self.status_ind.setPixmap(QtGui.QPixmap(':/img/ballorange-16.png'))
+        self.status_ind.setPixmap(QtGui.QPixmap(':/img/bullet-red-16.png'))
         self.status_text = QtGui.QLabel(self.ui.centralWidget)
         self.status_packet_text = QtGui.QLabel(self.ui.centralWidget)
         self.status_packet_text.setStyleSheet("QLabel {color:blue;}")
@@ -76,26 +84,27 @@ class ModSlaveMainWindow(QtGui.QMainWindow):
         self.ui.statusBar.addWidget(self.status_text, 14)
         self.ui.statusBar.addWidget(self.status_packet_text, 14)
         self.ui.statusBar.addWidget(self.status_error_text, 14)
-        #setup dialogs
+        #setup ui dialogs
         self._about_dlg = ModSlaveAboutWindow()
         self._settingsRTU_dlg = ModSlaveSettingsRTUWindow()
         self._settingsTCP_dlg = ModSlaveSettingsTCPWindow()
         self._settings_dlg = ModSlaveSettingsWindow()
-        self._bus_monitor_dlg = ModSlaveBusMonitorWindow()
-        #setup data windows
-        self._mbdata_dlg = ModSlaveMBDataWindow()
+        self._bus_monitor_dlg = ModSlaveBusMonitorWindow(self)
+        #setup data controller
+        self._mbdata_ctrl = ModSlaveMBData(self.ui)
         #signals-slots
         self.ui.actionAbout.triggered.connect(self._about_dlg.show)
         self.ui.actionSerial_RTU.triggered.connect(self._settings_RTU_show)
         self.ui.actionTCP.triggered.connect(self._settings_TCP_show)
         self.ui.actionSettings.triggered.connect(self._settings_show)
-        self.ui.actionIO_Data.triggered.connect(self._mbdata_show)
         self.ui.actionBus_Monitor.triggered.connect(self._bus_monitor_show)
         self.ui.actionReset_Counters.triggered.connect(self._reset_counters)
+        self.ui.actionLog.triggered.connect(self._open_log_file)
         self.ui.btStartStop.clicked.connect(self._start_stop)
         self.ui.cmbModbusMode.currentIndexChanged.connect(self._update_status_bar)
         self.ui.spInterval.valueChanged.connect(self._spInterval_value_changed)
         self.connect(self._bus_monitor_dlg, QtCore.SIGNAL("update_counters"), self._update_counters)
+        self.ui.cmbModbusMode.currentIndexChanged.connect(self._update_modbus_mode)
         #show window
         self._update_status_bar()
         self.show()
@@ -123,6 +132,7 @@ class ModSlaveMainWindow(QtGui.QMainWindow):
     def _bus_monitor_show(self):
         """coils data dialog"""
         self._bus_monitor_dlg.svr = self.svr
+        self._bus_monitor_dlg.move(self.x() + self.width() + 20, self.y())
         self._bus_monitor_dlg.show()
 
     def _spInterval_value_changed(self,value):
@@ -142,9 +152,9 @@ class ModSlaveMainWindow(QtGui.QMainWindow):
                                                     self._settingsRTU_dlg.parity)
         self.status_text.setText(msg)
         if (self.svr != None):#server is running
-            self.status_ind.setPixmap(QtGui.QPixmap(':/img/ballgreen-16.png'))
+            self.status_ind.setPixmap(QtGui.QPixmap(':/img/bullet-green-16.png'))
         else:#server is stopped
-            self.status_ind.setPixmap(QtGui.QPixmap(':/img/ballorange-16.png'))
+            self.status_ind.setPixmap(QtGui.QPixmap(':/img/bullet-red-16.png'))
         self._update_counters()
 
     def _update_counters(self):
@@ -162,6 +172,14 @@ class ModSlaveMainWindow(QtGui.QMainWindow):
             self.ui.actionSerial_RTU.setEnabled(False)
             self.ui.actionTCP.setEnabled(False)
             self.ui.actionSettings.setEnabled(False)
+            self.ui.sbNoOfCoils.setEnabled(False)
+            self.ui.sbCoilsStartAddr.setEnabled(False)
+            self.ui.sbNoOfDigInputs.setEnabled(False)
+            self.ui.sbDigInputsstartAddr.setEnabled(False)
+            self.ui.sbNoOfHoldingRegs.setEnabled(False)
+            self.ui.sbHoldingRegsStartAddr.setEnabled(False)
+            self.ui.sbNoOfInputRegs.setEnabled(False)
+            self.ui.sbInputRegsStartAddr.setEnabled(False)
         else:#stop
             self.ui.btStartStop.setText("Start")
             self.ui.cmbModbusMode.setEnabled(True)
@@ -170,6 +188,16 @@ class ModSlaveMainWindow(QtGui.QMainWindow):
             self.ui.actionSerial_RTU.setEnabled(True)
             self.ui.actionTCP.setEnabled(True)
             self.ui.actionSettings.setEnabled(True)
+            self.ui.sbNoOfCoils.setEnabled(True)
+            self.ui.sbCoilsStartAddr.setEnabled(True)
+            self.ui.sbNoOfDigInputs.setEnabled(True)
+            self.ui.sbDigInputsstartAddr.setEnabled(True)
+            self.ui.sbNoOfHoldingRegs.setEnabled(True)
+            self.ui.sbHoldingRegsStartAddr.setEnabled(True)
+            self.ui.sbNoOfInputRegs.setEnabled(True)
+            self.ui.sbInputRegsStartAddr.setEnabled(True)
+            _empty_model = self.coils_data_model = ModSlaveMBDataModel(0, 0, 0)
+            self._mbdata_ctrl.set_data_models(_empty_model,_empty_model,_empty_model,_empty_model)
 
     def _start_stop(self):
         """start - stop server and slave"""
@@ -200,10 +228,10 @@ class ModSlaveMainWindow(QtGui.QMainWindow):
                     self.svr.start()
                     self.slv = simSlave.ModSlaveSim(self.svr,self.ui.sbSlaveID.value(),
                                                 self.ui.spInterval.value()/1000.0,
-                                                self._settings_dlg.coils,
-                                                self._settings_dlg.inputs,
-                                                self._settings_dlg.input_regs,
-                                                self._settings_dlg.hold_regs)
+                                                self.ui.sbCoilsStartAddr.value(), self.ui.sbNoOfCoils.value(),
+                                                self.ui.sbDigInputsstartAddr.value(), self.ui.sbNoOfDigInputs.value(),
+                                                self.ui.sbInputRegsStartAddr.value(), self.ui.sbNoOfInputRegs.value(),
+                                                self.ui.sbHoldingRegsStartAddr.value(), self.ui.sbNoOfHoldingRegs.value())
                     if (self.slv == None):#fail to build slave
                         self._logger.error("Fail to start slave")
                         Utils.errorMessageBox("Fail to start slave")
@@ -211,7 +239,7 @@ class ModSlaveMainWindow(QtGui.QMainWindow):
                         self.svr = None
                         self.ui.btStartStop.setChecked(False)
                     else:
-                        self._mbdata_dlg.set_data_models(self.slv.coils_data_model,
+                        self._mbdata_ctrl.set_data_models(self.slv.coils_data_model,
                                                          self.slv.dis_inputs_data_model,
                                                          self.slv.input_regs_data_model,
                                                          self.slv.hold_regs_data_model)
@@ -230,7 +258,7 @@ class ModSlaveMainWindow(QtGui.QMainWindow):
         self._logger.info("Load params")
         config_tcp_defaut = {'TCP_Port':'502', 'TCP_IP':'127.000.000.001'}
         config_rtu_defaut = {'RTU_Port':'0', 'Baud':'9600', 'DataBits':'8', 'StopBits':'1', 'Parity':'None'}
-        config_var_defaut = {'Coils':'0', 'DisInputs':'0', 'InputRegs':'0', 'HoldRegs':'0', 'TimeInterval':'1000', 'MaxNoOfBusMonitorLines':'50'}
+        config_var_defaut = {'Coils':'10', 'DisInputs':'10', 'InputRegs':'10', 'HoldRegs':'10', 'TimeInterval':'1000', 'MaxNoOfBusMonitorLines':'50'}
         config_default = {}
         config_default.update(config_tcp_defaut)
         config_default.update(config_rtu_defaut)
@@ -249,10 +277,10 @@ class ModSlaveMainWindow(QtGui.QMainWindow):
         self._settingsRTU_dlg.stop_bits = config.get('RTU', 'StopBits')
         self._settingsRTU_dlg.parity = config.get('RTU', 'Parity')
         #Var Settings
-        self._settings_dlg.coils = config.getint('Var', 'Coils')
-        self._settings_dlg.inputs = config.getint('Var', 'DisInputs')
-        self._settings_dlg.input_regs = config.getint('Var', 'InputRegs')
-        self._settings_dlg.hold_regs = config.getint('Var', 'HoldRegs')
+        self._coils = config.getint('Var', 'Coils')
+        self._inputs = config.getint('Var', 'DisInputs')
+        self._input_regs = config.getint('Var', 'InputRegs')
+        self._hold_regs = config.getint('Var', 'HoldRegs')
         self._time_interval = config.getint('Var', 'TimeInterval')
         self._settings_dlg.max_no_of_bus_monitor_lines = config.getint('Var', 'MaxNoOfBusMonitorLines')
         self._bus_monitor_dlg.set_max_no_of_bus_monitor_lines(self._settings_dlg.max_no_of_bus_monitor_lines)
@@ -273,10 +301,10 @@ class ModSlaveMainWindow(QtGui.QMainWindow):
         config.set('RTU','Parity',self._settingsRTU_dlg.parity)
         #Var Settings
         config.add_section('Var')
-        config.set('Var','Coils',self._settings_dlg.coils)
-        config.set('Var','DisInputs',self._settings_dlg.inputs)
-        config.set('Var','InputRegs',self._settings_dlg.input_regs)
-        config.set('Var','HoldRegs',self._settings_dlg.hold_regs)
+        config.set('Var','Coils',self._coils)
+        config.set('Var','DisInputs',self._inputs)
+        config.set('Var','InputRegs',self._input_regs)
+        config.set('Var','HoldRegs',self._hold_regs)
         config.set('Var','TimeInterval',self._time_interval)
         config.set('Var','MaxNoOfBusMonitorLines',self._settings_dlg.max_no_of_bus_monitor_lines)
         #Save Settings
@@ -286,14 +314,44 @@ class ModSlaveMainWindow(QtGui.QMainWindow):
     def _reset_counters(self):
         self._bus_monitor_dlg.reset_counters()
 
+    def _update_modbus_mode(self, index):
+        if (index == 0):# RTU
+            self.ui.lblSlave.setText('Slave Addr')
+            #self.ui.sbSlaveID.setVisible(True)
+        elif (index == 1):# TCP
+            self.ui.lblSlave.setText('Unit ID')
+            #self.ui.sbSlaveID.setVisible(False)
+
+    def _open_log_file(self):
+        """open application log"""
+        if (not os.path.exists('pyModSlaveQt.log')):
+            msg = "File 'pyModSlaveQt.log' does not exist"
+            self._logger.error(msg)
+            Utils.errorMessageBox(msg)
+            return
+        try:
+            subprocess.Popen(['notepad.exe', 'pyModSlaveQt.log'])
+        except WindowsError as we:
+            msg = "Windows Error No %i - %s" % we.args
+            self._logger.error(msg)
+            Utils.errorMessageBox(msg)
+
     def showEvent(self,QShowEvent):
         """set values for controls"""
         self._load_params()
+        self.ui.sbNoOfCoils.setValue(self._coils)
+        self.ui.sbNoOfDigInputs.setValue(self._inputs)
+        self.ui.sbNoOfHoldingRegs.setValue(self._hold_regs)
+        self.ui.sbNoOfInputRegs.setValue(self._input_regs)
         self.ui.spInterval.setValue(self._time_interval)
         self._update_status_bar()
 
     def closeEvent(self,QCloseEvent):
         """window is closing"""
+        self._coils = self.ui.sbNoOfCoils.value()
+        self._inputs = self.ui.sbNoOfDigInputs.value()
+        self._hold_regs = self.ui.sbNoOfHoldingRegs.value()
+        self._input_regs = self.ui.sbNoOfInputRegs.value()
         self._save_params()
 
 #-------------------------------------------------------------------------------

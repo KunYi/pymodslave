@@ -11,7 +11,6 @@
 #!/usr/bin/env python
 
 from PyQt4 import QtGui,QtCore
-from Ui_mbdata import Ui_MBData
 from ModSlaveMBDataModel import ModSlaveMBDataModel
 from ModSlaveMBDataItemDelegate import ModSlaveMBDataItemDelegate
 
@@ -19,24 +18,21 @@ from ModSlaveMBDataItemDelegate import ModSlaveMBDataItemDelegate
 import logging
 
 #-------------------------------------------------------------------------------
-class ModSlaveMBDataWindow(QtGui.QMainWindow):
+class ModSlaveMBData(QtCore.QObject):
     """ Class wrapper for modbus data """
 
-    def __init__(self):
-        super(ModSlaveMBDataWindow,self).__init__()
+    def __init__(self, ui):
         #data models
         self.coils = None
         self.dis_inputs = None
         self.input_regs = None
         self.hold_regs = None
         self._logger = logging.getLogger("modbus_tk")
-        #setu UI
+        #setup UI
+        self.ui = ui
         self.setupUI()
 
     def setupUI(self):
-        #create window from ui
-        self.ui=Ui_MBData()
-        self.ui.setupUi(self)
         #signals-slots
         self.ui.chkSimCoils.stateChanged.connect(self._sim_coils_changed)
         self.ui.chkSimDisInputs.stateChanged.connect(self._sim_dis_inputs_changed)

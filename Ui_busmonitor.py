@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'busmonitor.ui'
 #
-# Created: Thu Nov 12 20:31:06 2015
+# Created: Tue Nov 17 13:26:35 2015
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -27,9 +27,9 @@ class Ui_BusMonitor(object):
     def setupUi(self, BusMonitor):
         BusMonitor.setObjectName(_fromUtf8("BusMonitor"))
         BusMonitor.setWindowModality(QtCore.Qt.NonModal)
-        BusMonitor.resize(450, 450)
-        BusMonitor.setMinimumSize(QtCore.QSize(450, 450))
-        BusMonitor.setMaximumSize(QtCore.QSize(450, 450))
+        BusMonitor.resize(450, 580)
+        BusMonitor.setMinimumSize(QtCore.QSize(450, 580))
+        BusMonitor.setMaximumSize(QtCore.QSize(450, 580))
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(_fromUtf8(":/img/view-16.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         BusMonitor.setWindowIcon(icon)

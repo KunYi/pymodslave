@@ -10,26 +10,26 @@
     <x>0</x>
     <y>0</y>
     <width>450</width>
-    <height>450</height>
+    <height>580</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
     <width>450</width>
-    <height>450</height>
+    <height>580</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
     <width>450</width>
-    <height>450</height>
+    <height>580</height>
    </size>
   </property>
   <property name="windowTitle">
    <string>Bus Monitor</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="icons/pyModSlaveQt.qrc">
+   <iconset>
     <normaloff>:/img/view-16.png</normaloff>:/img/view-16.png</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">

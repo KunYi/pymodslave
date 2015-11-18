@@ -63,33 +63,39 @@ class ModSlaveSim(QtCore.QObject):
     """ Simulate modbus data """
 
     def __init__(self,modServer,slaveAddress,timeIntervalSim,
-                    no_coils = 50, no_dis_inputs = 50,
-                    no_input_regs = 50, no_hold_regs = 50):
+                    start_addr_coils = 0 ,no_coils = 10,
+                    start_addr_dis_inputs = 0, no_dis_inputs = 10,
+                    start_addr_input_regs = 0, no_input_regs = 10,
+                    start_addr_hold_regs = 0, no_hold_regs = 10):
         super(ModSlaveSim,self).__init__()
         self._modServer = modServer
+        self._start_addr_coils = start_addr_coils
         self._no_coils = no_coils
+        self._start_addr_dis_inputs = start_addr_dis_inputs
         self._no_dis_inputs = no_dis_inputs
+        self._start_addr_input_regs = start_addr_input_regs
         self._no_input_regs = no_input_regs
+        self._start_addr_hold_regs = start_addr_hold_regs
         self._no_hold_regs = no_hold_regs
         self._logger = logging.getLogger("modbus_tk")
         # data models
-        self.coils_data_model = ModSlaveMBDataModel(no_coils)
+        self.coils_data_model = ModSlaveMBDataModel(start_addr_coils, no_coils, 0)
         self.connect(self.coils_data_model, QtCore.SIGNAL("update_data"), self.set_coils_data)
-        self.dis_inputs_data_model = ModSlaveMBDataModel(no_dis_inputs)
+        self.dis_inputs_data_model = ModSlaveMBDataModel(start_addr_dis_inputs, no_dis_inputs, 0)
         self.connect(self.dis_inputs_data_model, QtCore.SIGNAL("update_data"), self.set_dis_inputs_data)
-        self.input_regs_data_model = ModSlaveMBDataModel(no_input_regs)
+        self.input_regs_data_model = ModSlaveMBDataModel(start_addr_input_regs, no_input_regs, 0)
         self.connect(self.input_regs_data_model, QtCore.SIGNAL("update_data"), self.set_input_regs_data)
-        self.hold_regs_data_model = ModSlaveMBDataModel(no_hold_regs)
+        self.hold_regs_data_model = ModSlaveMBDataModel(start_addr_hold_regs, no_hold_regs, 0)
         self.connect(self.hold_regs_data_model, QtCore.SIGNAL("update_data"), self.set_hold_regs_data)
 
         try:
             #add slave
             self.slave= modServer.add_slave(slaveAddress)
             #add blocks
-            self.slave.add_block('0', cst.COILS , 0, self._no_coils)
-            self.slave.add_block('1', cst.DISCRETE_INPUTS, 0, self._no_dis_inputs)
-            self.slave.add_block('3', cst.ANALOG_INPUTS , 0, self._no_input_regs)
-            self.slave.add_block('4', cst.HOLDING_REGISTERS, 0, self._no_hold_regs)
+            self.slave.add_block('0', cst.COILS , start_addr_coils, self._no_coils)
+            self.slave.add_block('1', cst.DISCRETE_INPUTS, start_addr_dis_inputs, self._no_dis_inputs)
+            self.slave.add_block('3', cst.ANALOG_INPUTS , start_addr_input_regs, self._no_input_regs)
+            self.slave.add_block('4', cst.HOLDING_REGISTERS, start_addr_hold_regs, self._no_hold_regs)
             #create timer
             self._timer=rt.RepeatTimer(timeIntervalSim,self._simBlockValues,0)
             self._simBlockValues()
@@ -137,27 +143,27 @@ class ModSlaveSim(QtCore.QObject):
         self.hold_regs_data_model.update_model(self.get_hold_regs_data())
 
     def get_coils_data(self):
-        return self.slave.get_values('0',0,self._no_coils)
+        return self.slave.get_values('0', self._start_addr_coils, self._no_coils)
 
     def set_coils_data(self, data):
-        self.slave.set_values('0',0,data)
+        self.slave.set_values('0', self._start_addr_coils, data)
 
     def get_dis_inputs_data(self):
-        return self.slave.get_values('1',0,self._no_dis_inputs)
+        return self.slave.get_values('1', self._start_addr_dis_inputs, self._no_dis_inputs)
 
     def set_dis_inputs_data(self, data):
-        self.slave.set_values('1',0,data)
+        self.slave.set_values('1', self._start_addr_dis_inputs, data)
 
     def get_input_regs_data(self):
-        return self.slave.get_values('3',0,self._no_input_regs)
+        return self.slave.get_values('3', self._start_addr_input_regs, self._no_input_regs)
 
     def set_input_regs_data(self, data):
-        self.slave.set_values('3',0,data)
+        self.slave.set_values('3', self._start_addr_input_regs, data)
 
     def get_hold_regs_data(self):
-        return self.slave.get_values('4',0,self._no_hold_regs)
+        return self.slave.get_values('4', self._start_addr_hold_regs, self._no_hold_regs)
 
     def set_hold_regs_data(self, data):
-        self.slave.set_values('4',0,data)
+        self.slave.set_values('4', self._start_addr_hold_regs, data)
 
 #-------------------------------------------------------------------------------

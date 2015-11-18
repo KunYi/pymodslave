@@ -30,19 +30,18 @@ SERVER_RTU_HOOKS = ("modbus_rtu.RtuServer.after_read", "modbus_rtu.RtuServer.bef
 class ModSlaveBusMonitorWindow(QtGui.QMainWindow):
     """ Class wrapper for modbus data """
 
-    def __init__(self):
-        super(ModSlaveBusMonitorWindow,self).__init__()
+    def __init__(self, parent):
+        super(ModSlaveBusMonitorWindow,self).__init__(parent)
         self._logger = logging.getLogger("modbus_tk")
         self._model = QtGui.QStringListModel()
         self._string_list = QtCore.QStringList()
-        self._max_no_of_bus_monitor_lines = 50
+        self._max_no_of_bus_monitor_lines = None
         self.packets = 0
         self.errors = 0
         self.svr = None
         #setu UI
         self.setupUI()
         self.ui.lstRawData.setModel(self._model)
-        self.running = False
         #install hooks
         install_hook(SERVER_RTU_HOOKS[0], self._req_rtu_data)
         install_hook(SERVER_RTU_HOOKS[1], self._resp_rtu_data)
@@ -55,30 +54,25 @@ class ModSlaveBusMonitorWindow(QtGui.QMainWindow):
         self.ui=Ui_BusMonitor()
         self.ui.setupUi(self)
         #setup toolbar
-        self.ui.toolBar.addAction(self.ui.actionStart_Stop)
         self.ui.toolBar.addAction(self.ui.actionSave)
         self.ui.toolBar.addAction(self.ui.actionClear)
         self.ui.toolBar.addAction(self.ui.actionExit)
         #signals-slots
-        self.ui.actionStart_Stop.triggered.connect(self._start_stop)
         self.ui.actionSave.triggered.connect(self._save)
         self.ui.actionClear.triggered.connect(self._clear)
         self.ui.actionExit.triggered.connect(self.close)
         self.ui.lstRawData.activated.connect(self._selected_row)
         self.ui.lstRawData.clicked.connect(self._selected_row)
 
-    def set_max_no_of_bus_monitor_lines(self, no):
-        self._max_no_of_bus_monitor_lines = no
+    def set_max_no_of_bus_monitor_lines(self, n):
+        self._max_no_of_bus_monitor_lines = n
 
     def _add_line(self, line):
-        if (self.ui.actionStart_Stop.isChecked()):
-            if (self._string_list.count() >= self._max_no_of_bus_monitor_lines):
-                self._string_list.removeAt(0)
-            self._string_list.append(QtCore.QString(line))
+        if (self._string_list.count() >= self._max_no_of_bus_monitor_lines):
+            self._string_list.removeAt(0)
+        self._string_list.append(QtCore.QString(line))
         self._model.setStringList(self._string_list)
 
-    def _start_stop(self):
-        self.running = self.ui.actionStart_Stop.isChecked()
 
     def _save(self):
         file_name = QtGui.QFileDialog.getSaveFileName(self, QtCore.QString('Save File As...'),
@@ -99,31 +93,31 @@ class ModSlaveBusMonitorWindow(QtGui.QMainWindow):
     def _req_rtu_data(self, data):
         self.packets += 1
         self.emit(QtCore.SIGNAL("update_counters"))
-        if (self.running):
+        if (self.isVisible()):
             req = str(data[1]).encode('hex')
             self._add_line("[RTU]>Rx > %s : %s" % (dt.datetime.now().strftime('%H:%M:%S'), self._format_data(req.upper())))
 
     def _resp_rtu_data(self, data):
-        if (self.running):
+        if (self.isVisible()):
             resp = str(data[1]).encode('hex')
             self._add_line("[RTU]>Tx > %s : %s" % (dt.datetime.now().strftime('%H:%M:%S'),  self._format_data(resp.upper())))
 
     def _req_tcp_data(self, data):
         self.packets += 1
         self.emit(QtCore.SIGNAL("update_counters"))
-        if (self.running):
+        if (self.isVisible()):
             req = str(data[2]).encode('hex')
             self._add_line("[TCP]>Rx > %s : %s" % (dt.datetime.now().strftime('%H:%M:%S'), self._format_data(req.upper())))
 
     def _resp_tcp_data(self, data):
-        if (self.running):
+        if (self.isVisible()):
             resp = str(data[2]).encode('hex')
             self._add_line("[TCP]>Tx > %s : %s" % (dt.datetime.now().strftime('%H:%M:%S'),  self._format_data(resp.upper())))
 
     def _error_data(self, data):
         self.errors += 1
         self.emit(QtCore.SIGNAL("update_counters"))
-        if (self.running):
+        if (self.isVisible()):
             slave = data[1]
             msg = data[2]
             self._add_line("Sys > %s : Slave %s - %s" % (dt.datetime.now().strftime('%H:%M:%S'), slave, msg))
@@ -158,21 +152,21 @@ class ModSlaveBusMonitorWindow(QtGui.QMainWindow):
             self.ui.txtPDU.appendPlainText('TimeStamp : %s' % pdu[0].strip())
             mb_data = pdu[1].replace(' ', '')
             if ('RTU' in data):
-                self._parse_Tx_pdu(mb_data[:-4])
+                self._parse_Tx_pdu('Slave Addr', mb_data[:-4])
                 self.ui.txtPDU.appendPlainText('CRC : %s' % mb_data[-4:])
             elif ('TCP' in data):
                 self.ui.txtPDU.appendPlainText('Transaction ID  : %s' % mb_data[0:4])
                 self.ui.txtPDU.appendPlainText('Protocol ID  : %s' % mb_data[4:8])
                 self.ui.txtPDU.appendPlainText('Length  : %s' % mb_data[8:12])
-                self._parse_Tx_pdu(mb_data[12:])
+                self._parse_Tx_pdu('Unit ID', mb_data[12:])
             else :
                 self.ui.txtPDU.appendPlainText('Error! Cannot parse Message')
         except :
             self.ui.txtPDU.appendPlainText('Error! Cannot parse Message')
 
-    def _parse_Tx_pdu(self, pdu):
+    def _parse_Tx_pdu(self, slave, pdu):
         try :
-            self.ui.txtPDU.appendPlainText('Slave ID : %s' % pdu[:2])
+            self.ui.txtPDU.appendPlainText(slave + ' : %s' % pdu[:2])
             fc = int(pdu[2:4], 16)
             if (fc > 128): #Modbus error
                 self.ui.txtPDU.appendPlainText('Function Code [80 + SlaveID] : %s' % pdu[2:4])
@@ -206,21 +200,21 @@ class ModSlaveBusMonitorWindow(QtGui.QMainWindow):
             self.ui.txtPDU.appendPlainText('TimeStamp : %s' % pdu[0].strip())
             mb_data = pdu[1].replace(' ', '')
             if ('RTU' in data):
-                self._parse_Rx_pdu(mb_data[:-4])
+                self._parse_Rx_pdu('Slave Addr', mb_data[:-4])
                 self.ui.txtPDU.appendPlainText('CRC : %s' % mb_data[-4:])
             elif ('TCP' in data):
                 self.ui.txtPDU.appendPlainText('Transaction ID  : %s' % mb_data[0:4])
                 self.ui.txtPDU.appendPlainText('Protocol ID  : %s' % mb_data[4:8])
                 self.ui.txtPDU.appendPlainText('Length  : %s' % mb_data[8:12])
-                self._parse_Rx_pdu(mb_data[12:])
+                self._parse_Rx_pdu('Unit ID', mb_data[12:])
             else :
                 self.ui.txtPDU.appendPlainText('Error! Cannot parse Message')
         except :
             self.ui.txtPDU.appendPlainText('Error! Cannot parse Message')
 
-    def _parse_Rx_pdu(self, pdu):
+    def _parse_Rx_pdu(self, slave, pdu):
         try :
-            self.ui.txtPDU.appendPlainText('Slave ID : %s' % pdu[:2])
+            self.ui.txtPDU.appendPlainText(slave + ' : %s' % pdu[:2])
             self.ui.txtPDU.appendPlainText('Function Code : %s' % pdu[2:4])
             self.ui.txtPDU.appendPlainText('Starting Address : %s' % pdu[4:8])
             fc = int(pdu[2:4], 16)
@@ -246,6 +240,6 @@ class ModSlaveBusMonitorWindow(QtGui.QMainWindow):
         pass
 
     def closeEvent(self,QCloseEvent):
-        self.ui.actionStart_Stop.setChecked(False)
+        self._clear()
 
-#-------------------------------------------------------------------------------
+    #-------------------------------------------------------------------------------

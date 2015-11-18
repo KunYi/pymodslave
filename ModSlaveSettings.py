@@ -23,10 +23,6 @@ class ModSlaveSettingsWindow(QtGui.QDialog):
     def __init__(self):
         super(ModSlaveSettingsWindow,self).__init__()
         #init values
-        self.coils = 50
-        self.inputs = 50
-        self.input_regs = 50
-        self.hold_regs = 50
         self.max_no_of_bus_monitor_lines = 50
         self._logger = logging.getLogger("modbus_tk")
         self.setupUI()
@@ -44,19 +40,11 @@ class ModSlaveSettingsWindow(QtGui.QDialog):
     def _set_values(self):
         """set param values to ui"""
         self._logger.info("Set param values to UI")
-        self.ui.sbNoOfCoils.setValue(self.coils)
-        self.ui.sbNoOfDigInputs.setValue(self.inputs)
-        self.ui.sbNoOfInputRegs.setValue(self.input_regs)
-        self.ui.sbNoOfHoldingRegs.setValue(self.hold_regs)
         self.ui.sbMaxNoOfBusMonitorLines.setValue(self.max_no_of_bus_monitor_lines)
 
     def _get_values(self):
         """get param values from ui"""
         self._logger.info("Get param values from UI")
-        self.coils = self.ui.sbNoOfCoils.value()
-        self.inputs = self.ui.sbNoOfDigInputs.value()
-        self.input_regs = self.ui.sbNoOfInputRegs.value()
-        self.hold_regs = self.ui.sbNoOfHoldingRegs.value()
         self.max_no_of_bus_monitor_lines = self.ui.sbMaxNoOfBusMonitorLines.value()
 
     def _OK_pressed(self):
