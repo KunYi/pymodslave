@@ -45,11 +45,11 @@ class ModSlaveMainWindow(QtGui.QMainWindow):
         self.svr = None # Server
         self._svr_args = []
         self.slv = None # Slave
-        self._coils = None
-        self._inputs = None
-        self._input_regs = None
-        self._hold_regs = None
-        self._time_interval = None # interval for simulation in msec
+        self._coils = 10
+        self._inputs = 10
+        self._input_regs = 10
+        self._hold_regs = 10
+        self._time_interval = 2000 # interval for simulation in msec
         self._params_file_name = 'pyModSlaveQt.ini'
         self._logger = logging.getLogger("modbus_tk")
         self._setupUI()
