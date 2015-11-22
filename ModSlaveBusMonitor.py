@@ -35,7 +35,7 @@ class ModSlaveBusMonitorWindow(QtGui.QMainWindow):
         self._logger = logging.getLogger("modbus_tk")
         self._model = QtGui.QStringListModel()
         self._string_list = QtCore.QStringList()
-        self._max_no_of_bus_monitor_lines = None
+        self._max_no_of_bus_monitor_lines = 50
         self.packets = 0
         self.errors = 0
         self.svr = None
