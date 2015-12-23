@@ -175,19 +175,13 @@ class ModSlaveBusMonitorWindow(QtGui.QMainWindow):
                 self.ui.txtPDU.appendPlainText('Function Code : %s' % pdu[2:4])
                 self.ui.txtPDU.appendPlainText('Byte Count : %s' % pdu[4:6])
                 self.ui.txtPDU.appendPlainText('Register Values : %s' % pdu[6:])
-            elif (fc <= 4): # Read
-                self.ui.txtPDU.appendPlainText('Function Code : %s' % pdu[2:4])
-                self.ui.txtPDU.appendPlainText('Byte Count : %s' % pdu[4:6])
-                self.ui.txtPDU.appendPlainText('Register Values : %s' % pdu[6:])
             elif (fc >= 5 and fc <= 6): # Write
                 self.ui.txtPDU.appendPlainText('Function Code : %s' % pdu[2:4])
-                self.ui.txtPDU.appendPlainText('Byte Count : %s' % pdu[4:6])
-                self.ui.txtPDU.appendPlainText('Starting Address : %s' % pdu[6:8])
+                self.ui.txtPDU.appendPlainText('Starting Address : %s' % pdu[4:8])
                 self.ui.txtPDU.appendPlainText('Output Value : %s' % pdu[8:])
             elif (fc >= 15 and fc <= 16): # Write Multiple
                 self.ui.txtPDU.appendPlainText('Function Code : %s' % pdu[2:4])
-                self.ui.txtPDU.appendPlainText('Byte Count : %s' % pdu[4:6])
-                self.ui.txtPDU.appendPlainText('Starting Address : %s' % pdu[6:8])
+                self.ui.txtPDU.appendPlainText('Starting Address : %s' % pdu[4:8])
                 self.ui.txtPDU.appendPlainText('Quantity of Registers : %s' % pdu[8:])
         except :
             self.ui.txtPDU.appendPlainText('Error! Cannot parse PDU')
