@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="/img">
+    <file>help-desk-icon-16.png</file>
     <file>bullet-green-16.png</file>
     <file>bullet-red-16.png</file>
     <file>Close-16.png</file>

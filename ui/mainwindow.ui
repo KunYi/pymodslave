@@ -909,6 +909,7 @@
     <property name="title">
      <string>Help</string>
     </property>
+    <addaction name="actionModbus_Manual"/>
     <addaction name="actionAbout"/>
    </widget>
    <widget class="QMenu" name="menuView">
@@ -1061,6 +1062,15 @@
    </property>
    <property name="text">
     <string>Log</string>
+   </property>
+  </action>
+  <action name="actionModbus_Manual">
+   <property name="icon">
+    <iconset resource="icons/pyModSlaveQt.qrc">
+     <normaloff>:/img/help-desk-icon-16.png</normaloff>:/img/help-desk-icon-16.png</iconset>
+   </property>
+   <property name="text">
+    <string>Modbus Manual</string>
    </property>
   </action>
  </widget>

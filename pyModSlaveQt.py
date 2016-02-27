@@ -13,6 +13,7 @@
 import sys
 import os
 import subprocess
+import webbrowser
 from PyQt4 import QtGui,QtCore
 import logging # add logging capability
 import ConfigParser # config file parser
@@ -68,6 +69,7 @@ class ModSlaveMainWindow(QtGui.QMainWindow):
         self.ui.mainToolBar.addSeparator()
         self.ui.mainToolBar.addAction(self.ui.actionReset_Counters)
         self.ui.mainToolBar.addSeparator()
+        self.ui.mainToolBar.addAction(self.ui.actionModbus_Manual)
         self.ui.mainToolBar.addAction(self.ui.actionAbout)
         self.ui.mainToolBar.addAction(self.ui.actionExit)
         #setup status bar
@@ -100,6 +102,7 @@ class ModSlaveMainWindow(QtGui.QMainWindow):
         self.ui.actionBus_Monitor.triggered.connect(self._bus_monitor_show)
         self.ui.actionReset_Counters.triggered.connect(self._reset_counters)
         self.ui.actionLog.triggered.connect(self._open_log_file)
+        self.ui.actionModbus_Manual.triggered.connect(self._open_modbus_manual)
         self.ui.btStartStop.clicked.connect(self._start_stop)
         self.ui.cmbModbusMode.currentIndexChanged.connect(self._update_status_bar)
         self.ui.spInterval.valueChanged.connect(self._spInterval_value_changed)
@@ -333,6 +336,20 @@ class ModSlaveMainWindow(QtGui.QMainWindow):
             subprocess.Popen(['notepad.exe', 'pyModSlaveQt.log'])
         except WindowsError as we:
             msg = "Windows Error No %i - %s" % we.args
+            self._logger.error(msg)
+            Utils.errorMessageBox(msg)
+
+    def _open_modbus_manual(self):
+        """open modbus manual"""
+        if (not os.path.exists('ManModbus\index.html')):
+            msg = "Modbus Manual is missing"
+            self._logger.error(msg)
+            Utils.errorMessageBox(msg)
+            return
+        try:
+            webbrowser.open_new_tab('ManModbus\index.html')
+        except WindowsError as we:
+            msg = "Cannot open Modbus Manual %i - %s" % we.args
             self._logger.error(msg)
             Utils.errorMessageBox(msg)
 
