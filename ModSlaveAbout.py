@@ -13,7 +13,7 @@
 from PyQt4 import QtGui,QtCore
 from Ui_about import Ui_About
 
-_VERSION = "0.3.7"
+_VERSION = "0.3.8"
 _URL = "<a href = ""http://sourceforge.net/projects/pymodslave"">Sourceforge Project Home Page</a>"
 
 #-------------------------------------------------------------------------------
