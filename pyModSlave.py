@@ -51,7 +51,7 @@ class ModSlaveMainWindow(QtGui.QMainWindow):
         self._input_regs = 10
         self._hold_regs = 10
         self._time_interval = 2000 # interval for simulation in msec
-        self._params_file_name = 'pyModSlaveQt.ini'
+        self._params_file_name = 'pyModSlave.ini'
         self._logger = logging.getLogger("modbus_tk")
         self._setupUI()
 
@@ -378,7 +378,7 @@ def main():
 
     #logger
     logger = modbus_tk.utils.create_logger("console")
-    Utils.set_up_logger_file(logger,'pyModSlaveQt.log')
+    Utils.set_up_logger_file(logger,'pyModSlave.log')
     #create qt application
     app=QtGui.QApplication(sys.argv)
     #load main window
