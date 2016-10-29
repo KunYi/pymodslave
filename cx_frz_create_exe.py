@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Run the build process by running the command 'python setup.py build'
+# Run the build process by running the command 'python cx_frz_create_exe.py build'
 #
 # If everything works well you should find a subdirectory in the build
 # subdirectory that contains the files needed to run the application
@@ -20,11 +20,11 @@ options = {
 }
 
 executables = [
-    Executable('pyModSlaveQt.py', base=base)
+    Executable('pyModSlave.py', base=base)
 ]
 
 setup(name='pyModSlave',
-      version='0.3.7',
+      version='0.3.8',
       description='pyModSlave - Modbus RTU-TCP slave',
       options=options,
       executables=executables

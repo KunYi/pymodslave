@@ -5,6 +5,7 @@
 # Author:      elbar
 #
 # Created:     28/08/2012
+# Obsolete -> Not Used any more
 # Copyright:   (c) elbar 2012
 # Licence:     <your licence>
 #-------------------------------------------------------------------------------

@@ -26,6 +26,7 @@ from ModSlaveSettings import ModSlaveSettingsWindow
 from ModSlaveMBData import ModSlaveMBData
 from ModSlaveMBDataModel import ModSlaveMBDataModel
 from ModSlaveBusMonitor import ModSlaveBusMonitorWindow
+from ModSlaveMBDataItemDelegate import ModSlaveMBDataItemDelegate
 
 #modbus toolkit
 import modbus_tk
@@ -42,16 +43,23 @@ class ModSlaveMainWindow(QtGui.QMainWindow):
 
     def __init__(self):
         super(ModSlaveMainWindow,self).__init__()
+        self.setAttribute(QtCore.Qt.WA_DeleteOnClose)
         #init
         self.svr = None # Server
         self._svr_args = []
         self.slv = None # Slave
-        self._coils = 10
-        self._inputs = 10
-        self._input_regs = 10
-        self._hold_regs = 10
+        #data models
+        self.coils = None
+        self.dis_inputs = None
+        self.input_regs = None
+        self.hold_regs = None
+        #no of signals
+        self._no_coils = 10
+        self._no_inputs = 10
+        self._no_input_regs = 10
+        self._no_hold_regs = 10
         self._time_interval = 2000 # interval for simulation in msec
-        self._params_file_name = 'pyModSlaveQt.ini'
+        self._params_file_name = 'pyModSlave.ini'
         self._logger = logging.getLogger("modbus_tk")
         self._setupUI()
 
@@ -59,6 +67,9 @@ class ModSlaveMainWindow(QtGui.QMainWindow):
         #create window from ui
         self.ui=Ui_MainWindow()
         self.ui.setupUi(self)
+        #disable Sim for Coils, Holding Regs
+        self.ui.chkSimCoils.setVisible(False)
+        self.ui.chkSimHoldRegs.setVisible(False)
         #setup toolbar
         self.ui.mainToolBar.addAction(self.ui.actionSerial_RTU)
         self.ui.mainToolBar.addAction(self.ui.actionTCP)
@@ -92,8 +103,6 @@ class ModSlaveMainWindow(QtGui.QMainWindow):
         self._settingsTCP_dlg = ModSlaveSettingsTCPWindow()
         self._settings_dlg = ModSlaveSettingsWindow()
         self._bus_monitor_dlg = ModSlaveBusMonitorWindow(self)
-        #setup data controller
-        self._mbdata_ctrl = ModSlaveMBData(self.ui)
         #signals-slots
         self.ui.actionAbout.triggered.connect(self._about_dlg.show)
         self.ui.actionSerial_RTU.triggered.connect(self._settings_RTU_show)
@@ -108,6 +117,26 @@ class ModSlaveMainWindow(QtGui.QMainWindow):
         self.ui.spInterval.valueChanged.connect(self._spInterval_value_changed)
         self.connect(self._bus_monitor_dlg, QtCore.SIGNAL("update_counters"), self._update_counters)
         self.ui.cmbModbusMode.currentIndexChanged.connect(self._update_modbus_mode)
+        self.ui.chkSimCoils.stateChanged.connect(self._sim_coils_changed)
+        self.ui.chkSimDisInputs.stateChanged.connect(self._sim_dis_inputs_changed)
+        self.ui.chkSimInputRegs.stateChanged.connect(self._sim_input_regs_changed)
+        self.ui.chkSimHoldRegs.stateChanged.connect(self._sim_hold_regs_changed)
+        self.ui.cmbInputRegsType.currentIndexChanged.connect(self._input_regs_data_type_changed)
+        self.ui.cmbHoldRegsType.currentIndexChanged.connect(self._hold_regs_data_type_changed)
+        self.ui.pbResetDO.clicked.connect(self._reset_DO)
+        self.ui.pbResetDI.clicked.connect(self._reset_DI)
+        self.ui.pbResetAO.clicked.connect(self._reset_AO)
+        self.ui.pbResetAI.clicked.connect(self._reset_AI)
+        #read only table views
+        self.ui.tvCoilsData.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
+        self.ui.tvDiscreteInputsData.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
+        self.ui.tvHoldingRegistersData.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
+        self.ui.tvInputRegistersData.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
+        #item delegates
+        self.ui.tvCoilsData.setItemDelegate(ModSlaveMBDataItemDelegate(True))
+        self.ui.tvDiscreteInputsData.setItemDelegate(ModSlaveMBDataItemDelegate(True))
+        self.ui.tvHoldingRegistersData.setItemDelegate(ModSlaveMBDataItemDelegate(False))
+        self.ui.tvInputRegistersData.setItemDelegate(ModSlaveMBDataItemDelegate(False))
         #show window
         self._update_status_bar()
         self.show()
@@ -154,7 +183,7 @@ class ModSlaveMainWindow(QtGui.QMainWindow):
                                                     self._settingsRTU_dlg.stop_bits,
                                                     self._settingsRTU_dlg.parity)
         self.status_text.setText(msg)
-        if (self.svr != None):#server is running
+        if (self.svr is not None):#server is running
             self.status_ind.setPixmap(QtGui.QPixmap(':/img/bullet-green-16.png'))
         else:#server is stopped
             self.status_ind.setPixmap(QtGui.QPixmap(':/img/bullet-red-16.png'))
@@ -200,7 +229,7 @@ class ModSlaveMainWindow(QtGui.QMainWindow):
             self.ui.sbNoOfInputRegs.setEnabled(True)
             self.ui.sbInputRegsStartAddr.setEnabled(True)
             _empty_model = self.coils_data_model = ModSlaveMBDataModel(0, 0, 0)
-            self._mbdata_ctrl.set_data_models(_empty_model,_empty_model,_empty_model,_empty_model)
+            self.set_data_models(_empty_model,_empty_model,_empty_model,_empty_model)
 
     def _start_stop(self):
         """start - stop server and slave"""
@@ -223,7 +252,7 @@ class ModSlaveMainWindow(QtGui.QMainWindow):
                 self._svr_args.append(self._settingsRTU_dlg.stop_bits)
             if (len(self._svr_args) > 0): # check for valid no of parameters
                 self.svr = simSlave.ModServerFactory(self._svr_args)
-                if (self.svr == None):#fail to build server
+                if (self.svr is None):#fail to build server
                     self._logger.error("Fail to start server")
                     Utils.errorMessageBox("Fail to start server")
                     self.ui.btStartStop.setChecked(False)
@@ -235,14 +264,14 @@ class ModSlaveMainWindow(QtGui.QMainWindow):
                                                 self.ui.sbDigInputsstartAddr.value(), self.ui.sbNoOfDigInputs.value(),
                                                 self.ui.sbInputRegsStartAddr.value(), self.ui.sbNoOfInputRegs.value(),
                                                 self.ui.sbHoldingRegsStartAddr.value(), self.ui.sbNoOfHoldingRegs.value())
-                    if (self.slv == None):#fail to build slave
+                    if (self.slv is None):#fail to build slave
                         self._logger.error("Fail to start slave")
                         Utils.errorMessageBox("Fail to start slave")
                         self.svr.stop()
                         self.svr = None
                         self.ui.btStartStop.setChecked(False)
                     else:
-                        self._mbdata_ctrl.set_data_models(self.slv.coils_data_model,
+                        self.set_data_models(self.slv.coils_data_model,
                                                          self.slv.dis_inputs_data_model,
                                                          self.slv.input_regs_data_model,
                                                          self.slv.hold_regs_data_model)
@@ -280,10 +309,10 @@ class ModSlaveMainWindow(QtGui.QMainWindow):
         self._settingsRTU_dlg.stop_bits = config.get('RTU', 'StopBits')
         self._settingsRTU_dlg.parity = config.get('RTU', 'Parity')
         #Var Settings
-        self._coils = config.getint('Var', 'Coils')
-        self._inputs = config.getint('Var', 'DisInputs')
-        self._input_regs = config.getint('Var', 'InputRegs')
-        self._hold_regs = config.getint('Var', 'HoldRegs')
+        self._no_coils = config.getint('Var', 'Coils')
+        self._no_inputs = config.getint('Var', 'DisInputs')
+        self._no_input_regs = config.getint('Var', 'InputRegs')
+        self._no_hold_regs = config.getint('Var', 'HoldRegs')
         self._time_interval = config.getint('Var', 'TimeInterval')
         self._settings_dlg.max_no_of_bus_monitor_lines = config.getint('Var', 'MaxNoOfBusMonitorLines')
         self._bus_monitor_dlg.set_max_no_of_bus_monitor_lines(self._settings_dlg.max_no_of_bus_monitor_lines)
@@ -304,10 +333,10 @@ class ModSlaveMainWindow(QtGui.QMainWindow):
         config.set('RTU','Parity',self._settingsRTU_dlg.parity)
         #Var Settings
         config.add_section('Var')
-        config.set('Var','Coils',self._coils)
-        config.set('Var','DisInputs',self._inputs)
-        config.set('Var','InputRegs',self._input_regs)
-        config.set('Var','HoldRegs',self._hold_regs)
+        config.set('Var','Coils',self._no_coils)
+        config.set('Var','DisInputs',self._no_inputs)
+        config.set('Var','InputRegs',self._no_input_regs)
+        config.set('Var','HoldRegs',self._no_hold_regs)
         config.set('Var','TimeInterval',self._time_interval)
         config.set('Var','MaxNoOfBusMonitorLines',self._settings_dlg.max_no_of_bus_monitor_lines)
         #Save Settings
@@ -327,13 +356,13 @@ class ModSlaveMainWindow(QtGui.QMainWindow):
 
     def _open_log_file(self):
         """open application log"""
-        if (not os.path.exists('pyModSlaveQt.log')):
-            msg = "File 'pyModSlaveQt.log' does not exist"
+        if (not os.path.exists('pyModSlave.log')):
+            msg = "File 'pyModSlave.log' does not exist"
             self._logger.error(msg)
             Utils.errorMessageBox(msg)
             return
         try:
-            subprocess.Popen(['notepad.exe', 'pyModSlaveQt.log'])
+            subprocess.Popen(['notepad.exe', 'pyModSlave.log'])
         except WindowsError as we:
             msg = "Windows Error No %i - %s" % we.args
             self._logger.error(msg)
@@ -356,21 +385,115 @@ class ModSlaveMainWindow(QtGui.QMainWindow):
     def showEvent(self,QShowEvent):
         """set values for controls"""
         self._load_params()
-        self.ui.sbNoOfCoils.setValue(self._coils)
-        self.ui.sbNoOfDigInputs.setValue(self._inputs)
-        self.ui.sbNoOfHoldingRegs.setValue(self._hold_regs)
-        self.ui.sbNoOfInputRegs.setValue(self._input_regs)
+        self.ui.sbNoOfCoils.setValue(self._no_coils)
+        self.ui.sbNoOfDigInputs.setValue(self._no_inputs)
+        self.ui.sbNoOfHoldingRegs.setValue(self._no_hold_regs)
+        self.ui.sbNoOfInputRegs.setValue(self._no_input_regs)
         self.ui.spInterval.setValue(self._time_interval)
         self._update_status_bar()
 
     def closeEvent(self,QCloseEvent):
         """window is closing"""
-        self._coils = self.ui.sbNoOfCoils.value()
-        self._inputs = self.ui.sbNoOfDigInputs.value()
-        self._hold_regs = self.ui.sbNoOfHoldingRegs.value()
-        self._input_regs = self.ui.sbNoOfInputRegs.value()
+        self._no_coils = self.ui.sbNoOfCoils.value()
+        self._no_inputs = self.ui.sbNoOfDigInputs.value()
+        self._no_hold_regs = self.ui.sbNoOfHoldingRegs.value()
+        self._no_input_regs = self.ui.sbNoOfInputRegs.value()
         self._save_params()
 
+    def set_data_models(self, coils, dis_inputs, input_regs, hold_regs):
+        self.coils = coils
+        self.dis_inputs = dis_inputs
+        self.input_regs = input_regs
+        self.hold_regs = hold_regs
+        #table views models
+        #coils
+        self.ui.tvCoilsData.setModel(self.coils.model)
+        self.connect(self.coils, QtCore.SIGNAL("update_view"), self._models_data_changed)
+        self.connect(self.ui.tvCoilsData.itemDelegate(), QtCore.SIGNAL("update_data"), self.coils.update_item)
+        self._sim_coils_changed()
+        #discrete inputs
+        self.ui.tvDiscreteInputsData.setModel(self.dis_inputs.model)
+        self.connect(self.dis_inputs, QtCore.SIGNAL("update_view"), self._models_data_changed)
+        self.connect(self.ui.tvDiscreteInputsData.itemDelegate(), QtCore.SIGNAL("update_data"), self.dis_inputs.update_item)
+        self._sim_dis_inputs_changed()
+        #input regs
+        self.ui.tvInputRegistersData.setModel(self.input_regs.model)
+        self.connect(self.input_regs, QtCore.SIGNAL("update_view"), self._models_data_changed)
+        self.input_regs.set_data_type(self.ui.cmbInputRegsType.currentIndex())
+        self.connect(self.ui.tvInputRegistersData.itemDelegate(), QtCore.SIGNAL("update_data"), self.input_regs.update_item)
+        self._sim_input_regs_changed()
+        #holding regs
+        self.ui.tvHoldingRegistersData.setModel(self.hold_regs.model)
+        self.connect(self.hold_regs, QtCore.SIGNAL("update_view"), self._models_data_changed)
+        self.hold_regs.set_data_type(self.ui.cmbHoldRegsType.currentIndex())
+        self.connect(self.ui.tvHoldingRegistersData.itemDelegate(), QtCore.SIGNAL("update_data"), self.hold_regs.update_item)
+        self._sim_hold_regs_changed()
+        #update table views
+        self._models_data_changed()
+
+    def _sim_coils_changed(self):
+        self.coils.sim = self.ui.chkSimCoils.isChecked()
+        self.ui.pbResetDO.setDisabled(self.coils.sim)
+        if (self.coils.sim):
+            self.ui.tvCoilsData.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
+        else:
+            self.ui.tvCoilsData.setEditTriggers(QtGui.QAbstractItemView.AnyKeyPressed)
+
+    def _sim_dis_inputs_changed(self):
+        self.dis_inputs.sim = self.ui.chkSimDisInputs.isChecked()
+        self.ui.pbResetDI.setDisabled(self.dis_inputs.sim)
+        if (self.dis_inputs.sim):
+            self.ui.tvDiscreteInputsData.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
+        else:
+            self.ui.tvDiscreteInputsData.setEditTriggers(QtGui.QAbstractItemView.AnyKeyPressed)
+
+    def _sim_input_regs_changed(self):
+        self.input_regs.sim = self.ui.chkSimInputRegs.isChecked()
+        self.ui.pbResetAI.setDisabled(self.input_regs.sim)
+        if (self.input_regs.sim):
+            self.ui.tvInputRegistersData.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
+        else:
+            self.ui.tvInputRegistersData.setEditTriggers(QtGui.QAbstractItemView.AnyKeyPressed)
+
+    def _sim_hold_regs_changed(self):
+        self.hold_regs.sim = self.ui.chkSimHoldRegs.isChecked()
+        self.ui.pbResetAO.setDisabled(self.hold_regs.sim)
+        if (self.hold_regs.sim):
+            self.ui.tvHoldingRegistersData.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
+        else:
+            self.ui.tvHoldingRegistersData.setEditTriggers(QtGui.QAbstractItemView.AnyKeyPressed)
+
+    def _models_data_changed(self):
+        self.ui.tvCoilsData.resizeColumnsToContents()
+        self.ui.tvDiscreteInputsData.resizeColumnsToContents()
+        self.ui.tvInputRegistersData.resizeColumnsToContents()
+        self.ui.tvHoldingRegistersData.resizeColumnsToContents()
+
+    def _input_regs_data_type_changed(self):
+        if (self.input_regs):
+            self.input_regs.set_data_type(self.ui.cmbInputRegsType.currentIndex())
+            (self.ui.tvInputRegistersData.itemDelegate()).set_data_type(self.ui.cmbInputRegsType.currentIndex())
+
+    def _hold_regs_data_type_changed(self):
+        if (self.hold_regs):
+            self.hold_regs.set_data_type(self.ui.cmbHoldRegsType.currentIndex())
+            (self.ui.tvHoldingRegistersData.itemDelegate()).set_data_type(self.ui.cmbHoldRegsType.currentIndex())
+
+    def _reset_DO(self):
+        self._logger.info("Reset DO")
+        self.coils.reset_data()
+
+    def _reset_DI(self):
+        self._logger.info("Reset DI")
+        self.dis_inputs.reset_data()
+
+    def _reset_AO(self):
+        self._logger.info("Reset AO")
+        self.hold_regs.reset_data()
+
+    def _reset_AI(self):
+        self._logger.info("Reset AI")
+        self.input_regs.reset_data()
 #-------------------------------------------------------------------------------
 
 #-------------------------------------------------------------------------------
@@ -378,9 +501,9 @@ def main():
 
     #logger
     logger = modbus_tk.utils.create_logger("console")
-    Utils.set_up_logger_file(logger,'pyModSlaveQt.log')
+    Utils.set_up_logger_file(logger,'pyModSlave.log')
     #create qt application
-    app=QtGui.QApplication(sys.argv)
+    app = QtGui.QApplication(sys.argv)
     #load main window
     window=ModSlaveMainWindow()
     #application loop

@@ -20,7 +20,7 @@
    <string>About</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="icons/pyModSlaveQt.qrc">
+   <iconset>
     <normaloff>:/img/info16.png</normaloff>:/img/info16.png</iconset>
   </property>
   <property name="modal">
@@ -38,6 +38,22 @@
      </property>
      <property name="text">
       <string>pyModSlave</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="lblLibVer">
+     <property name="font">
+      <font>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>modbus_tk lib</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>

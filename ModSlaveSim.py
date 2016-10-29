@@ -68,6 +68,7 @@ class ModSlaveSim(QtCore.QObject):
                     start_addr_input_regs = 0, no_input_regs = 10,
                     start_addr_hold_regs = 0, no_hold_regs = 10):
         super(ModSlaveSim,self).__init__()
+        self._sim_interval = timeIntervalSim
         self._modServer = modServer
         self._start_addr_coils = start_addr_coils
         self._no_coils = no_coils
@@ -96,19 +97,23 @@ class ModSlaveSim(QtCore.QObject):
             self.slave.add_block('1', cst.DISCRETE_INPUTS, start_addr_dis_inputs, self._no_dis_inputs)
             self.slave.add_block('3', cst.ANALOG_INPUTS , start_addr_input_regs, self._no_input_regs)
             self.slave.add_block('4', cst.HOLDING_REGISTERS, start_addr_hold_regs, self._no_hold_regs)
-            #create timer
-            self._timer=rt.RepeatTimer(timeIntervalSim,self._simBlockValues,0)
+            #create timer -> repeat timer
+            #self._timer=rt.RepeatTimer(timeIntervalSim,self._simBlockValues,0)
+            self._timer = QtCore.QTimer()
+            self._timer.timeout.connect(self._simBlockValues)
             self._simBlockValues()
         except Exception,msg:
     		self._logger.error("Slave Init Error : {0}".format(msg))
 
     def start(self):
         self._logger.info("Slave sim started")
-        self._timer.start()
+        #self._timer.start()
+        self._timer.start(self._sim_interval * 1000)
 
     def stop(self):
         self._logger.info("Slave sim stopped")
-        self._timer.cancel()
+        #self._timer.cancel()
+        self._timer.stop()
 
     def _simBlockValues(self):
         #init block values

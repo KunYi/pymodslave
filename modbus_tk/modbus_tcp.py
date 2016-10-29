@@ -9,16 +9,20 @@
  This is distributed under GNU LGPL license, see license.txt
 """
 
-from modbus import *
 import socket
 import select
-import logging
-from hooks import call_hooks
-from utils import threadsafe_function
-import sys
+import struct
+
+from modbus_tk import LOGGER
+from modbus_tk.hooks import call_hooks
+from modbus_tk.modbus import (
+    Databank, Master, Query, Server,
+    InvalidArgumentError, ModbusInvalidResponseError, ModbusInvalidRequestError
+)
+from modbus_tk.utils import threadsafe_function, flush_socket, to_data
 
 
-# -------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
 class ModbusInvalidMbapError(Exception):
     """Exception raised when the modbus TCP header doesn't correspond to what is expected"""
 
@@ -26,8 +30,8 @@ class ModbusInvalidMbapError(Exception):
         Exception.__init__(self, value)
 
 
-# -------------------------------------------------------------------------------
-class TcpMbap:
+#-------------------------------------------------------------------------------
+class TcpMbap(object):
     """Defines the information added by the Modbus TCP layer"""
 
     def __init__(self):
@@ -46,29 +50,30 @@ class TcpMbap:
 
     def _check_ids(self, request_mbap):
         """
-        Check that the ids in the request and the response are similar. 
+        Check that the ids in the request and the response are similar.
         if not returns a string describing the error
         """
         error_str = ""
 
         if request_mbap.transaction_id != self.transaction_id:
-            error_str += "Invalid transaction id: request=%d - response=%d. " % \
-                         (request_mbap.transaction_id, self.transaction_id)
+            error_str += "Invalid transaction id: request={0} - response={1}. ".format(
+                request_mbap.transaction_id, self.transaction_id)
 
         if request_mbap.protocol_id != self.protocol_id:
-            error_str += "Invalid protocol id: request=%d - response=%d. " % \
-                         (request_mbap.protocol_id, self.protocol_id)
+            error_str += "Invalid protocol id: request={0} - response={1}. ".format(
+                request_mbap.protocol_id, self.protocol_id
+            )
 
         if request_mbap.unit_id != self.unit_id:
-            error_str += "Invalid unit id: request=%d - response=%d. " % (request_mbap.unit_id, self.unit_id)
+            error_str += "Invalid unit id: request={0} - response={1}. ".format(request_mbap.unit_id, self.unit_id)
 
         return error_str
 
     def check_length(self, pdu_length):
         """Check the length field is valid. If not raise an exception"""
-        following_bytes_length = pdu_length + 1
+        following_bytes_length = pdu_length+1
         if self.length != following_bytes_length:
-            return "Response length is %d while receiving %d bytes. " % (self.length, following_bytes_length)
+            return "Response length is {0} while receiving {1} bytes. ".format(self.length, following_bytes_length)
         return ""
 
     def check_response(self, request_mbap, response_pdu_length):
@@ -76,7 +81,7 @@ class TcpMbap:
         error_str = self._check_ids(request_mbap)
         error_str += self.check_length(response_pdu_length)
         if len(error_str) > 0:
-            raise ModbusInvalidMbapError, error_str
+            raise ModbusInvalidMbapError(error_str)
 
     def pack(self):
         """convert the TCP mbap into a string"""
@@ -86,18 +91,16 @@ class TcpMbap:
         """extract the TCP mbap from a string"""
         (self.transaction_id, self.protocol_id, self.length, self.unit_id) = struct.unpack(">HHHB", value)
 
-    # -------------------------------------------------------------------------------
-
 
 class TcpQuery(Query):
     """Subclass of a Query. Adds the Modbus TCP specific part of the protocol"""
 
-    # static variable for giving a unique id to each query
+    #static variable for giving a unique id to each query
     _last_transaction_id = 0
 
     def __init__(self):
         """Constructor"""
-        Query.__init__(self)
+        super(TcpQuery, self).__init__()
         self._request_mbap = TcpMbap()
         self._response_mbap = TcpMbap()
 
@@ -113,7 +116,7 @@ class TcpQuery(Query):
     def build_request(self, pdu, slave):
         """Add the Modbus TCP part to the request"""
         if (slave < 0) or (slave > 255):
-            raise InvalidArgumentError, "%d Invalid value for slave id" % (slave)
+            raise InvalidArgumentError("{0} Invalid value for slave id".format(slave))
         self._request_mbap.length = len(pdu) + 1
         self._request_mbap.transaction_id = self._get_transaction_id()
         self._request_mbap.unit_id = slave
@@ -128,7 +131,7 @@ class TcpQuery(Query):
             self._response_mbap.check_response(self._request_mbap, len(pdu))
             return pdu
         else:
-            raise ModbusInvalidResponseError, "Response length is only %d bytes. " % (len(response))
+            raise ModbusInvalidResponseError("Response length is only {0} bytes. ".format(len(response)))
 
     def parse_request(self, request):
         """Extract the pdu from a modbus request"""
@@ -137,10 +140,10 @@ class TcpQuery(Query):
             self._request_mbap.unpack(mbap)
             error_str = self._request_mbap.check_length(len(pdu))
             if len(error_str) > 0:
-                raise ModbusInvalidMbapError, error_str
-            return (self._request_mbap.unit_id, pdu)
+                raise ModbusInvalidMbapError(error_str)
+            return self._request_mbap.unit_id, pdu
         else:
-            raise ModbusInvalidRequestError, "Request length is only %d bytes. " % (len(request))
+            raise ModbusInvalidRequestError("Request length is only {0} bytes. ".format(len(request)))
 
     def build_response(self, response_pdu):
         """Build the response"""
@@ -149,13 +152,12 @@ class TcpQuery(Query):
         return self._response_mbap.pack() + response_pdu
 
 
-# -------------------------------------------------------------------------------
 class TcpMaster(Master):
     """Subclass of Master. Implements the Modbus TCP MAC layer"""
 
     def __init__(self, host="127.0.0.1", port=502, timeout_in_sec=5.0):
         """Constructor. Set the communication settings"""
-        Master.__init__(self, timeout_in_sec)
+        super(TcpMaster, self).__init__(timeout_in_sec)
         self._host = host
         self._port = port
         self._sock = None
@@ -166,21 +168,22 @@ class TcpMaster(Master):
             self._sock.close()
         self._sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.set_timeout(self.get_timeout())
-        call_hooks("modbus_tcp.TcpMaster.before_connect", (self,))
+        self._sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        call_hooks("modbus_tcp.TcpMaster.before_connect", (self, ))
         self._sock.connect((self._host, self._port))
-        call_hooks("modbus_tcp.TcpMaster.after_connect", (self,))
+        call_hooks("modbus_tcp.TcpMaster.after_connect", (self, ))
 
     def _do_close(self):
         """Close the connection with the Modbus Slave"""
         if self._sock:
-            call_hooks("modbus_tcp.TcpMaster.before_close", (self,))
+            call_hooks("modbus_tcp.TcpMaster.before_close", (self, ))
             self._sock.close()
-            call_hooks("modbus_tcp.TcpMaster.after_close", (self,))
+            call_hooks("modbus_tcp.TcpMaster.after_close", (self, ))
             self._sock = None
 
     def set_timeout(self, timeout_in_sec):
         """Change the timeout value"""
-        Master.set_timeout(self, timeout_in_sec)
+        super(TcpMaster, self).set_timeout(timeout_in_sec)
         if self._sock:
             self._sock.setblocking(timeout_in_sec > 0)
             if timeout_in_sec:
@@ -189,16 +192,15 @@ class TcpMaster(Master):
     def _send(self, request):
         """Send request to the slave"""
         retval = call_hooks("modbus_tcp.TcpMaster.before_send", (self, request))
-        if retval <> None:
+        if retval is not None:
             request = retval
         try:
-            utils.flush_socket(self._sock, 3)
-        except Exception, msg:
-            # if we can't flush the socket successfully: a disconnection may happened
-            # try to reconnect
+            flush_socket(self._sock, 3)
+        except Exception as msg:
+            #if we can't flush the socket successfully: a disconnection may happened
+            #try to reconnect
             LOGGER.error('Error while flushing the socket: {0}'.format(msg))
-            # raise ModbusNotConnectedError(msg)
-            self._do_open();
+            self._do_open()
         self._sock.send(request)
 
     def _recv(self, expected_length=-1):
@@ -207,21 +209,20 @@ class TcpMaster(Master):
         Do not take expected_length into account because the length of the response is
         written in the mbap. Used for RTU only
         """
-
-        response = ""
+        response = to_data('')
         length = 255
         while len(response) < length:
             rcv_byte = self._sock.recv(1)
             if rcv_byte:
                 response += rcv_byte
                 if len(response) == 6:
-                    (tr_id, pr_id, to_be_recv_length) = struct.unpack(">HHH", response)
+                    to_be_recv_length = struct.unpack(">HHH", response)[2]
                     length = to_be_recv_length + 6
             else:
                 break
         retval = call_hooks("modbus_tcp.TcpMaster.after_recv", (self, response))
-        if retval <> None:
-            return response
+        if retval is not None:
+            return retval
         return response
 
     def _make_query(self):
@@ -229,13 +230,16 @@ class TcpMaster(Master):
         return TcpQuery()
 
 
-# -------------------------------------------------------------------------------
 class TcpServer(Server):
-    """This class implements a simple and mono-threaded modbus tcp server"""
+    """
+    This class implements a simple and mono-threaded modbus tcp server
+    !! Change in 0.5.0: By default the TcpServer is not bound to a specific address
+    for example: You must set address to 'loaclhost', if youjust want to accept local connections
+    """
 
-    def __init__(self, port=502, address='localhost', timeout_in_sec=1, databank=None):
+    def __init__(self, port=502, address='', timeout_in_sec=1, databank=None):
         """Constructor: initializes the server settings"""
-        Server.__init__(self, databank if databank else Databank())
+        super(TcpServer, self).__init__(databank if databank else Databank())
         self._sock = None
         self._sa = (address, port)
         self._timeout_in_sec = timeout_in_sec
@@ -249,7 +253,7 @@ class TcpServer(Server):
         """Parse the mbap and returns the number of bytes to be read"""
         if len(mbap) < 6:
             raise ModbusInvalidRequestError("The mbap is only %d bytes long", len(mbap))
-        (tr_id, pr_id, length) = struct.unpack(">HHH", mbap[:6])
+        length = struct.unpack(">HHH", mbap[:6])[2]
         return length
 
     def _do_init(self):
@@ -264,33 +268,34 @@ class TcpServer(Server):
 
     def _do_exit(self):
         """clean the server tasks"""
-        # close the sockets
+        #close the sockets
         for sock in self._sockets:
             try:
                 sock.close()
                 self._sockets.remove(sock)
-            except Exception, msg:
+            except Exception as msg:
                 LOGGER.warning("Error while closing socket, Exception occurred: %s", msg)
         self._sock.close()
         self._sock = None
 
     def _do_run(self):
         """called in a almost-for-ever loop by the server"""
-        # check the status of every socket
-        inputready, outputready, exceptready = select.select(self._sockets, [], [], 1.0)
+        #check the status of every socket
+        inputready = select.select(self._sockets, [], [], 1.0)[0]
 
-        for sock in inputready:  # handle data on each a socket
+        #handle data on each a socket
+        for sock in inputready:
             try:
                 if sock == self._sock:
                     # handle the server socket
                     client, address = self._sock.accept()
                     client.setblocking(0)
-                    LOGGER.info("%s is connected with socket %d..." % (str(address), client.fileno()))
+                    LOGGER.info("%s is connected with socket %d...", str(address), client.fileno())
                     self._sockets.append(client)
                     call_hooks("modbus_tcp.TcpServer.on_connect", (self, client, address))
                 else:
                     if len(sock.recv(1, socket.MSG_PEEK)) == 0:
-                        # socket is disconnected
+                        #socket is disconnected
                         LOGGER.info("%d is disconnected" % (sock.fileno()))
                         call_hooks("modbus_tcp.TcpServer.on_disconnect", (self, sock))
                         sock.close()
@@ -299,10 +304,10 @@ class TcpServer(Server):
 
                     # handle all other sockets
                     sock.settimeout(1.0)
-                    request = ""
+                    request = to_data("")
                     is_ok = True
 
-                    # read the 7 bytes of the mbap
+                    #read the 7 bytes of the mbap
                     while (len(request) < 7) and is_ok:
                         new_byte = sock.recv(1)
                         if len(new_byte) == 0:
@@ -310,8 +315,12 @@ class TcpServer(Server):
                         else:
                             request += new_byte
 
+                    retval = call_hooks("modbus_tcp.TcpServer.after_recv", (self, sock, request))
+                    if retval is not None:
+                        request = retval
+
                     if is_ok:
-                        # read the rest of the request
+                        #read the rest of the request
                         length = self._get_request_length(request)
                         while (len(request) < (length + 6)) and is_ok:
                             new_byte = sock.recv(1)
@@ -320,30 +329,27 @@ class TcpServer(Server):
                             else:
                                 request += new_byte
 
-                    retval = call_hooks("modbus_tcp.TcpServer.after_recv", (self, sock, request))
-                    if retval <> None:
-                        request = retval
-
                     if is_ok:
                         response = ""
-                        # parse the request
+                        #parse the request
                         try:
                             response = self._handle(request)
-                        except Exception, msg:
+                        except Exception as msg:
                             LOGGER.error("Error while handling a request, Exception occurred: %s", msg)
 
-                        # send back the response
+                        #send back the response
                         if response:
                             try:
                                 retval = call_hooks("modbus_tcp.TcpServer.before_send", (self, sock, response))
-                                if retval <> None:
+                                if retval is not None:
                                     response = retval
                                 sock.send(response)
-                            except Exception, msg:
+                            except Exception as msg:
                                 is_ok = False
-                                LOGGER.error("Error while sending on socket %d, Exception occurred: %s", \
-                                             sock.fileno(), msg)
-            except Exception, excpt:
+                                LOGGER.error(
+                                    "Error while sending on socket %d, Exception occurred: %s", sock.fileno(), msg
+                                )
+            except Exception as excpt:
                 LOGGER.warning("Error while processing data on socket %d: %s", sock.fileno(), excpt)
                 call_hooks("modbus_tcp.TcpServer.on_error", (self, sock, excpt))
                 sock.close()
