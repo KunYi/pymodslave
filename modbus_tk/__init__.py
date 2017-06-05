@@ -11,7 +11,22 @@
  Make possible to write modbus TCP and RTU master and slave for testing purpose
  Modbus TestKit is different from pymodbus which is another implementation of
  the modbus stack in python
+
+contributors:
+----------------------------------
+* OrangeTux
+* denisstogl
+* MELabs
+* idahogray
+* riaan.doorduin
+* tor.sjowall
+* smachin1000
+
+Please let us know if your name is missing!
+
 """
 
+VERSION = '0.5.0'
 
-
+import logging
+LOGGER = logging.getLogger("modbus_tk")

@@ -2,8 +2,7 @@
 
 # Form implementation generated from reading ui file 'about.ui'
 #
-# Created: Thu Nov 12 20:30:39 2015
-#      by: PyQt4 UI code generator 4.9.6
+# Created by: PyQt4 UI code generator 4.11.4
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -43,6 +42,14 @@ class Ui_About(object):
         self.lblVersion.setAlignment(QtCore.Qt.AlignCenter)
         self.lblVersion.setObjectName(_fromUtf8("lblVersion"))
         self.verticalLayout.addWidget(self.lblVersion)
+        self.lblLibVer = QtGui.QLabel(About)
+        font = QtGui.QFont()
+        font.setBold(True)
+        font.setWeight(75)
+        self.lblLibVer.setFont(font)
+        self.lblLibVer.setAlignment(QtCore.Qt.AlignCenter)
+        self.lblLibVer.setObjectName(_fromUtf8("lblLibVer"))
+        self.verticalLayout.addWidget(self.lblLibVer)
         self.lblURL = QtGui.QLabel(About)
         font = QtGui.QFont()
         font.setBold(True)
@@ -59,6 +66,7 @@ class Ui_About(object):
     def retranslateUi(self, About):
         About.setWindowTitle(_translate("About", "About", None))
         self.lblVersion.setText(_translate("About", "pyModSlave", None))
+        self.lblLibVer.setText(_translate("About", "modbus_tk lib", None))
         self.lblURL.setText(_translate("About", "http://", None))
 
 import pyModSlaveQt_rc
