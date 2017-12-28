@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'settingsmodbusrtu.ui'
+# Form implementation generated from reading ui file 'C:\Projects\python\pyModSlave\ui\settingsmodbusrtu.ui'
 #
-# Created: Thu Nov 12 20:31:54 2015
-#      by: PyQt4 UI code generator 4.9.6
+# Created by: PyQt4 UI code generator 4.11.4
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -41,14 +40,6 @@ class Ui_SettingsModbusRTU(object):
         self.lblPort.setMinimumSize(QtCore.QSize(0, 0))
         self.lblPort.setObjectName(_fromUtf8("lblPort"))
         self.gridLayout.addWidget(self.lblPort, 0, 0, 1, 1)
-        self.cmbPort = QtGui.QComboBox(SettingsModbusRTU)
-        self.cmbPort.setEditable(True)
-        self.cmbPort.setObjectName(_fromUtf8("cmbPort"))
-        self.cmbPort.addItem(_fromUtf8(""))
-        self.cmbPort.addItem(_fromUtf8(""))
-        self.cmbPort.addItem(_fromUtf8(""))
-        self.cmbPort.addItem(_fromUtf8(""))
-        self.gridLayout.addWidget(self.cmbPort, 0, 1, 1, 1)
         self.cmbBaud = QtGui.QComboBox(SettingsModbusRTU)
         self.cmbBaud.setObjectName(_fromUtf8("cmbBaud"))
         self.cmbBaud.addItem(_fromUtf8(""))
@@ -89,13 +80,17 @@ class Ui_SettingsModbusRTU(object):
         self.cmbParity.addItem(_fromUtf8(""))
         self.cmbParity.addItem(_fromUtf8(""))
         self.gridLayout.addWidget(self.cmbParity, 4, 1, 1, 1)
+        self.cmbPort = QtGui.QSpinBox(SettingsModbusRTU)
+        self.cmbPort.setMinimum(1)
+        self.cmbPort.setMaximum(128)
+        self.cmbPort.setObjectName(_fromUtf8("cmbPort"))
+        self.gridLayout.addWidget(self.cmbPort, 0, 1, 1, 1)
         self.verticalLayout.addLayout(self.gridLayout)
         self.buttonBox = QtGui.QDialogButtonBox(SettingsModbusRTU)
         self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
         self.buttonBox.setStandardButtons(QtGui.QDialogButtonBox.Cancel|QtGui.QDialogButtonBox.Ok)
         self.buttonBox.setObjectName(_fromUtf8("buttonBox"))
         self.verticalLayout.addWidget(self.buttonBox)
-        self.lblPort.setBuddy(self.cmbPort)
         self.lblBaud.setBuddy(self.cmbBaud)
         self.lblDataBits.setBuddy(self.cmbDataBits)
         self.lblStopBits.setBuddy(self.cmbStopBits)
@@ -113,10 +108,6 @@ class Ui_SettingsModbusRTU(object):
     def retranslateUi(self, SettingsModbusRTU):
         SettingsModbusRTU.setWindowTitle(_translate("SettingsModbusRTU", "Modbus RTU Settings", None))
         self.lblPort.setText(_translate("SettingsModbusRTU", "Serial port", None))
-        self.cmbPort.setItemText(0, _translate("SettingsModbusRTU", "1", None))
-        self.cmbPort.setItemText(1, _translate("SettingsModbusRTU", "2", None))
-        self.cmbPort.setItemText(2, _translate("SettingsModbusRTU", "3", None))
-        self.cmbPort.setItemText(3, _translate("SettingsModbusRTU", "4", None))
         self.cmbBaud.setItemText(0, _translate("SettingsModbusRTU", "1200", None))
         self.cmbBaud.setItemText(1, _translate("SettingsModbusRTU", "2400", None))
         self.cmbBaud.setItemText(2, _translate("SettingsModbusRTU", "4800", None))

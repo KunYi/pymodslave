@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'busmonitor.ui'
+# Form implementation generated from reading ui file 'C:\Projects\python\pyModSlave\ui\busmonitor.ui'
 #
-# Created: Tue Nov 17 13:26:35 2015
-#      by: PyQt4 UI code generator 4.9.6
+# Created by: PyQt4 UI code generator 4.11.4
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -27,8 +26,8 @@ class Ui_BusMonitor(object):
     def setupUi(self, BusMonitor):
         BusMonitor.setObjectName(_fromUtf8("BusMonitor"))
         BusMonitor.setWindowModality(QtCore.Qt.NonModal)
-        BusMonitor.resize(450, 580)
-        BusMonitor.setMinimumSize(QtCore.QSize(450, 580))
+        BusMonitor.resize(450, 500)
+        BusMonitor.setMinimumSize(QtCore.QSize(450, 500))
         BusMonitor.setMaximumSize(QtCore.QSize(450, 580))
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(_fromUtf8(":/img/view-16.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -39,8 +38,6 @@ class Ui_BusMonitor(object):
         self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
         self.verticalLayout = QtGui.QVBoxLayout(self.centralwidget)
         self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
-        self.verticalLayout_2 = QtGui.QVBoxLayout()
-        self.verticalLayout_2.setObjectName(_fromUtf8("verticalLayout_2"))
         self.lblRawData = QtGui.QLabel(self.centralwidget)
         font = QtGui.QFont()
         font.setBold(True)
@@ -48,7 +45,7 @@ class Ui_BusMonitor(object):
         self.lblRawData.setFont(font)
         self.lblRawData.setLayoutDirection(QtCore.Qt.LeftToRight)
         self.lblRawData.setObjectName(_fromUtf8("lblRawData"))
-        self.verticalLayout_2.addWidget(self.lblRawData)
+        self.verticalLayout.addWidget(self.lblRawData)
         self.lstRawData = QtGui.QListView(self.centralwidget)
         self.lstRawData.setMinimumSize(QtCore.QSize(0, 0))
         font = QtGui.QFont()
@@ -60,19 +57,18 @@ class Ui_BusMonitor(object):
         self.lstRawData.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
         self.lstRawData.setSelectionRectVisible(False)
         self.lstRawData.setObjectName(_fromUtf8("lstRawData"))
-        self.verticalLayout_2.addWidget(self.lstRawData)
+        self.verticalLayout.addWidget(self.lstRawData)
         self.lblPDU = QtGui.QLabel(self.centralwidget)
         font = QtGui.QFont()
         font.setBold(True)
         font.setWeight(75)
         self.lblPDU.setFont(font)
         self.lblPDU.setObjectName(_fromUtf8("lblPDU"))
-        self.verticalLayout_2.addWidget(self.lblPDU)
+        self.verticalLayout.addWidget(self.lblPDU)
         self.txtPDU = QtGui.QPlainTextEdit(self.centralwidget)
         self.txtPDU.setReadOnly(True)
         self.txtPDU.setObjectName(_fromUtf8("txtPDU"))
-        self.verticalLayout_2.addWidget(self.txtPDU)
-        self.verticalLayout.addLayout(self.verticalLayout_2)
+        self.verticalLayout.addWidget(self.txtPDU)
         BusMonitor.setCentralWidget(self.centralwidget)
         self.toolBar = QtGui.QToolBar(BusMonitor)
         self.toolBar.setObjectName(_fromUtf8("toolBar"))

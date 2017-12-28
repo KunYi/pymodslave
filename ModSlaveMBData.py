@@ -1,11 +1,10 @@
 #-------------------------------------------------------------------------------
-# Name:        ModSlaveMBDataWindow
+# Name:        ModSlaveMBData
 # Purpose:
 #
 # Author:      elbar
 #
 # Created:     28/08/2012
-# Obsolete -> Not Used any more
 # Copyright:   (c) elbar 2012
 # Licence:     <your licence>
 #-------------------------------------------------------------------------------
@@ -23,6 +22,7 @@ class ModSlaveMBData(QtCore.QObject):
     """ Class wrapper for modbus data """
 
     def __init__(self, ui):
+        super(ModSlaveMBData, self).__init__()
         #data models
         self.coils = None
         self.dis_inputs = None
@@ -88,6 +88,7 @@ class ModSlaveMBData(QtCore.QObject):
         self._models_data_changed()
 
     def _sim_coils_changed(self):
+        self._logger.info("Sim Coils : " + str(self.ui.chkSimCoils.isChecked()))
         self.coils.sim = self.ui.chkSimCoils.isChecked()
         self.ui.pbResetDO.setDisabled(self.coils.sim)
         if (self.coils.sim):
@@ -96,6 +97,7 @@ class ModSlaveMBData(QtCore.QObject):
             self.ui.tvCoilsData.setEditTriggers(QtGui.QAbstractItemView.AnyKeyPressed)
 
     def _sim_dis_inputs_changed(self):
+        self._logger.info("Sim Digital Inputs : " + str(self.ui.chkSimDisInputs.isChecked()))
         self.dis_inputs.sim = self.ui.chkSimDisInputs.isChecked()
         self.ui.pbResetDI.setDisabled(self.dis_inputs.sim)
         if (self.dis_inputs.sim):
@@ -104,6 +106,7 @@ class ModSlaveMBData(QtCore.QObject):
             self.ui.tvDiscreteInputsData.setEditTriggers(QtGui.QAbstractItemView.AnyKeyPressed)
 
     def _sim_input_regs_changed(self):
+        self._logger.info("Sim Input Regs : " + str(self.ui.chkSimInputRegs.isChecked()))
         self.input_regs.sim = self.ui.chkSimInputRegs.isChecked()
         self.ui.pbResetAI.setDisabled(self.input_regs.sim)
         if (self.input_regs.sim):
@@ -112,6 +115,7 @@ class ModSlaveMBData(QtCore.QObject):
             self.ui.tvInputRegistersData.setEditTriggers(QtGui.QAbstractItemView.AnyKeyPressed)
 
     def _sim_hold_regs_changed(self):
+        self._logger.info("Sim Holding Regs : " + str(self.ui.chkSimHoldRegs.isChecked()))
         self.hold_regs.sim = self.ui.chkSimHoldRegs.isChecked()
         self.ui.pbResetAO.setDisabled(self.hold_regs.sim)
         if (self.hold_regs.sim):
@@ -126,11 +130,13 @@ class ModSlaveMBData(QtCore.QObject):
         self.ui.tvHoldingRegistersData.resizeColumnsToContents()
 
     def _input_regs_data_type_changed(self):
+        self._logger.info("Input Regs Data Type Changed")
         if (self.input_regs):
             self.input_regs.set_data_type(self.ui.cmbInputRegsType.currentIndex())
             (self.ui.tvInputRegistersData.itemDelegate()).set_data_type(self.ui.cmbInputRegsType.currentIndex())
 
     def _hold_regs_data_type_changed(self):
+        self._logger.info("Holding Regs Data Type Changed")
         if (self.hold_regs):
             self.hold_regs.set_data_type(self.ui.cmbHoldRegsType.currentIndex())
             (self.ui.tvHoldingRegistersData.itemDelegate()).set_data_type(self.ui.cmbHoldRegsType.currentIndex())

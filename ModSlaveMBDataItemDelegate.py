@@ -47,10 +47,13 @@ class ModSlaveMBDataItemDelegate(QtGui.QStyledItemDelegate):
     def setModelData(self, editor, model,index):
         # print("Set model data")
         value = str(editor.text())
-        if (self._data_type == 0): # decimal
-            _value = int(value, 10)
-        elif(self._data_type == 1): #hex
-            _value = int(value, 16)
+        try:
+            if (self._data_type == 0): # decimal
+                _value = int(value, 10)
+            elif(self._data_type == 1): #hex
+                _value = int(value, 16)
+        except Exception:
+            _value = 0
         if (not self._discrete): # check values
             if (_value > 65535):
                 Utils.errorMessageBox("Value is greater than 65535.")

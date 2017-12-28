@@ -44,7 +44,9 @@ class ModSlaveMBDataModel(QtCore.QObject):
                 item.setEditable(False)
             else:
                 self.model.setData(idx, "Address : {0}".format(i + self._start_addr - self._offset), QtCore.Qt.ToolTipRole)
-                if (self._data_type == 0):#decimal
+                if (not self._data):#no data
+                    self.model.setData(idx, 0, QtCore.Qt.DisplayRole)
+                elif (self._data_type == 0):#decimal
                     self.model.setData(idx, self._data[i - self._offset], QtCore.Qt.DisplayRole)
                 else:#hex
                     self.model.setData(idx,"%X"%self._data[i - self._offset], QtCore.Qt.DisplayRole)
@@ -78,10 +80,13 @@ class ModSlaveMBDataModel(QtCore.QObject):
             if (i >= self._offset and i < (self._offset + self._no_of_items)):
                  idx = self.model.index(row, col, QtCore.QModelIndex())
                  value = str((self.model.data(idx, QtCore.Qt.EditRole)).toString())
-            if (self._data_type == 0): # decimal
-                 _new_data.append(int(value, 10))
-            elif(self._data_type == 1): #hex
-                _new_data.append(int(value, 16))
+            try:
+                if (self._data_type == 0): # decimal
+                     _new_data.append(int(value, 10))
+                elif(self._data_type == 1): #hex
+                    _new_data.append(int(value, 16))
+            except Exception:
+                _new_data.append(0)
         # emit SIGNAL for updating UI
         self.emit(QtCore.SIGNAL("update_view"))
         self.update_data(_new_data)

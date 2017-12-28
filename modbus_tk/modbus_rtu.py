@@ -87,7 +87,7 @@ class RtuMaster(Master):
 
     def __init__(self, serial, interchar_multiplier=1.5, interframe_multiplier=3.5):
         """Constructor. Pass the pyserial.Serial object"""
-        self._serial = serial
+        self.RtuServer.after_read_serial = serial
         LOGGER.info("RtuMaster %s is %s", self._serial.portstr, "opened" if self._serial.isOpen() else "closed")
         super(RtuMaster, self).__init__(self._serial.timeout)
         self._t0 = utils.calculate_rtu_inter_char(self._serial.baudrate)

@@ -45,7 +45,7 @@ class ModSlaveSettingsRTUWindow(QtGui.QDialog):
     def _set_values(self):
         """set param values to ui"""
         self._logger.info("Set param values to UI")
-        self.ui.cmbPort.setEditText(str(self.rtu_port))
+        self.ui.cmbPort.setValue(self.rtu_port)
         self.ui.cmbBaud.setCurrentIndex(self.ui.cmbBaud.findText(str(self.baud_rate)))
         self.ui.cmbDataBits.setCurrentIndex(self.ui.cmbDataBits.findText(str(self.byte_size)))
         self.ui.cmbParity.setCurrentIndex(self.ui.cmbParity.findText(self.parity))
@@ -54,7 +54,7 @@ class ModSlaveSettingsRTUWindow(QtGui.QDialog):
     def _get_values(self):
         """get param values from ui"""
         self._logger.info("Get param values from UI")
-        self.rtu_port = int(self.ui.cmbPort.currentText())
+        self.rtu_port = self.ui.cmbPort.value()
         self.baud_rate = self.ui.cmbBaud.currentText()
         self.byte_size = self.ui.cmbDataBits.currentText()
         self.parity = self.ui.cmbParity.currentText()

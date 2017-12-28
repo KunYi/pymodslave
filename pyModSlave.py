@@ -29,12 +29,9 @@ from ModSlaveBusMonitor import ModSlaveBusMonitorWindow
 
 #modbus toolkit
 import modbus_tk
-import ModSlaveSim as simSlave
+import ModFactory as modFactory
 from modbus_tk.hooks import install_hook
 import Utils
-
-#Hooks
-SLAVE_HOOKS = ("modbus.Slave.on_exception")
 
 #-------------------------------------------------------------------------------
 class ModSlaveMainWindow(QtGui.QMainWindow):
@@ -222,19 +219,19 @@ class ModSlaveMainWindow(QtGui.QMainWindow):
                 self._svr_args.append(self._settingsRTU_dlg.parity[0])
                 self._svr_args.append(self._settingsRTU_dlg.stop_bits)
             if (len(self._svr_args) > 0): # check for valid no of parameters
-                self.svr = simSlave.ModServerFactory(self._svr_args)
+                self.svr = modFactory.ModSvrFactory(self._svr_args)
                 if (self.svr == None):#fail to build server
                     self._logger.error("Fail to start server")
                     Utils.errorMessageBox("Fail to start server")
                     self.ui.btStartStop.setChecked(False)
                 else:
                     self.svr.start()
-                    self.slv = simSlave.ModSlaveSim(self.svr,self.ui.sbSlaveID.value(),
-                                                self.ui.spInterval.value()/1000.0,
-                                                self.ui.sbCoilsStartAddr.value(), self.ui.sbNoOfCoils.value(),
-                                                self.ui.sbDigInputsstartAddr.value(), self.ui.sbNoOfDigInputs.value(),
-                                                self.ui.sbInputRegsStartAddr.value(), self.ui.sbNoOfInputRegs.value(),
-                                                self.ui.sbHoldingRegsStartAddr.value(), self.ui.sbNoOfHoldingRegs.value())
+                    self.slv = modFactory.ModSlave(self.svr, self.ui.sbSlaveID.value(),
+                                                   self.ui.spInterval.value() / 1000.0,
+                                                   self.ui.sbCoilsStartAddr.value(), self.ui.sbNoOfCoils.value(),
+                                                   self.ui.sbDigInputsstartAddr.value(), self.ui.sbNoOfDigInputs.value(),
+                                                   self.ui.sbInputRegsStartAddr.value(), self.ui.sbNoOfInputRegs.value(),
+                                                   self.ui.sbHoldingRegsStartAddr.value(), self.ui.sbNoOfHoldingRegs.value())
                     if (self.slv == None):#fail to build slave
                         self._logger.error("Fail to start slave")
                         Utils.errorMessageBox("Fail to start slave")
@@ -246,10 +243,10 @@ class ModSlaveMainWindow(QtGui.QMainWindow):
                                                          self.slv.dis_inputs_data_model,
                                                          self.slv.input_regs_data_model,
                                                          self.slv.hold_regs_data_model)
-                        self.slv.start()
+                        self.slv.start_sim()
         else:#stop
             self._logger.info("Stop server")
-            self.slv.stop()
+            self.slv.stop_sim()
             self.svr.stop()
             self.slv = None
             self.svr = None
@@ -327,13 +324,13 @@ class ModSlaveMainWindow(QtGui.QMainWindow):
 
     def _open_log_file(self):
         """open application log"""
-        if (not os.path.exists('pyModSlaveQt.log')):
-            msg = "File 'pyModSlaveQt.log' does not exist"
+        if (not os.path.exists('pyModSlave.log')):
+            msg = "File 'pyModSlave.log' does not exist"
             self._logger.error(msg)
             Utils.errorMessageBox(msg)
             return
         try:
-            subprocess.Popen(['notepad.exe', 'pyModSlaveQt.log'])
+            subprocess.Popen(['notepad.exe', 'pyModSlave.log'])
         except WindowsError as we:
             msg = "Windows Error No %i - %s" % we.args
             self._logger.error(msg)
