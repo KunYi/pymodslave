@@ -180,6 +180,7 @@ class TcpMaster(Master):
             self._sock.close()
             call_hooks("modbus_tcp.TcpMaster.after_close", (self, ))
             self._sock = None
+            return True
 
     def set_timeout(self, timeout_in_sec):
         """Change the timeout value"""
@@ -237,9 +238,10 @@ class TcpServer(Server):
     for example: You must set address to 'loaclhost', if youjust want to accept local connections
     """
 
-    def __init__(self, port=502, address='', timeout_in_sec=1, databank=None):
+    def __init__(self, port=502, address='', timeout_in_sec=1, databank=None, error_on_missing_slave=True):
         """Constructor: initializes the server settings"""
-        super(TcpServer, self).__init__(databank if databank else Databank())
+        databank = databank if databank else Databank(error_on_missing_slave=error_on_missing_slave)
+        super(TcpServer, self).__init__(databank)
         self._sock = None
         self._sa = (address, port)
         self._timeout_in_sec = timeout_in_sec
@@ -280,10 +282,10 @@ class TcpServer(Server):
 
     def _do_run(self):
         """called in a almost-for-ever loop by the server"""
-        #check the status of every socket
+        # check the status of every socket
         inputready = select.select(self._sockets, [], [], 1.0)[0]
 
-        #handle data on each a socket
+        # handle data on each a socket
         for sock in inputready:
             try:
                 if sock == self._sock:
@@ -295,7 +297,7 @@ class TcpServer(Server):
                     call_hooks("modbus_tcp.TcpServer.on_connect", (self, client, address))
                 else:
                     if len(sock.recv(1, socket.MSG_PEEK)) == 0:
-                        #socket is disconnected
+                        # socket is disconnected
                         LOGGER.info("%d is disconnected" % (sock.fileno()))
                         call_hooks("modbus_tcp.TcpServer.on_disconnect", (self, sock))
                         sock.close()
@@ -307,7 +309,7 @@ class TcpServer(Server):
                     request = to_data("")
                     is_ok = True
 
-                    #read the 7 bytes of the mbap
+                    # read the 7 bytes of the mbap
                     while (len(request) < 7) and is_ok:
                         new_byte = sock.recv(1)
                         if len(new_byte) == 0:
@@ -320,7 +322,7 @@ class TcpServer(Server):
                         request = retval
 
                     if is_ok:
-                        #read the rest of the request
+                        # read the rest of the request
                         length = self._get_request_length(request)
                         while (len(request) < (length + 6)) and is_ok:
                             new_byte = sock.recv(1)
@@ -331,19 +333,20 @@ class TcpServer(Server):
 
                     if is_ok:
                         response = ""
-                        #parse the request
+                        # parse the request
                         try:
                             response = self._handle(request)
                         except Exception as msg:
                             LOGGER.error("Error while handling a request, Exception occurred: %s", msg)
 
-                        #send back the response
+                        # send back the response
                         if response:
                             try:
                                 retval = call_hooks("modbus_tcp.TcpServer.before_send", (self, sock, response))
                                 if retval is not None:
                                     response = retval
                                 sock.send(response)
+                                call_hooks("modbus_tcp.TcpServer.after_send", (self, sock, response))
                             except Exception as msg:
                                 is_ok = False
                                 LOGGER.error(

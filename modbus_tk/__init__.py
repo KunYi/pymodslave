@@ -21,12 +21,17 @@ contributors:
 * riaan.doorduin
 * tor.sjowall
 * smachin1000
+* GadgetSteve 
+* dhoomakethu
+* zerox1212
+* ffreckle
+* Matthew West
 
 Please let us know if your name is missing!
 
 """
 
-VERSION = '0.5.0'
+VERSION = '0.5.8'
 
 import logging
 LOGGER = logging.getLogger("modbus_tk")

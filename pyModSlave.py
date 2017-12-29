@@ -57,6 +57,9 @@ class ModSlaveMainWindow(QtGui.QMainWindow):
         self.ui=Ui_MainWindow()
         self.ui.setupUi(self)
         #setup toolbar
+        self.ui.mainToolBar.addAction(self.ui.actionLoad_Session)
+        self.ui.mainToolBar.addAction(self.ui.actionSave_Session)
+        self.ui.mainToolBar.addSeparator()
         self.ui.mainToolBar.addAction(self.ui.actionSerial_RTU)
         self.ui.mainToolBar.addAction(self.ui.actionTCP)
         self.ui.mainToolBar.addAction(self.ui.actionSettings)
@@ -92,6 +95,8 @@ class ModSlaveMainWindow(QtGui.QMainWindow):
         #setup data controller
         self._mbdata_ctrl = ModSlaveMBData(self.ui)
         #signals-slots
+        self.ui.actionLoad_Session.triggered.connect(self._load_session)
+        self.ui.actionSave_Session.triggered.connect(self._save_session)
         self.ui.actionAbout.triggered.connect(self._about_dlg.show)
         self.ui.actionSerial_RTU.triggered.connect(self._settings_RTU_show)
         self.ui.actionTCP.triggered.connect(self._settings_TCP_show)
@@ -213,7 +218,7 @@ class ModSlaveMainWindow(QtGui.QMainWindow):
             elif (self.ui.cmbModbusMode.currentText() == "RTU"): # RTU server params
                 self._logger.info("Starting RTU server")
                 self._svr_args.append("-rtu")
-                self._svr_args.append(self._settingsRTU_dlg.rtu_port - 1) # zero based index
+                self._svr_args.append("COM" + str(self._settingsRTU_dlg.rtu_port))
                 self._svr_args.append(self._settingsRTU_dlg.baud_rate)
                 self._svr_args.append(self._settingsRTU_dlg.byte_size)
                 self._svr_args.append(self._settingsRTU_dlg.parity[0])
@@ -310,6 +315,12 @@ class ModSlaveMainWindow(QtGui.QMainWindow):
         #Save Settings
         config_file = open(self._params_file_name, 'wb')
         config.write(config_file)
+
+    def _load_session(self):
+        self._logger.info("Load session")
+
+    def _save_session(self):
+        self._logger.info("Save session")
 
     def _reset_counters(self):
         self._bus_monitor_dlg.reset_counters()

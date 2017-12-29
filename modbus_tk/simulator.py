@@ -18,15 +18,8 @@ import os
 import sys
 import select
 import serial
-import six
 import threading
 import time
-if six.PY2:
-    import Queue
-    import SocketServer
-else:
-    import queue as Queue
-    import socketserver as SocketServer
 
 import modbus_tk
 from modbus_tk import hooks
@@ -34,18 +27,24 @@ from modbus_tk import modbus
 from modbus_tk import modbus_tcp
 from modbus_tk import modbus_rtu
 
+if modbus_tk.utils.PY2:
+    import Queue as queue
+    import SocketServer
+else:
+    import queue
+    import socketserver as SocketServer
 
-#add logging capability
+
+# add logging capability
 LOGGER = modbus_tk.utils.create_logger(name="console", record_format="%(message)s")
 
-#The communication between the server and the user interfaces (console or rpc)
-#are done through queues
+# The communication between the server and the user interfaces (console or rpc) are done through queues
 
-#command received from the interfaces
-INPUT_QUEUE = Queue.Queue()
+# command received from the interfaces
+INPUT_QUEUE = queue.Queue()
 
-#response to be sent back by the interfaces
-OUTPUT_QUEUE = Queue.Queue()
+# response to be sent back by the interfaces
+OUTPUT_QUEUE = queue.Queue()
 
 
 class CompositeServer(modbus.Server):
@@ -135,8 +134,8 @@ class ConsoleInterface(threading.Thread):
             self.console_handle = ctypes.windll.Kernel32.GetStdHandle(ctypes.c_ulong(0xfffffff5))
             ctypes.windll.Kernel32.WaitForSingleObject.restype = ctypes.c_ulong
 
-        if os.name == "posix":
-            #select already imported
+        elif os.name == "posix":
+            # select already imported
             pass
 
         else:
@@ -373,8 +372,8 @@ def run_simulator():
     finally:
         simulator.close()
         LOGGER.info("modbus_tk.simulator has stopped!")
-        #In python 2.5, the SocketServer shutdown is not working Ok
-        #The 2 lines below are an ugly temporary workaround
+        # In python 2.5, the SocketServer shutdown is not working Ok
+        # The 2 lines below are an ugly temporary workaround
         time.sleep(1.0)
         sys.exit()
 

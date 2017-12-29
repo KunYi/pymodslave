@@ -62,15 +62,7 @@ class ModSlaveSettingsRTUWindow(QtGui.QDialog):
 
     def _OK_pressed(self):
         """new values are accepted"""
-        port = str(self.ui.cmbPort.currentText())
-        if (port.isdigit() and int(port) >= 1 and int(port) <= 16):#port must be an integer
-            self._get_values()
-        else:
-            self.rtu_port = 1
-            self._set_values()
-            self._get_values()
-            self._logger.error("Port must be an integer between 1 and 16")
-            Utils.errorMessageBox("Port must be an integer between 1 and 16")
+        self._get_values()
 
     def _cancel_pressed(self):
         """new values are rejected"""

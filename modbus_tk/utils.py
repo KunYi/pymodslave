@@ -10,12 +10,15 @@
 """
 from __future__ import print_function
 
+import sys
 import threading
 import logging
 import socket
 import select
-import six
 from modbus_tk import LOGGER
+
+PY2 = sys.version_info[0] == 2
+PY3 = sys.version_info[0] == 3
 
 
 def threadsafe_function(fcn):
@@ -23,14 +26,20 @@ def threadsafe_function(fcn):
     lock = threading.RLock()
 
     def new(*args, **kwargs):
-        """lock and call the decorated function"""
-        lock.acquire()
+        """Lock and call the decorated function
+
+           Unless kwargs['threadsafe'] == False
+        """
+        threadsafe = kwargs.pop('threadsafe', True)
+        if threadsafe:
+            lock.acquire()
         try:
             ret = fcn(*args, **kwargs)
         except Exception as excpt:
             raise excpt
         finally:
-            lock.release()
+            if threadsafe:
+                lock.release()
         return ret
     return new
 
@@ -56,7 +65,7 @@ def get_log_buffer(prefix, buff):
     """Format binary data into a string for debug purpose"""
     log = prefix
     for i in buff:
-        log += str(ord(i) if six.PY2 else i) + "-"
+        log += str(ord(i) if PY2 else i) + "-"
     return log[:-1]
 
 
@@ -84,7 +93,7 @@ class LogitHandler(logging.Handler):
     def emit(self, record):
         """format and send the record over udp"""
         data = self.format(record) + "\r\n"
-        if six.PY3:
+        if PY3:
             data = to_data(data)
         self._sock.sendto(data, self._dest)
 
@@ -133,7 +142,7 @@ def calculate_crc(data):
     """Calculate the CRC16 of a datagram"""
     crc = 0xFFFF
     for i in data:
-        if six.PY2:
+        if PY2:
             crc = crc ^ ord(i)
         else:
             crc = crc ^ i
@@ -192,7 +201,7 @@ class WorkerThread(object):
 
 
 def to_data(string_data):
-    if six.PY2:
+    if PY2:
         return string_data
     else:
         return bytearray(string_data, 'ascii')
