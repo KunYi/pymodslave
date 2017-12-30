@@ -40,14 +40,20 @@ class ModSlaveMainWindow(QtGui.QMainWindow):
     def __init__(self):
         super(ModSlaveMainWindow,self).__init__()
         #init
-        self.svr = None # Server
+        self.svr = None # Server hosting one or more slaves
         self._svr_args = []
         self.slv = None # Slave
         self._coils = 10
+        self._coils_start_addr = 0
         self._inputs = 10
+        self._inputs_start_addr = 0
         self._input_regs = 10
+        self._input_regs_start_addr = 0
         self._hold_regs = 10
+        self._hold_regs_start_addr = 0
         self._time_interval = 2000 # interval for simulation in msec
+        self._modbus_mode = 1 # 1:RTU, 2:TCP
+        self._modbus_slave_ID = 1
         self._params_file_name = 'pyModSlave.ini'
         self._logger = logging.getLogger("modbus_tk")
         self._setupUI()
@@ -259,17 +265,19 @@ class ModSlaveMainWindow(QtGui.QMainWindow):
         self._update_ui()
         self._update_status_bar()
 
-    def _load_params(self):
+    def _load_params(self, fname):
         self._logger.info("Load params")
         config_tcp_defaut = {'TCP_Port':'502', 'TCP_IP':'127.000.000.001'}
         config_rtu_defaut = {'RTU_Port':'0', 'Baud':'9600', 'DataBits':'8', 'StopBits':'1', 'Parity':'None'}
-        config_var_defaut = {'Coils':'10', 'DisInputs':'10', 'InputRegs':'10', 'HoldRegs':'10', 'TimeInterval':'1000', 'MaxNoOfBusMonitorLines':'50'}
+        config_var_defaut = {'Coils':'10', 'CoilsStartAddr':'0', 'DisInputs':'10', 'DisInputsStartAddr':'0',
+                             'InputRegs':'10', 'InputRegsStartAddr':'0','HoldRegs':'10', 'HoldRegsStartAddr':'0',
+                             'TimeInterval':'1000', 'MaxNoOfBusMonitorLines':'50', 'ModbusMode':'1', 'ModbusSlaveID':'1'}
         config_default = {}
         config_default.update(config_tcp_defaut)
         config_default.update(config_rtu_defaut)
         config_default.update(config_var_defaut)
         config = ConfigParser.RawConfigParser(config_default)
-        if not(config.read(self._params_file_name)):#if file does not exist exit
+        if not(config.read(fname)):#if file does not exist exit
             self._logger.error("Parameters file does not exist")
             return
         #TCP Settings
@@ -283,15 +291,44 @@ class ModSlaveMainWindow(QtGui.QMainWindow):
         self._settingsRTU_dlg.parity = config.get('RTU', 'Parity')
         #Var Settings
         self._coils = config.getint('Var', 'Coils')
+        self._coils_start_addr = config.getint('Var', 'CoilsStartAddr')
         self._inputs = config.getint('Var', 'DisInputs')
+        self._inputs_start_addr = config.getint('Var', 'DisInputsStartAddr')
         self._input_regs = config.getint('Var', 'InputRegs')
+        self._input_regs_start_addr = config.getint('Var', 'InputRegsStartAddr')
         self._hold_regs = config.getint('Var', 'HoldRegs')
+        self._hold_regs_start_addr = config.getint('Var', 'HoldRegsStartAddr')
         self._time_interval = config.getint('Var', 'TimeInterval')
         self._settings_dlg.max_no_of_bus_monitor_lines = config.getint('Var', 'MaxNoOfBusMonitorLines')
         self._bus_monitor_dlg.set_max_no_of_bus_monitor_lines(self._settings_dlg.max_no_of_bus_monitor_lines)
+        self._modbus_mode = config.getint('Var', 'ModbusMode')
+        self._modbus_slave_ID = config.getint('Var', 'ModbusSlaveID')
+        #update ui
+        self.ui.sbNoOfCoils.setValue(self._coils)
+        self.ui.sbCoilsStartAddr.setValue(self._coils_start_addr)
+        self.ui.sbNoOfDigInputs.setValue(self._inputs)
+        self.ui.sbDigInputsstartAddr.setValue(self._inputs_start_addr)
+        self.ui.sbNoOfHoldingRegs.setValue(self._hold_regs)
+        self.ui.sbHoldingRegsStartAddr.setValue(self._hold_regs_start_addr)
+        self.ui.sbNoOfInputRegs.setValue(self._input_regs)
+        self.ui.sbInputRegsStartAddr.setValue(self._input_regs_start_addr)
+        self.ui.spInterval.setValue(self._time_interval)
+        self.ui.cmbModbusMode.setCurrentIndex(self._modbus_mode)
+        self.ui.sbSlaveID.setValue(self._modbus_slave_ID)
 
-    def _save_params(self):
+    def _save_params(self, fname):
         self._logger.info("Save params")
+        #update params from ui
+        self._coils = self.ui.sbNoOfCoils.value()
+        self._coils_start_addr = self.ui.sbCoilsStartAddr.value()
+        self._inputs = self.ui.sbNoOfDigInputs.value()
+        self._inputs_start_addr = self.ui.sbDigInputsstartAddr.value()
+        self._hold_regs = self.ui.sbNoOfHoldingRegs.value()
+        self._hold_regs_start_addr = self.ui.sbHoldingRegsStartAddr.value()
+        self._input_regs = self.ui.sbNoOfInputRegs.value()
+        self._input_regs_start_addr = self.ui.sbInputRegsStartAddr.value()
+        self._modbus_mode = self.ui.cmbModbusMode.currentIndex()
+        self._modbus_slave_ID = self.ui.sbSlaveID.value()
         config = ConfigParser.RawConfigParser()
         #TCP Settings
         config.add_section('TCP')
@@ -307,20 +344,34 @@ class ModSlaveMainWindow(QtGui.QMainWindow):
         #Var Settings
         config.add_section('Var')
         config.set('Var','Coils',self._coils)
+        config.set('Var','CoilsStartAddr',self._coils_start_addr)
         config.set('Var','DisInputs',self._inputs)
+        config.set('Var','DisInputsStartAddr', self._inputs_start_addr)
         config.set('Var','InputRegs',self._input_regs)
+        config.set('Var','InputRegsStartAddr', self._input_regs_start_addr)
         config.set('Var','HoldRegs',self._hold_regs)
+        config.set('Var','HoldRegsStartAddr', self._hold_regs_start_addr)
         config.set('Var','TimeInterval',self._time_interval)
         config.set('Var','MaxNoOfBusMonitorLines',self._settings_dlg.max_no_of_bus_monitor_lines)
+        config.set('Var','ModbusMode', self._modbus_mode)
+        config.set('Var','ModbusSlaveID', self._modbus_slave_ID)
         #Save Settings
-        config_file = open(self._params_file_name, 'wb')
+        config_file = open(fname, 'wb')
         config.write(config_file)
 
     def _load_session(self):
-        self._logger.info("Load session")
+        cwd = os.getcwd()
+        fname = QtGui.QFileDialog.getOpenFileName(self, "Load Session file", cwd, "Session Files (*.ses);;All Files (*.*)")
+        if (fname <> ''):
+            self._logger.info("Load session : " + fname)
+            self._load_params(os.path.abspath(fname))
 
     def _save_session(self):
-        self._logger.info("Save session")
+        cwd = os.getcwd()
+        fname = QtGui.QFileDialog.getSaveFileName(self, "Save Session file", cwd, "Session Files (*.ses)")
+        if (fname <> ''):
+            self._logger.info("Save session : " + fname)
+            self._save_params(os.path.abspath(fname))
 
     def _reset_counters(self):
         self._bus_monitor_dlg.reset_counters()
@@ -363,21 +414,12 @@ class ModSlaveMainWindow(QtGui.QMainWindow):
 
     def showEvent(self,QShowEvent):
         """set values for controls"""
-        self._load_params()
-        self.ui.sbNoOfCoils.setValue(self._coils)
-        self.ui.sbNoOfDigInputs.setValue(self._inputs)
-        self.ui.sbNoOfHoldingRegs.setValue(self._hold_regs)
-        self.ui.sbNoOfInputRegs.setValue(self._input_regs)
-        self.ui.spInterval.setValue(self._time_interval)
+        self._load_params(self._params_file_name)
         self._update_status_bar()
 
     def closeEvent(self,QCloseEvent):
         """window is closing"""
-        self._coils = self.ui.sbNoOfCoils.value()
-        self._inputs = self.ui.sbNoOfDigInputs.value()
-        self._hold_regs = self.ui.sbNoOfHoldingRegs.value()
-        self._input_regs = self.ui.sbNoOfInputRegs.value()
-        self._save_params()
+        self._save_params(self._params_file_name)
 
 #-------------------------------------------------------------------------------
 
