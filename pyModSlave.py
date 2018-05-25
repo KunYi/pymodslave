@@ -224,7 +224,10 @@ class ModSlaveMainWindow(QtGui.QMainWindow):
             elif (self.ui.cmbModbusMode.currentText() == "RTU"): # RTU server params
                 self._logger.info("Starting RTU server")
                 self._svr_args.append("-rtu")
-                self._svr_args.append("COM" + str(self._settingsRTU_dlg.rtu_port))
+                if os.name == 'nt': #windows
+                    self._svr_args.append("COM" + str(self._settingsRTU_dlg.rtu_port))
+                else: #linux?
+                    self._svr_args.append("/dev/ttyS" + str(self._settingsRTU_dlg.rtu_port))
                 self._svr_args.append(self._settingsRTU_dlg.baud_rate)
                 self._svr_args.append(self._settingsRTU_dlg.byte_size)
                 self._svr_args.append(self._settingsRTU_dlg.parity[0])
