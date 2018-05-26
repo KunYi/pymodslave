@@ -7,6 +7,14 @@
 # Created:     29/02/2012
 # Copyright:   (c) ElBar 2012
 # Licence:     <your licence>
+# Logging Levels
+# CRITICAL : 50
+# ERROR : 40
+# WARNING : 30
+# INFO : 20
+# DEBUG : 10
+# NOTSET : 0
+#
 #-------------------------------------------------------------------------------
 #!/usr/bin/env python
 
@@ -54,8 +62,10 @@ class ModSlaveMainWindow(QtGui.QMainWindow):
         self._time_interval = 2000 # interval for simulation in msec
         self._modbus_mode = 1 # 1:RTU, 2:TCP
         self._modbus_slave_ID = 1
+        self._logging_level = 30 # warning level
         self._params_file_name = 'pyModSlave.ini'
         self._logger = logging.getLogger("modbus_tk")
+        self._logger.setLevel(0) # start with no logging
         self._setupUI()
 
     def _setupUI(self):
@@ -272,7 +282,8 @@ class ModSlaveMainWindow(QtGui.QMainWindow):
         config_rtu_defaut = {'RTU_Port':'0', 'Baud':'9600', 'DataBits':'8', 'StopBits':'1', 'Parity':'None'}
         config_var_defaut = {'Coils':'10', 'CoilsStartAddr':'0', 'DisInputs':'10', 'DisInputsStartAddr':'0',
                              'InputRegs':'10', 'InputRegsStartAddr':'0','HoldRegs':'10', 'HoldRegsStartAddr':'0',
-                             'TimeInterval':'1000', 'MaxNoOfBusMonitorLines':'50', 'ModbusMode':'1', 'ModbusSlaveID':'1'}
+                             'TimeInterval':'1000', 'MaxNoOfBusMonitorLines':'50', 'ModbusMode':'1', 'ModbusSlaveID':'1',
+                             'LoggingLevel':'30'}
         config_default = {}
         config_default.update(config_tcp_defaut)
         config_default.update(config_rtu_defaut)
@@ -304,6 +315,8 @@ class ModSlaveMainWindow(QtGui.QMainWindow):
         self._bus_monitor_dlg.set_max_no_of_bus_monitor_lines(self._settings_dlg.max_no_of_bus_monitor_lines)
         self._modbus_mode = config.getint('Var', 'ModbusMode')
         self._modbus_slave_ID = config.getint('Var', 'ModbusSlaveID')
+        self._logging_level = config.getint('Var', 'LoggingLevel')
+        self._logger.setLevel(self._logging_level)
         #update ui
         self.ui.sbNoOfCoils.setValue(self._coils)
         self.ui.sbCoilsStartAddr.setValue(self._coils_start_addr)
@@ -356,6 +369,7 @@ class ModSlaveMainWindow(QtGui.QMainWindow):
         config.set('Var','MaxNoOfBusMonitorLines',self._settings_dlg.max_no_of_bus_monitor_lines)
         config.set('Var','ModbusMode', self._modbus_mode)
         config.set('Var','ModbusSlaveID', self._modbus_slave_ID)
+        config.set('Var','LoggingLevel', self._logging_level)
         #Save Settings
         config_file = open(fname, 'wb')
         config.write(config_file)
