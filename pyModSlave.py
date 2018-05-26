@@ -65,15 +65,15 @@ class ModSlaveMainWindow(QtGui.QMainWindow):
         #setup toolbar
         self.ui.mainToolBar.addAction(self.ui.actionLoad_Session)
         self.ui.mainToolBar.addAction(self.ui.actionSave_Session)
-        self.ui.mainToolBar.addSeparator()
-        self.ui.mainToolBar.addAction(self.ui.actionSerial_RTU)
-        self.ui.mainToolBar.addAction(self.ui.actionTCP)
-        self.ui.mainToolBar.addAction(self.ui.actionSettings)
+        self.ui.mainToolBar.addAction(self.ui.actionConnect)
+        self.ui.mainToolBar.addAction(self.ui.actionReset_Counters)
         self.ui.mainToolBar.addSeparator()
         self.ui.mainToolBar.addAction(self.ui.actionLog)
         self.ui.mainToolBar.addAction(self.ui.actionBus_Monitor)
         self.ui.mainToolBar.addSeparator()
-        self.ui.mainToolBar.addAction(self.ui.actionReset_Counters)
+        self.ui.mainToolBar.addAction(self.ui.actionSerial_RTU)
+        self.ui.mainToolBar.addAction(self.ui.actionTCP)
+        self.ui.mainToolBar.addAction(self.ui.actionSettings)
         self.ui.mainToolBar.addSeparator()
         self.ui.mainToolBar.addAction(self.ui.actionModbus_Manual)
         self.ui.mainToolBar.addAction(self.ui.actionAbout)
@@ -111,7 +111,7 @@ class ModSlaveMainWindow(QtGui.QMainWindow):
         self.ui.actionReset_Counters.triggered.connect(self._reset_counters)
         self.ui.actionLog.triggered.connect(self._open_log_file)
         self.ui.actionModbus_Manual.triggered.connect(self._open_modbus_manual)
-        self.ui.btStartStop.clicked.connect(self._start_stop)
+        self.ui.actionConnect.triggered.connect(self._start_stop)
         self.ui.cmbModbusMode.currentIndexChanged.connect(self._update_status_bar)
         self.ui.spInterval.valueChanged.connect(self._spInterval_value_changed)
         self.connect(self._bus_monitor_dlg, QtCore.SIGNAL("update_counters"), self._update_counters)
@@ -175,8 +175,7 @@ class ModSlaveMainWindow(QtGui.QMainWindow):
 
     def _update_ui(self):
         """update enable-disable status of ui components"""
-        if (self.ui.btStartStop.isChecked()):#start
-            self.ui.btStartStop.setText("Stop")
+        if (self.ui.actionConnect.isChecked()):#start
             self.ui.cmbModbusMode.setEnabled(False)
             self.ui.sbSlaveID.setEnabled(False)
             self.ui.spInterval.setEnabled(False)
@@ -192,7 +191,6 @@ class ModSlaveMainWindow(QtGui.QMainWindow):
             self.ui.sbNoOfInputRegs.setEnabled(False)
             self.ui.sbInputRegsStartAddr.setEnabled(False)
         else:#stop
-            self.ui.btStartStop.setText("Start")
             self.ui.cmbModbusMode.setEnabled(True)
             self.ui.sbSlaveID.setEnabled(True)
             self.ui.spInterval.setEnabled(True)
@@ -215,7 +213,7 @@ class ModSlaveMainWindow(QtGui.QMainWindow):
         self._reset_counters()
         del self._svr_args[:]#clear params
         svr_hooks = []
-        if (self.ui.btStartStop.isChecked()):#start
+        if (self.ui.actionConnect.isChecked()):#start
             if (self.ui.cmbModbusMode.currentText() == "TCP"): # TCP server params
                 self._logger.info("Starting TCP server")
                 self._svr_args.append("-tcp")
@@ -237,7 +235,7 @@ class ModSlaveMainWindow(QtGui.QMainWindow):
                 if (self.svr == None):#fail to build server
                     self._logger.error("Fail to start server")
                     Utils.errorMessageBox("Fail to start server")
-                    self.ui.btStartStop.setChecked(False)
+                    self.ui.actionConnect.setChecked(False)
                 else:
                     self.svr.start()
                     self.slv = modFactory.ModSlave(self.svr, self.ui.sbSlaveID.value(),
@@ -251,7 +249,7 @@ class ModSlaveMainWindow(QtGui.QMainWindow):
                         Utils.errorMessageBox("Fail to start slave")
                         self.svr.stop()
                         self.svr = None
-                        self.ui.btStartStop.setChecked(False)
+                        self.ui.actionConnect.setChecked(False)
                     else:
                         self._mbdata_ctrl.set_data_models(self.slv.coils_data_model,
                                                          self.slv.dis_inputs_data_model,
