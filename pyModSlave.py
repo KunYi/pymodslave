@@ -186,6 +186,8 @@ class ModSlaveMainWindow(QtGui.QMainWindow):
     def _update_ui(self):
         """update enable-disable status of ui components"""
         if (self.ui.actionConnect.isChecked()):#start
+            self.ui.actionLoad_Session.setEnabled(False)
+            self.ui.actionSave_Session.setEnabled(False)
             self.ui.cmbModbusMode.setEnabled(False)
             self.ui.sbSlaveID.setEnabled(False)
             self.ui.spInterval.setEnabled(False)
@@ -201,6 +203,8 @@ class ModSlaveMainWindow(QtGui.QMainWindow):
             self.ui.sbNoOfInputRegs.setEnabled(False)
             self.ui.sbInputRegsStartAddr.setEnabled(False)
         else:#stop
+            self.ui.actionLoad_Session.setEnabled(True)
+            self.ui.actionSave_Session.setEnabled(True)
             self.ui.cmbModbusMode.setEnabled(True)
             self.ui.sbSlaveID.setEnabled(True)
             self.ui.spInterval.setEnabled(True)
