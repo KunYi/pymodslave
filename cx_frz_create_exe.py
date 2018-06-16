@@ -24,7 +24,7 @@ executables = [
 ]
 
 setup(name='pyModSlave',
-      version='0.4.0',
+      version='0.4.1',
       description='pyModSlave - Modbus RTU-TCP slave',
       options=options,
       executables=executables
