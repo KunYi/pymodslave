@@ -12,6 +12,7 @@
 
 from PyQt4 import QtGui,QtCore
 from Ui_settingsModbusRTU import Ui_SettingsModbusRTU
+import os
 
 import Utils
 #add logging capability
@@ -24,6 +25,7 @@ class ModSlaveSettingsRTUWindow(QtGui.QDialog):
     def __init__(self):
         super(ModSlaveSettingsRTUWindow,self).__init__()
         #init value
+        self.rtu_dev = 'COM'
         self.rtu_port = 1
         self.baud_rate = 9600
         self.byte_size = 8
@@ -36,6 +38,10 @@ class ModSlaveSettingsRTUWindow(QtGui.QDialog):
         #create window from ui
         self.ui=Ui_SettingsModbusRTU()
         self.ui.setupUi(self)
+        if os.name == 'nt':  # windows
+            self.ui.cmbDev.setEnabled(False)
+        else: # linux?
+            self.ui.cmbDev.setEnabled(True)
         #set init values
         self._set_values()
         #signals-slots
@@ -45,6 +51,10 @@ class ModSlaveSettingsRTUWindow(QtGui.QDialog):
     def _set_values(self):
         """set param values to ui"""
         self._logger.info("Set param values to UI")
+        if os.name == 'nt':  # windows
+            self.ui.cmbDev.setEditText('COM')
+        else: # linux?
+            self.ui.cmbDev.setEditText(self.rtu_dev)
         self.ui.cmbPort.setValue(self.rtu_port)
         self.ui.cmbBaud.setCurrentIndex(self.ui.cmbBaud.findText(str(self.baud_rate)))
         self.ui.cmbDataBits.setCurrentIndex(self.ui.cmbDataBits.findText(str(self.byte_size)))
@@ -54,6 +64,7 @@ class ModSlaveSettingsRTUWindow(QtGui.QDialog):
     def _get_values(self):
         """get param values from ui"""
         self._logger.info("Get param values from UI")
+        self.rtu_dev = self.ui.cmbDev.currentText()
         self.rtu_port = self.ui.cmbPort.value()
         self.baud_rate = self.ui.cmbBaud.currentText()
         self.byte_size = self.ui.cmbDataBits.currentText()

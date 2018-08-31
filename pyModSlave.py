@@ -239,7 +239,7 @@ class ModSlaveMainWindow(QtGui.QMainWindow):
                 if os.name == 'nt': #windows
                     self._svr_args.append("COM" + str(self._settingsRTU_dlg.rtu_port))
                 else: #linux?
-                    self._svr_args.append("/dev/ttyS" + str(self._settingsRTU_dlg.rtu_port))
+                    self._svr_args.append(self._settingsRTU_dlg.rtu_dev + str(self._settingsRTU_dlg.rtu_port))
                 self._svr_args.append(self._settingsRTU_dlg.baud_rate)
                 self._svr_args.append(self._settingsRTU_dlg.byte_size)
                 self._svr_args.append(self._settingsRTU_dlg.parity[0])
@@ -283,7 +283,7 @@ class ModSlaveMainWindow(QtGui.QMainWindow):
     def _load_params(self, fname):
         self._logger.info("Load params")
         config_tcp_defaut = {'TCP_Port':'502', 'TCP_IP':'127.000.000.001'}
-        config_rtu_defaut = {'RTU_Port':'0', 'Baud':'9600', 'DataBits':'8', 'StopBits':'1', 'Parity':'None'}
+        config_rtu_defaut = {'RTU_Dev':'COM', 'RTU_Port':'0', 'Baud':'9600', 'DataBits':'8', 'StopBits':'1', 'Parity':'None'}
         config_var_defaut = {'Coils':'10', 'CoilsStartAddr':'0', 'DisInputs':'10', 'DisInputsStartAddr':'0',
                              'InputRegs':'10', 'InputRegsStartAddr':'0','HoldRegs':'10', 'HoldRegsStartAddr':'0',
                              'TimeInterval':'1000', 'MaxNoOfBusMonitorLines':'50', 'ModbusMode':'1', 'ModbusSlaveID':'1',
@@ -300,6 +300,7 @@ class ModSlaveMainWindow(QtGui.QMainWindow):
         self._settingsTCP_dlg.tcp_port = config.getint('TCP', 'TCP_Port')
         self._settingsTCP_dlg.tcp_ip = config.get('TCP', 'TCP_IP')
         #RTU Settings
+        self._settingsRTU_dlg.rtu_dev = config.get('RTU', 'RTU_Dev')
         self._settingsRTU_dlg.rtu_port = config.getint('RTU', 'RTU_Port')
         self._settingsRTU_dlg.baud_rate = config.getint('RTU', 'Baud')
         self._settingsRTU_dlg.byte_size = config.getint('RTU', 'DataBits')
@@ -354,6 +355,7 @@ class ModSlaveMainWindow(QtGui.QMainWindow):
         config.set('TCP','TCP_IP',self._settingsTCP_dlg.tcp_ip)
         #RTU Settings
         config.add_section('RTU')
+        config.set('RTU', 'RTU_Dev', self._settingsRTU_dlg.rtu_dev)
         config.set('RTU','RTU_Port',self._settingsRTU_dlg.rtu_port)
         config.set('RTU','Baud',self._settingsRTU_dlg.baud_rate)
         config.set('RTU','DataBits',self._settingsRTU_dlg.byte_size)
