@@ -94,6 +94,6 @@ class ModSlaveMBDataModel(QtCore.QObject):
 
     def update_data(self, data):
         # emit SIGNAL for updating modbus data
-        self.emit(QtCore.SIGNAL("update_data"), data)
+        self.emit(QtCore.SIGNAL("update_data"), data[:self._no_of_items])
 
 #-------------------------------------------------------------------------------

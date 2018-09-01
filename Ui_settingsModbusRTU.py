@@ -25,9 +25,9 @@ except AttributeError:
 class Ui_SettingsModbusRTU(object):
     def setupUi(self, SettingsModbusRTU):
         SettingsModbusRTU.setObjectName(_fromUtf8("SettingsModbusRTU"))
-        SettingsModbusRTU.resize(180, 197)
-        SettingsModbusRTU.setMinimumSize(QtCore.QSize(180, 180))
-        SettingsModbusRTU.setMaximumSize(QtCore.QSize(240, 240))
+        SettingsModbusRTU.resize(220, 240)
+        SettingsModbusRTU.setMinimumSize(QtCore.QSize(220, 240))
+        SettingsModbusRTU.setMaximumSize(QtCore.QSize(220, 300))
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(_fromUtf8(":/img/options-16.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         SettingsModbusRTU.setWindowIcon(icon)

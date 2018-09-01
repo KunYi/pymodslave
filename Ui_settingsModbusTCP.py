@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'settingsmodbustcp.ui'
+# Form implementation generated from reading ui file 'C:\Projects\python\pyModSlave\ui\settingsmodbustcp.ui'
 #
-# Created: Thu Nov 12 20:32:03 2015
-#      by: PyQt4 UI code generator 4.9.6
+# Created by: PyQt4 UI code generator 4.11.4
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -26,9 +25,9 @@ except AttributeError:
 class Ui_SettingsModbusTCP(object):
     def setupUi(self, SettingsModbusTCP):
         SettingsModbusTCP.setObjectName(_fromUtf8("SettingsModbusTCP"))
-        SettingsModbusTCP.resize(180, 90)
-        SettingsModbusTCP.setMinimumSize(QtCore.QSize(180, 90))
-        SettingsModbusTCP.setMaximumSize(QtCore.QSize(180, 90))
+        SettingsModbusTCP.resize(240, 110)
+        SettingsModbusTCP.setMinimumSize(QtCore.QSize(240, 110))
+        SettingsModbusTCP.setMaximumSize(QtCore.QSize(240, 160))
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(_fromUtf8(":/img/network-16.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         SettingsModbusTCP.setWindowIcon(icon)

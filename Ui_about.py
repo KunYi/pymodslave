@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'about.ui'
+# Form implementation generated from reading ui file 'C:\Projects\python\pyModSlave\ui\about.ui'
 #
 # Created by: PyQt4 UI code generator 4.11.4
 #
@@ -26,7 +26,8 @@ class Ui_About(object):
     def setupUi(self, About):
         About.setObjectName(_fromUtf8("About"))
         About.resize(400, 80)
-        About.setMaximumSize(QtCore.QSize(400, 80))
+        About.setMinimumSize(QtCore.QSize(400, 80))
+        About.setMaximumSize(QtCore.QSize(400, 150))
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(_fromUtf8(":/img/info16.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         About.setWindowIcon(icon)

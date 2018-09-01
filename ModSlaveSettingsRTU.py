@@ -51,10 +51,7 @@ class ModSlaveSettingsRTUWindow(QtGui.QDialog):
     def _set_values(self):
         """set param values to ui"""
         self._logger.info("Set param values to UI")
-        if os.name == 'nt':  # windows
-            self.ui.cmbDev.setEditText('COM')
-        else: # linux?
-            self.ui.cmbDev.setEditText(self.rtu_dev)
+        self.ui.cmbDev.setEditText(self.rtu_dev)
         self.ui.cmbPort.setValue(self.rtu_port)
         self.ui.cmbBaud.setCurrentIndex(self.ui.cmbBaud.findText(str(self.baud_rate)))
         self.ui.cmbDataBits.setCurrentIndex(self.ui.cmbDataBits.findText(str(self.byte_size)))

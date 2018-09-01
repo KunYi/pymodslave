@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'settings.ui'
+# Form implementation generated from reading ui file 'C:\Projects\python\pyModSlave\ui\settings.ui'
 #
-# Created: Thu Nov 12 20:31:43 2015
-#      by: PyQt4 UI code generator 4.9.6
+# Created by: PyQt4 UI code generator 4.11.4
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -26,14 +25,14 @@ except AttributeError:
 class Ui_Settings(object):
     def setupUi(self, Settings):
         Settings.setObjectName(_fromUtf8("Settings"))
-        Settings.resize(240, 69)
+        Settings.resize(240, 72)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Maximum, QtGui.QSizePolicy.Maximum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(Settings.sizePolicy().hasHeightForWidth())
         Settings.setSizePolicy(sizePolicy)
-        Settings.setMinimumSize(QtCore.QSize(240, 20))
-        Settings.setMaximumSize(QtCore.QSize(240, 69))
+        Settings.setMinimumSize(QtCore.QSize(240, 72))
+        Settings.setMaximumSize(QtCore.QSize(240, 96))
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(_fromUtf8(":/img/options-16.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         Settings.setWindowIcon(icon)
