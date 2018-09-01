@@ -25,7 +25,10 @@ class ModSlaveSettingsRTUWindow(QtGui.QDialog):
     def __init__(self):
         super(ModSlaveSettingsRTUWindow,self).__init__()
         #init value
-        self.rtu_dev = 'COM'
+        if os.name == 'nt':  # windows
+            self.rtu_dev = 'COM'
+        else:  # linux?
+            self.rtu_dev = '/dev/ttyS'
         self.rtu_port = 1
         self.baud_rate = 9600
         self.byte_size = 8
