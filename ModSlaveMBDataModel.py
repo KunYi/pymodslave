@@ -43,7 +43,7 @@ class ModSlaveMBDataModel(QtCore.QObject):
                 item = self.model.itemFromIndex(idx)
                 item.setEditable(False)
             else:
-                self.model.setData(idx, "Address : {0}".format(i + self._start_addr - self._offset), QtCore.Qt.ToolTipRole)
+                self.model.setData(idx, "ADDRESS : {0}".format(i + self._start_addr - self._offset), QtCore.Qt.ToolTipRole)
                 if (not self._data):#no data
                     self.model.setData(idx, 0, QtCore.Qt.DisplayRole)
                 elif (self._data_type == 0):#decimal
@@ -65,7 +65,7 @@ class ModSlaveMBDataModel(QtCore.QObject):
             if (i >= self._offset and i < (self._offset + self._no_of_items)):
                  idx = self.model.index(row, col, QtCore.QModelIndex())
                  self.model.setData(idx, 0, QtCore.Qt.DisplayRole)
-                 self.model.setData(idx, "Address : {0}".format(i + self._start_addr - self._offset), QtCore.Qt.ToolTipRole)
+                 self.model.setData(idx, "ADDRESS : {0}".format(i + self._start_addr - self._offset), QtCore.Qt.ToolTipRole)
                  _new_data.append(0)
         # emit SIGNAL for updating UI
         self.emit(QtCore.SIGNAL("update_view"))
