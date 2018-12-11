@@ -355,6 +355,9 @@
             <height>0</height>
            </size>
           </property>
+          <property name="cornerButtonEnabled">
+           <bool>false</bool>
+          </property>
           <attribute name="horizontalHeaderVisible">
            <bool>false</bool>
           </attribute>
@@ -541,6 +544,9 @@
             <width>16777215</width>
             <height>16777215</height>
            </size>
+          </property>
+          <property name="cornerButtonEnabled">
+           <bool>false</bool>
           </property>
           <attribute name="horizontalHeaderVisible">
            <bool>false</bool>
@@ -734,6 +740,9 @@
             <height>0</height>
            </size>
           </property>
+          <property name="cornerButtonEnabled">
+           <bool>false</bool>
+          </property>
           <attribute name="horizontalHeaderVisible">
            <bool>false</bool>
           </attribute>
@@ -926,6 +935,9 @@
             <height>0</height>
            </size>
           </property>
+          <property name="cornerButtonEnabled">
+           <bool>false</bool>
+          </property>
           <attribute name="horizontalHeaderVisible">
            <bool>false</bool>
           </attribute>
@@ -980,7 +992,7 @@
     </property>
     <addaction name="actionLog"/>
     <addaction name="actionBus_Monitor"/>
-    <addaction name="separator"/>
+    <addaction name="actionHeaders"/>
    </widget>
    <widget class="QMenu" name="menuCommands">
     <property name="title">
@@ -1129,6 +1141,18 @@
    </property>
    <property name="text">
     <string>Connect</string>
+   </property>
+  </action>
+  <action name="actionHeaders">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="icons/pyModSlaveQt.qrc">
+     <normaloff>:/img/Header16.png</normaloff>:/img/Header16.png</iconset>
+   </property>
+   <property name="text">
+    <string>Headers</string>
    </property>
   </action>
  </widget>

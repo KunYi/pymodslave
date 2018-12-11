@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'mainwindow.ui'
+# Form implementation generated from reading ui file 'C:\Projects\python\pyModSlave\ui\mainwindow.ui'
 #
 # Created by: PyQt4 UI code generator 4.11.4
 #
@@ -165,6 +165,7 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.tvCoilsData.sizePolicy().hasHeightForWidth())
         self.tvCoilsData.setSizePolicy(sizePolicy)
         self.tvCoilsData.setMinimumSize(QtCore.QSize(450, 0))
+        self.tvCoilsData.setCornerButtonEnabled(False)
         self.tvCoilsData.setObjectName(_fromUtf8("tvCoilsData"))
         self.tvCoilsData.horizontalHeader().setVisible(False)
         self.tvCoilsData.verticalHeader().setVisible(False)
@@ -245,6 +246,7 @@ class Ui_MainWindow(object):
         self.tvDiscreteInputsData.setSizePolicy(sizePolicy)
         self.tvDiscreteInputsData.setMinimumSize(QtCore.QSize(450, 0))
         self.tvDiscreteInputsData.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        self.tvDiscreteInputsData.setCornerButtonEnabled(False)
         self.tvDiscreteInputsData.setObjectName(_fromUtf8("tvDiscreteInputsData"))
         self.tvDiscreteInputsData.horizontalHeader().setVisible(False)
         self.tvDiscreteInputsData.verticalHeader().setVisible(False)
@@ -329,6 +331,7 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.tvInputRegistersData.sizePolicy().hasHeightForWidth())
         self.tvInputRegistersData.setSizePolicy(sizePolicy)
         self.tvInputRegistersData.setMinimumSize(QtCore.QSize(450, 0))
+        self.tvInputRegistersData.setCornerButtonEnabled(False)
         self.tvInputRegistersData.setObjectName(_fromUtf8("tvInputRegistersData"))
         self.tvInputRegistersData.horizontalHeader().setVisible(False)
         self.tvInputRegistersData.verticalHeader().setVisible(False)
@@ -413,6 +416,7 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.tvHoldingRegistersData.sizePolicy().hasHeightForWidth())
         self.tvHoldingRegistersData.setSizePolicy(sizePolicy)
         self.tvHoldingRegistersData.setMinimumSize(QtCore.QSize(450, 0))
+        self.tvHoldingRegistersData.setCornerButtonEnabled(False)
         self.tvHoldingRegistersData.setObjectName(_fromUtf8("tvHoldingRegistersData"))
         self.tvHoldingRegistersData.horizontalHeader().setVisible(False)
         self.tvHoldingRegistersData.verticalHeader().setVisible(False)
@@ -509,6 +513,12 @@ class Ui_MainWindow(object):
         icon17.addPixmap(QtGui.QPixmap(_fromUtf8(":/img/plug-connect-16.png")), QtGui.QIcon.Normal, QtGui.QIcon.On)
         self.actionConnect.setIcon(icon17)
         self.actionConnect.setObjectName(_fromUtf8("actionConnect"))
+        self.actionHeaders = QtGui.QAction(MainWindow)
+        self.actionHeaders.setCheckable(True)
+        icon18 = QtGui.QIcon()
+        icon18.addPixmap(QtGui.QPixmap(_fromUtf8(":/img/Header16.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.actionHeaders.setIcon(icon18)
+        self.actionHeaders.setObjectName(_fromUtf8("actionHeaders"))
         self.menuFile.addAction(self.actionLoad_Session)
         self.menuFile.addAction(self.actionSave_Session)
         self.menuFile.addSeparator()
@@ -521,7 +531,7 @@ class Ui_MainWindow(object):
         self.menuHelp.addAction(self.actionAbout)
         self.menuView.addAction(self.actionLog)
         self.menuView.addAction(self.actionBus_Monitor)
-        self.menuView.addSeparator()
+        self.menuView.addAction(self.actionHeaders)
         self.menuCommands.addAction(self.actionConnect)
         self.menuCommands.addAction(self.actionReset_Counters)
         self.menuBar.addAction(self.menuFile.menuAction())
@@ -585,5 +595,6 @@ class Ui_MainWindow(object):
         self.actionLoad_Session.setText(_translate("MainWindow", "Load Session...", None))
         self.actionSave_Session.setText(_translate("MainWindow", "Save Session...", None))
         self.actionConnect.setText(_translate("MainWindow", "Connect", None))
+        self.actionHeaders.setText(_translate("MainWindow", "Headers", None))
 
 import pyModSlaveQt_rc

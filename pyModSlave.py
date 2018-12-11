@@ -80,6 +80,7 @@ class ModSlaveMainWindow(QtGui.QMainWindow):
         self.ui.mainToolBar.addSeparator()
         self.ui.mainToolBar.addAction(self.ui.actionLog)
         self.ui.mainToolBar.addAction(self.ui.actionBus_Monitor)
+        self.ui.mainToolBar.addAction(self.ui.actionHeaders)
         self.ui.mainToolBar.addSeparator()
         self.ui.mainToolBar.addAction(self.ui.actionSerial_RTU)
         self.ui.mainToolBar.addAction(self.ui.actionTCP)
@@ -120,6 +121,7 @@ class ModSlaveMainWindow(QtGui.QMainWindow):
         self.ui.actionBus_Monitor.triggered.connect(self._bus_monitor_show)
         self.ui.actionReset_Counters.triggered.connect(self._reset_counters)
         self.ui.actionLog.triggered.connect(self._open_log_file)
+        self.ui.actionHeaders.triggered.connect(self._showHeaders)
         self.ui.actionModbus_Manual.triggered.connect(self._open_modbus_manual)
         self.ui.actionConnect.triggered.connect(self._start_stop)
         self.ui.cmbModbusMode.currentIndexChanged.connect(self._update_status_bar)
@@ -182,6 +184,27 @@ class ModSlaveMainWindow(QtGui.QMainWindow):
         """update packets - errors counters"""
         self.status_packet_text.setText('Packets : %d' % self._bus_monitor_dlg.packets)
         self.status_error_text.setText('Erros : %d' % self._bus_monitor_dlg.errors)
+
+    def _showHeaders(self, value):
+        """show/hide headers"""
+        if (value):#show
+            self.ui.tvCoilsData.horizontalHeader().show()
+            self.ui.tvCoilsData.verticalHeader().show()
+            self.ui.tvDiscreteInputsData.horizontalHeader().show()
+            self.ui.tvDiscreteInputsData.verticalHeader().show()
+            self.ui.tvInputRegistersData.horizontalHeader().show()
+            self.ui.tvInputRegistersData.verticalHeader().show()
+            self.ui.tvHoldingRegistersData.horizontalHeader().show()
+            self.ui.tvHoldingRegistersData.verticalHeader().show()
+        else:#hide
+            self.ui.tvCoilsData.horizontalHeader().hide()
+            self.ui.tvCoilsData.verticalHeader().hide()
+            self.ui.tvDiscreteInputsData.horizontalHeader().hide()
+            self.ui.tvDiscreteInputsData.verticalHeader().hide()
+            self.ui.tvInputRegistersData.horizontalHeader().hide()
+            self.ui.tvInputRegistersData.verticalHeader().hide()
+            self.ui.tvHoldingRegistersData.horizontalHeader().hide()
+            self.ui.tvHoldingRegistersData.verticalHeader().hide()
 
     def _update_ui(self):
         """update enable-disable status of ui components"""
