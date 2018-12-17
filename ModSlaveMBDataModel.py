@@ -23,7 +23,7 @@ class ModSlaveMBDataModel(QtCore.QObject):
         self._offset = start_addr % 10
         self._no_of_model_items = ((self._offset + self._no_of_items - 1) // 10 + 1) * 10
         self.model = QtGui.QStandardItemModel(self._no_of_model_items / 10, 10)
-        self.model.setHorizontalHeaderLabels(("0","1","2","3","4","5","6","7","8","9"))
+        self.model.setHorizontalHeaderLabels(("00","01","02","03","04","05","06","07","08","09"))
         self.model.setVerticalHeaderLabels(["%02d"%(x*10) for x in range((no_of_items - 1) // 10 + 1)])
         self._data = None
         self._data_type = data_type
