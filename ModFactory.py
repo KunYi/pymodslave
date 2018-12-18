@@ -121,7 +121,9 @@ class ModSlave(QtCore.QObject):
 
     def _update(self, data):
         '''update mbdata on receiving'''
-        self._blockValues()
+        #update model data
+        self.coils_data_model.update_model(self.get_coils_data())
+        self.hold_regs_data_model.update_model(self.get_hold_regs_data())
 
     def _blockValues(self):
         #simulate then update
