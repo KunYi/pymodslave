@@ -96,7 +96,7 @@ class Ui_BusMonitor(object):
     def retranslateUi(self, BusMonitor):
         BusMonitor.setWindowTitle(_translate("BusMonitor", "Bus Monitor", None))
         self.lblRawData.setText(_translate("BusMonitor", "Raw Data", None))
-        self.lblPDU.setText(_translate("BusMonitor", "PDU", None))
+        self.lblPDU.setText(_translate("BusMonitor", "ADU", None))
         self.toolBar.setWindowTitle(_translate("BusMonitor", "toolBar", None))
         self.actionClear.setText(_translate("BusMonitor", "Clear", None))
         self.actionClear.setToolTip(_translate("BusMonitor", "Clear", None))

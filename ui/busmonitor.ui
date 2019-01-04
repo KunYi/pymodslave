@@ -101,7 +101,7 @@
        </font>
       </property>
       <property name="text">
-       <string>PDU</string>
+       <string>ADU</string>
       </property>
      </widget>
     </item>
