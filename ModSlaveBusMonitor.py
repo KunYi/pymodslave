@@ -169,7 +169,7 @@ class ModSlaveBusMonitorWindow(QtGui.QMainWindow):
             self.ui.txtPDU.appendPlainText(slave + ' : %s' % pdu[:2])
             fc = int(pdu[2:4], 16)
             if (fc > 128): #Modbus error
-                self.ui.txtPDU.appendPlainText('Function Code [80 + SlaveID] : %s' % pdu[2:4])
+                self.ui.txtPDU.appendPlainText('Function Code [80 + Rx Function Code] : %s' % pdu[2:4])
                 self.ui.txtPDU.appendPlainText('Exception Code : %s' % pdu[4:6])
             elif (fc <= 4): # Read
                 self.ui.txtPDU.appendPlainText('Function Code : %s' % pdu[2:4])

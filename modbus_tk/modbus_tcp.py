@@ -317,9 +317,9 @@ class TcpServer(Server):
                         else:
                             request += new_byte
 
-                    retval = call_hooks("modbus_tcp.TcpServer.after_recv", (self, sock, request))
-                    if retval is not None:
-                        request = retval
+                    # retval = call_hooks("modbus_tcp.TcpServer.after_recv", (self, sock, request))
+                    # if retval is not None:
+                    #    request = retval
 
                     if is_ok:
                         # read the rest of the request
@@ -330,6 +330,8 @@ class TcpServer(Server):
                                 is_ok = False
                             else:
                                 request += new_byte
+
+                    retval = call_hooks("modbus_tcp.TcpServer.after_recv", (self, sock, request))
 
                     if is_ok:
                         response = ""
