@@ -10,7 +10,7 @@
 #-------------------------------------------------------------------------------
 #!/usr/bin/env python
 
-from PyQt4 import QtGui,QtCore
+from PyQt5 import QtGui,QtCore,QtWidgets
 from ModSlaveMBDataModel import ModSlaveMBDataModel
 from ModSlaveMBDataItemDelegate import ModSlaveMBDataItemDelegate
 
@@ -46,10 +46,10 @@ class ModSlaveMBData(QtCore.QObject):
         self.ui.pbResetAO.clicked.connect(self._reset_AO)
         self.ui.pbResetAI.clicked.connect(self._reset_AI)
         #read only table views
-        self.ui.tvCoilsData.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
-        self.ui.tvDiscreteInputsData.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
-        self.ui.tvHoldingRegistersData.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
-        self.ui.tvInputRegistersData.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
+        self.ui.tvCoilsData.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
+        self.ui.tvDiscreteInputsData.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
+        self.ui.tvHoldingRegistersData.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
+        self.ui.tvInputRegistersData.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
         #item delegates
         self.ui.tvCoilsData.setItemDelegate(ModSlaveMBDataItemDelegate(True))
         self.ui.tvDiscreteInputsData.setItemDelegate(ModSlaveMBDataItemDelegate(True))
@@ -64,25 +64,33 @@ class ModSlaveMBData(QtCore.QObject):
         #table views models
         #coils
         self.ui.tvCoilsData.setModel(self.coils.model)
-        self.connect(self.coils, QtCore.SIGNAL("update_view"), self._models_data_changed)
-        self.connect(self.ui.tvCoilsData.itemDelegate(), QtCore.SIGNAL("update_data"), self.coils.update_item)
+        self.coils.update_view.connect(self._models_data_changed)
+        #self.connect(self.coils, QtCore.SIGNAL("update_view"), self._models_data_changed)
+        self.ui.tvCoilsData.itemDelegate().update_data.connect(self.coils.update_item)
+        # FIXME self.connect(self.ui.tvCoilsData.itemDelegate(), QtCore.SIGNAL("update_data"), self.coils.update_item)
         self._sim_coils_changed()
         #discrete inputs
         self.ui.tvDiscreteInputsData.setModel(self.dis_inputs.model)
-        self.connect(self.dis_inputs, QtCore.SIGNAL("update_view"), self._models_data_changed)
-        self.connect(self.ui.tvDiscreteInputsData.itemDelegate(), QtCore.SIGNAL("update_data"), self.dis_inputs.update_item)
+        self.dis_inputs.update_view.connect(self._models_data_changed)
+        #self.connect(self.dis_inputs, QtCore.SIGNAL("update_view"), self._models_data_changed)
+        self.ui.tvDiscreteInputsData.itemDelegate().update_data.connect(self.dis_inputs.update_item)
+        # FIXME self.connect(self.ui.tvDiscreteInputsData.itemDelegate(), QtCore.SIGNAL("update_data"), self.dis_inputs.update_item)
         self._sim_dis_inputs_changed()
         #input regs
         self.ui.tvInputRegistersData.setModel(self.input_regs.model)
-        self.connect(self.input_regs, QtCore.SIGNAL("update_view"), self._models_data_changed)
+        self.input_regs.update_view.connect(self._models_data_changed)
+        #self.connect(self.input_regs, QtCore.SIGNAL("update_view"), self._models_data_changed)
         self.input_regs.set_data_type(self.ui.cmbInputRegsType.currentIndex())
-        self.connect(self.ui.tvInputRegistersData.itemDelegate(), QtCore.SIGNAL("update_data"), self.input_regs.update_item)
+        self.ui.tvInputRegistersData.itemDelegate().update_data.connect(self.input_regs.update_item)
+        # FIXME self.connect(self.ui.tvInputRegistersData.itemDelegate(), QtCore.SIGNAL("update_data"), self.input_regs.update_item)
         self._sim_input_regs_changed()
         #holding regs
         self.ui.tvHoldingRegistersData.setModel(self.hold_regs.model)
-        self.connect(self.hold_regs, QtCore.SIGNAL("update_view"), self._models_data_changed)
+        self.hold_regs.update_view.connect(self._models_data_changed)
+        #self.connect(self.hold_regs, QtCore.SIGNAL("update_view"), self._models_data_changed)
         self.hold_regs.set_data_type(self.ui.cmbHoldRegsType.currentIndex())
-        self.connect(self.ui.tvHoldingRegistersData.itemDelegate(), QtCore.SIGNAL("update_data"), self.hold_regs.update_item)
+        self.ui.tvHoldingRegistersData.itemDelegate().update_data.connect(self.hold_regs.update_item)
+        # FIXME self.connect(self.ui.tvHoldingRegistersData.itemDelegate(), QtCore.SIGNAL("update_data"), self.hold_regs.update_item)
         self._sim_hold_regs_changed()
         #update table views
         self._models_data_changed()
@@ -92,36 +100,36 @@ class ModSlaveMBData(QtCore.QObject):
         self.coils.sim = self.ui.chkSimCoils.isChecked()
         self.ui.pbResetDO.setDisabled(self.coils.sim)
         if (self.coils.sim):
-            self.ui.tvCoilsData.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
+            self.ui.tvCoilsData.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
         else:
-            self.ui.tvCoilsData.setEditTriggers(QtGui.QAbstractItemView.AnyKeyPressed)
+            self.ui.tvCoilsData.setEditTriggers(QtWidgets.QAbstractItemView.AnyKeyPressed)
 
     def _sim_dis_inputs_changed(self):
         self._logger.info("Sim Digital Inputs : " + str(self.ui.chkSimDisInputs.isChecked()))
         self.dis_inputs.sim = self.ui.chkSimDisInputs.isChecked()
         self.ui.pbResetDI.setDisabled(self.dis_inputs.sim)
         if (self.dis_inputs.sim):
-            self.ui.tvDiscreteInputsData.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
+            self.ui.tvDiscreteInputsData.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
         else:
-            self.ui.tvDiscreteInputsData.setEditTriggers(QtGui.QAbstractItemView.AnyKeyPressed)
+            self.ui.tvDiscreteInputsData.setEditTriggers(QtWidgets.QAbstractItemView.AnyKeyPressed)
 
     def _sim_input_regs_changed(self):
         self._logger.info("Sim Input Regs : " + str(self.ui.chkSimInputRegs.isChecked()))
         self.input_regs.sim = self.ui.chkSimInputRegs.isChecked()
         self.ui.pbResetAI.setDisabled(self.input_regs.sim)
         if (self.input_regs.sim):
-            self.ui.tvInputRegistersData.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
+            self.ui.tvInputRegistersData.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
         else:
-            self.ui.tvInputRegistersData.setEditTriggers(QtGui.QAbstractItemView.AnyKeyPressed)
+            self.ui.tvInputRegistersData.setEditTriggers(QtWidgets.QAbstractItemView.AnyKeyPressed)
 
     def _sim_hold_regs_changed(self):
         self._logger.info("Sim Holding Regs : " + str(self.ui.chkSimHoldRegs.isChecked()))
         self.hold_regs.sim = self.ui.chkSimHoldRegs.isChecked()
         self.ui.pbResetAO.setDisabled(self.hold_regs.sim)
         if (self.hold_regs.sim):
-            self.ui.tvHoldingRegistersData.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
+            self.ui.tvHoldingRegistersData.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
         else:
-            self.ui.tvHoldingRegistersData.setEditTriggers(QtGui.QAbstractItemView.AnyKeyPressed)
+            self.ui.tvHoldingRegistersData.setEditTriggers(QtWidgets.QAbstractItemView.AnyKeyPressed)
 
     def _models_data_changed(self):
         self.ui.tvCoilsData.resizeColumnsToContents()

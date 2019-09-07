@@ -22,9 +22,9 @@ import sys
 import os
 import subprocess
 import webbrowser
-from PyQt4 import QtGui,QtCore
+from PyQt5 import QtGui,QtCore,QtWidgets
 import logging # add logging capability
-import ConfigParser # config file parser
+import configparser # config file parser
 
 from Ui_mainwindow import Ui_MainWindow
 from ModSlaveAbout import ModSlaveAboutWindow
@@ -42,7 +42,7 @@ from modbus_tk.hooks import install_hook
 import Utils
 
 #-------------------------------------------------------------------------------
-class ModSlaveMainWindow(QtGui.QMainWindow):
+class ModSlaveMainWindow(QtWidgets.QMainWindow):
     """ Class wrapper for main window ui """
 
     def __init__(self):
@@ -91,13 +91,13 @@ class ModSlaveMainWindow(QtGui.QMainWindow):
         self.ui.mainToolBar.addAction(self.ui.actionExit)
         #setup status bar
         pm = QtGui.QPixmap()
-        self.status_ind = QtGui.QLabel(self.ui.centralWidget)
+        self.status_ind = QtWidgets.QLabel(self.ui.centralWidget)
         self.status_ind.setFixedSize(16,16)
         self.status_ind.setPixmap(QtGui.QPixmap(':/img/bullet-red-16.png'))
-        self.status_text = QtGui.QLabel(self.ui.centralWidget)
-        self.status_packet_text = QtGui.QLabel(self.ui.centralWidget)
+        self.status_text = QtWidgets.QLabel(self.ui.centralWidget)
+        self.status_packet_text = QtWidgets.QLabel(self.ui.centralWidget)
         self.status_packet_text.setStyleSheet("QLabel {color:blue;}")
-        self.status_error_text = QtGui.QLabel(self.ui.centralWidget)
+        self.status_error_text = QtWidgets.QLabel(self.ui.centralWidget)
         self.status_error_text.setStyleSheet("QLabel {color:red;}")
         self.ui.statusBar.addWidget(self.status_ind)
         self.ui.statusBar.addWidget(self.status_text, 14)
@@ -126,7 +126,8 @@ class ModSlaveMainWindow(QtGui.QMainWindow):
         self.ui.actionConnect.triggered.connect(self._start_stop)
         self.ui.cmbModbusMode.currentIndexChanged.connect(self._update_status_bar)
         self.ui.spInterval.valueChanged.connect(self._spInterval_value_changed)
-        self.connect(self._bus_monitor_dlg, QtCore.SIGNAL("update_counters"), self._update_counters)
+        self._bus_monitor_dlg.update_counters.connect(self._update_counters)
+        #self.connect(self._bus_monitor_dlg, QtCore.SIGNAL("update_counters"), self._update_counters)
         self.ui.cmbModbusMode.currentIndexChanged.connect(self._update_modbus_mode)
         #show window
         self._update_status_bar()
@@ -318,7 +319,7 @@ class ModSlaveMainWindow(QtGui.QMainWindow):
         config_default.update(config_tcp_defaut)
         config_default.update(config_rtu_defaut)
         config_default.update(config_var_defaut)
-        config = ConfigParser.RawConfigParser(config_default)
+        config = configparser.ConfigParser(config_default)
         if not(config.read(fname)):#if file does not exist exit
             self._logger.error("Parameters file does not exist")
             return
@@ -374,49 +375,49 @@ class ModSlaveMainWindow(QtGui.QMainWindow):
         self._input_regs_start_addr = self.ui.sbInputRegsStartAddr.value()
         self._modbus_mode = self.ui.cmbModbusMode.currentIndex()
         self._modbus_slave_ID = self.ui.sbSlaveID.value()
-        config = ConfigParser.RawConfigParser()
+        config = configparser.ConfigParser()
         #TCP Settings
         config.add_section('TCP')
-        config.set('TCP','TCP_Port',self._settingsTCP_dlg.tcp_port)
+        config.set('TCP','TCP_Port',str(self._settingsTCP_dlg.tcp_port))
         config.set('TCP','TCP_IP',self._settingsTCP_dlg.tcp_ip)
         #RTU Settings
         config.add_section('RTU')
         config.set('RTU','RTU_Dev', self._settingsRTU_dlg.rtu_dev)
-        config.set('RTU','RTU_Port',self._settingsRTU_dlg.rtu_port)
-        config.set('RTU','Baud',self._settingsRTU_dlg.baud_rate)
-        config.set('RTU','DataBits',self._settingsRTU_dlg.byte_size)
-        config.set('RTU','StopBits',self._settingsRTU_dlg.stop_bits)
+        config.set('RTU','RTU_Port',str(self._settingsRTU_dlg.rtu_port))
+        config.set('RTU','Baud',str(self._settingsRTU_dlg.baud_rate))
+        config.set('RTU','DataBits',str(self._settingsRTU_dlg.byte_size))
+        config.set('RTU','StopBits',str(self._settingsRTU_dlg.stop_bits))
         config.set('RTU','Parity',self._settingsRTU_dlg.parity)
         #Var Settings
         config.add_section('Var')
-        config.set('Var','Coils',self._coils)
-        config.set('Var','CoilsStartAddr',self._coils_start_addr)
-        config.set('Var','DisInputs',self._inputs)
-        config.set('Var','DisInputsStartAddr', self._inputs_start_addr)
-        config.set('Var','InputRegs',self._input_regs)
-        config.set('Var','InputRegsStartAddr', self._input_regs_start_addr)
-        config.set('Var','HoldRegs',self._hold_regs)
-        config.set('Var','HoldRegsStartAddr', self._hold_regs_start_addr)
-        config.set('Var','TimeInterval',self._time_interval)
-        config.set('Var','MaxNoOfBusMonitorLines',self._settings_dlg.max_no_of_bus_monitor_lines)
-        config.set('Var','ModbusMode', self._modbus_mode)
-        config.set('Var','ModbusSlaveID', self._modbus_slave_ID)
-        config.set('Var','LoggingLevel', self._logging_level)
+        config.set('Var','Coils',str(self._coils))
+        config.set('Var','CoilsStartAddr',str(self._coils_start_addr))
+        config.set('Var','DisInputs',str(self._inputs))
+        config.set('Var','DisInputsStartAddr', str(self._inputs_start_addr))
+        config.set('Var','InputRegs',str(self._input_regs))
+        config.set('Var','InputRegsStartAddr', str(self._input_regs_start_addr))
+        config.set('Var','HoldRegs',str(self._hold_regs))
+        config.set('Var','HoldRegsStartAddr', str(self._hold_regs_start_addr))
+        config.set('Var','TimeInterval', str(self._time_interval))
+        config.set('Var','MaxNoOfBusMonitorLines', str(self._settings_dlg.max_no_of_bus_monitor_lines))
+        config.set('Var','ModbusMode', str(self._modbus_mode))
+        config.set('Var','ModbusSlaveID', str(self._modbus_slave_ID))
+        config.set('Var','LoggingLevel', str(self._logging_level))
         #Save Settings
-        config_file = open(fname, 'wb')
+        config_file = open(fname, 'w')
         config.write(config_file)
 
     def _load_session(self):
         cwd = os.getcwd()
         fname = QtGui.QFileDialog.getOpenFileName(self, "Load Session file", cwd, "Session Files (*.ses);;All Files (*.*)")
-        if (fname <> ''):
+        if (fname != ''):
             self._logger.info("Load session : " + fname)
             self._load_params(os.path.abspath(fname))
 
     def _save_session(self):
         cwd = os.getcwd()
         fname = QtGui.QFileDialog.getSaveFileName(self, "Save Session file", cwd, "Session Files (*.ses)")
-        if (fname <> ''):
+        if (fname != ''):
             self._logger.info("Save session : " + fname)
             self._save_params(os.path.abspath(fname))
 
@@ -477,7 +478,7 @@ def main():
     logger = modbus_tk.utils.create_logger("console")
     Utils.set_up_logger_file(logger,'pyModSlave.log')
     #create qt application
-    app=QtGui.QApplication(sys.argv)
+    app=QtWidgets.QApplication(sys.argv)
     #load main window
     window=ModSlaveMainWindow()
     #application loop

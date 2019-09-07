@@ -10,15 +10,15 @@
 #-------------------------------------------------------------------------------
 #!/usr/bin/env python
 
-from PyQt4 import QtGui,QtCore
+from PyQt5 import QtGui,QtCore,QtWidgets
 from Ui_about import Ui_About
 
-_VERSION = "0.4.2-1"
+_VERSION = "0.4.3"
 _LIB_VERSION = "0.5.8"
 _URL = "<a href = ""http://sourceforge.net/projects/pymodslave"">Sourceforge Project Home Page</a>"
 
 #-------------------------------------------------------------------------------
-class ModSlaveAboutWindow(QtGui.QDialog):
+class ModSlaveAboutWindow(QtWidgets.QDialog):
     """ Class wrapper for about window ui """
 
     def __init__(self):

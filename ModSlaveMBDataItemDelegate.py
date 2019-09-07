@@ -10,13 +10,15 @@
 #-------------------------------------------------------------------------------
 #!/usr/bin/env python
 
-from PyQt4 import QtGui,QtCore
+from PyQt5 import QtGui,QtCore,QtWidgets
 
 import Utils
 
 #-------------------------------------------------------------------------------
-class ModSlaveMBDataItemDelegate(QtGui.QStyledItemDelegate):
+class ModSlaveMBDataItemDelegate(QtWidgets.QStyledItemDelegate):
     """ Modbus data model items delegate """
+    # setup signals
+    update_data = QtCore.pyqtSignal()
 
     def __init__(self, discrete=False, data_type=0):#data type > 0 : decimal, 1 : hex
         super(ModSlaveMBDataItemDelegate,self).__init__()
@@ -24,11 +26,11 @@ class ModSlaveMBDataItemDelegate(QtGui.QStyledItemDelegate):
         self._data_type = data_type
 
     def paint(self, painter, option, index):
-        QtGui.QStyledItemDelegate.paint(self, painter, option, index)
+        QtWidgets.QStyledItemDelegate.paint(self, painter, option, index)
 
     def createEditor(self, parent, option, index):
         # print("Create editor")
-        editor = QtGui.QLineEdit(parent)
+        editor = QtWidgets.QLineEdit(parent)
         if (self._discrete):
             editor.setInputMask("b")
         elif (self._data_type == 0):
@@ -60,7 +62,7 @@ class ModSlaveMBDataItemDelegate(QtGui.QStyledItemDelegate):
                 return
         model.setData(index, value, QtCore.Qt.EditRole);
         # emit SIGNAL for updating modbus data
-        self.emit(QtCore.SIGNAL("update_data"))
+        self.update_data.emit()
 
     def updateEditorGeometry(self, editor, option, index):
         # print("Update editor geometry")

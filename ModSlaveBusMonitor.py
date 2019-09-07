@@ -10,7 +10,7 @@
 #-------------------------------------------------------------------------------
 #!/usr/bin/env python
 
-from PyQt4 import QtGui,QtCore
+from PyQt5 import QtGui,QtCore,QtWidgets
 from Ui_busmonitor import Ui_BusMonitor
 import datetime as dt
 import Utils
@@ -27,19 +27,21 @@ SERVER_TCP_HOOKS = ("modbus_tcp.TcpServer.after_recv", "modbus_tcp.TcpServer.bef
 SERVER_RTU_HOOKS = ("modbus_rtu.RtuServer.after_read", "modbus_rtu.RtuServer.before_write")
 
 #-------------------------------------------------------------------------------
-class ModSlaveBusMonitorWindow(QtGui.QMainWindow):
+class ModSlaveBusMonitorWindow(QtWidgets.QMainWindow):
     """ Class wrapper for modbus data """
+    # setup signals
+    update_counters = QtCore.pyqtSignal()
 
     def __init__(self, parent):
         super(ModSlaveBusMonitorWindow,self).__init__(parent)
         self._logger = logging.getLogger("modbus_tk")
-        self._model = QtGui.QStringListModel()
-        self._string_list = QtCore.QStringList()
+        self._model = QtCore.QStringListModel()
+        self._string_list = []
         self._max_no_of_bus_monitor_lines = 50
         self.packets = 0
         self.errors = 0
         self.svr = None
-        #setu UI
+        #setup UI
         self.setupUI()
         self.ui.lstRawData.setModel(self._model)
         #install hooks
@@ -92,7 +94,7 @@ class ModSlaveBusMonitorWindow(QtGui.QMainWindow):
 
     def _req_rtu_data(self, data):
         self.packets += 1
-        self.emit(QtCore.SIGNAL("update_counters"))
+        self.update_counters.emit()
         if (self.isVisible()):
             req = str(data[1]).encode('hex')
             self._add_line("[RTU]>Rx > %s : %s" % (dt.datetime.now().strftime('%H:%M:%S'), self._format_data(req.upper())))
@@ -104,7 +106,7 @@ class ModSlaveBusMonitorWindow(QtGui.QMainWindow):
 
     def _req_tcp_data(self, data):
         self.packets += 1
-        self.emit(QtCore.SIGNAL("update_counters"))
+        self.update_counters.emit()
         if (self.isVisible()):
             req = str(data[2]).encode('hex')
             self._add_line("[TCP]>Rx > %s : %s" % (dt.datetime.now().strftime('%H:%M:%S'), self._format_data(req.upper())))
@@ -116,7 +118,7 @@ class ModSlaveBusMonitorWindow(QtGui.QMainWindow):
 
     def _error_data(self, data):
         self.errors += 1
-        self.emit(QtCore.SIGNAL("update_counters"))
+        self.update_counters.emit()
         if (self.isVisible()):
             slave = data[1]
             msg = data[2]
@@ -124,14 +126,14 @@ class ModSlaveBusMonitorWindow(QtGui.QMainWindow):
 
     def _format_data(self, data):
         fmt_data = ''
-        for i in xrange(0, len(data), 2):
+        for i in range(0, len(data), 2):
             fmt_data += (data[i:i+2] + ' ')
         return fmt_data
 
     def reset_counters(self):
         self.packets = 0
         self.errors = 0
-        self.emit(QtCore.SIGNAL("update_counters"))
+        self.update_counters.emit()
 
     def _selected_row(self, sel):
         data = QtCore.QVariant.toPyObject(sel.data())

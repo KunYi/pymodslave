@@ -10,11 +10,14 @@
 #-------------------------------------------------------------------------------
 #!/usr/bin/env python
 
-from PyQt4 import QtGui,QtCore
+from PyQt5 import QtGui,QtCore,QtWidgets
 
 #-------------------------------------------------------------------------------
 class ModSlaveMBDataModel(QtCore.QObject):
     """ Modbus data model """
+    # setup signals
+    update_view = QtCore.pyqtSignal()
+    update_data = QtCore.pyqtSignal()
 
     def __init__(self, start_addr = 0, no_of_items = 10, data_type = 0):#data type > 0 : decimal, 1 : hex
         super(ModSlaveMBDataModel,self).__init__()
@@ -51,7 +54,7 @@ class ModSlaveMBDataModel(QtCore.QObject):
                 else:#hex
                     self.model.setData(idx,"%X"%self._data[i - self._offset], QtCore.Qt.DisplayRole)
         # emit SIGNAL for updating UI
-        self.emit(QtCore.SIGNAL("update_view"))
+        self.update_view.emit()
 
     def set_data_type(self, dt):
         self._data_type = dt
@@ -68,8 +71,8 @@ class ModSlaveMBDataModel(QtCore.QObject):
                  self.model.setData(idx, "ADDRESS : {0}".format(i + self._start_addr - self._offset), QtCore.Qt.ToolTipRole)
                  _new_data.append(0)
         # emit SIGNAL for updating UI
-        self.emit(QtCore.SIGNAL("update_view"))
-        self.update_data(_new_data)
+        self.update_view.emit()
+        self.update_data.emit(_new_data)
         self.update_model(_new_data)
 
     def update_item(self):
@@ -88,12 +91,7 @@ class ModSlaveMBDataModel(QtCore.QObject):
             except Exception:
                 _new_data.append(0)
         # emit SIGNAL for updating UI
-        self.emit(QtCore.SIGNAL("update_view"))
-        self.update_data(_new_data)
+        self.update_view.emit()
+        self.update_data.emit(_new_data)
         self.update_model(_new_data)
-
-    def update_data(self, data):
-        # emit SIGNAL for updating modbus data
-        self.emit(QtCore.SIGNAL("update_data"), data[:self._no_of_items])
-
 #-------------------------------------------------------------------------------

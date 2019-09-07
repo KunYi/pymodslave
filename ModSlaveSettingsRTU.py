@@ -10,7 +10,7 @@
 #-------------------------------------------------------------------------------
 #!/usr/bin/env python
 
-from PyQt4 import QtGui,QtCore
+from PyQt5 import QtGui,QtCore,QtWidgets
 from Ui_settingsModbusRTU import Ui_SettingsModbusRTU
 import os
 
@@ -19,7 +19,7 @@ import Utils
 import logging
 
 #-------------------------------------------------------------------------------
-class ModSlaveSettingsRTUWindow(QtGui.QDialog):
+class ModSlaveSettingsRTUWindow(QtWidgets.QDialog):
     """ Class wrapper for RTU settings ui """
 
     def __init__(self):

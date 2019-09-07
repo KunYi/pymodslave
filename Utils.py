@@ -10,7 +10,7 @@
 #-------------------------------------------------------------------------------
 #!/usr/bin/env python
 
-from PyQt4 import QtGui
+from PyQt5 import QtGui
 import logging # add logging capability
 
 def errorMessageBox(msg):

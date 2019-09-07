@@ -10,7 +10,7 @@
 #-------------------------------------------------------------------------------
 #!/usr/bin/env python
 
-from PyQt4 import QtCore
+from PyQt5 import QtCore
 #repeated timer
 import RepeatTimer as rt
 import random
@@ -43,8 +43,8 @@ def ModSvrFactory(args):
         logger.info("Build TCP Server - {0}:{1}".format(args[2],args[1]))
         try :
             _svr = modbus_tcp.TcpServer(int(args[1]), args[2])
-        except Exception,msg:
-            logger.error("Error while building TCP Server : {0}".format(msg))
+        except Exception as err:
+            logger.error("Error while building TCP Server : {0}".format(err))
     elif args[0]=='-rtu':
         logger.info("Build RTU Server - Port: {0}, Baudrate: {1}, Bytesize: {2}, Parity: {3}, Stopbits : {4}"
                     .format(args[1],args[2],args[3],args[4],args[5]))
@@ -55,8 +55,8 @@ def ModSvrFactory(args):
                                                         parity=args[4],
                                                         stopbits=float(args[5]),
                                                         xonxoff=0))
-        except Exception,msg:
-            logger.error("Error while building RTU Server : {0}".format(msg))
+        except Exception as err:
+            logger.error("Error while building RTU Server : {0}".format(err))
     else:
         logger.error("Wrong arguments")
 
@@ -85,13 +85,17 @@ class ModSlave(QtCore.QObject):
         self._logger = logging.getLogger("modbus_tk")
         # data models
         self.coils_data_model = ModSlaveMBDataModel(start_addr_coils, no_coils, 0)
-        self.connect(self.coils_data_model, QtCore.SIGNAL("update_data"), self.set_coils_data)
+        self.coils_data_model.update_data.connect(self.set_coils_data)
+        #self.connect(self.coils_data_model, QtCore.SIGNAL("update_data"), self.set_coils_data)
         self.dis_inputs_data_model = ModSlaveMBDataModel(start_addr_dis_inputs, no_dis_inputs, 0)
-        self.connect(self.dis_inputs_data_model, QtCore.SIGNAL("update_data"), self.set_dis_inputs_data)
+        self.dis_inputs_data_model.update_data.connect(self.set_dis_inputs_data)
+        #self.connect(self.dis_inputs_data_model, QtCore.SIGNAL("update_data"), self.set_dis_inputs_data)
         self.input_regs_data_model = ModSlaveMBDataModel(start_addr_input_regs, no_input_regs, 0)
-        self.connect(self.input_regs_data_model, QtCore.SIGNAL("update_data"), self.set_input_regs_data)
+        self.input_regs_data_model.update_data.connect(self.set_input_regs_data)
+        #self.connect(self.input_regs_data_model, QtCore.SIGNAL("update_data"), self.set_input_regs_data)
         self.hold_regs_data_model = ModSlaveMBDataModel(start_addr_hold_regs, no_hold_regs, 0)
-        self.connect(self.hold_regs_data_model, QtCore.SIGNAL("update_data"), self.set_hold_regs_data)
+        self.hold_regs_data_model.update_data.connect(self.set_hold_regs_data)
+        #self.connect(self.hold_regs_data_model, QtCore.SIGNAL("update_data"), self.set_hold_regs_data)
         #install hooks
         install_hook(SERVER_HOOKS[1], self._update)
 
@@ -105,8 +109,8 @@ class ModSlave(QtCore.QObject):
             self.slave.add_block('4', cst.HOLDING_REGISTERS, start_addr_hold_regs, no_hold_regs)
             #create timer -> repeat timer
             self._sim_timer=rt.RepeatTimer(timeIntervalSim,self._blockValues,0)
-        except Exception,msg:
-    		self._logger.error("Slave Init Error : {0}".format(msg))
+        except Exception as err:
+            self._logger.error("Slave Init Error : {0}".format(err))
 
         #update data
         self._blockValues()
