@@ -261,6 +261,7 @@ class TcpServer(Server):
     def _do_init(self):
         """initialize server"""
         self._sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self._sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         if self._timeout_in_sec:
             self._sock.settimeout(self._timeout_in_sec)
         self._sock.setblocking(0)
@@ -317,8 +318,9 @@ class TcpServer(Server):
                         else:
                             request += new_byte
 
-                    # retval = call_hooks("modbus_tcp.TcpServer.after_recv", (self, sock, request))
-                    # if retval is not None:
+                    #pyModSlave modification for monitoring packets 
+                    #retval = call_hooks("modbus_tcp.TcpServer.after_recv", (self, sock, request))
+                    #if retval is not None:
                     #    request = retval
 
                     if is_ok:
@@ -330,9 +332,10 @@ class TcpServer(Server):
                                 is_ok = False
                             else:
                                 request += new_byte
-
+                    
+                    #pyModSlave modification for monitoring packets 
                     retval = call_hooks("modbus_tcp.TcpServer.after_recv", (self, sock, request))
-
+                    
                     if is_ok:
                         response = ""
                         # parse the request

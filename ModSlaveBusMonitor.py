@@ -10,7 +10,10 @@
 #-------------------------------------------------------------------------------
 #!/usr/bin/env python
 
-from PyQt5 import QtGui,QtCore,QtWidgets
+import os
+import codecs
+from PyQt5 import QtCore,QtWidgets
+
 from Ui_busmonitor import Ui_BusMonitor
 import datetime as dt
 import Utils
@@ -70,18 +73,19 @@ class ModSlaveBusMonitorWindow(QtWidgets.QMainWindow):
         self._max_no_of_bus_monitor_lines = n
 
     def _add_line(self, line):
-        if (self._string_list.count() >= self._max_no_of_bus_monitor_lines):
+        if (len(self._string_list) >= self._max_no_of_bus_monitor_lines):
             self._string_list.removeAt(0)
-        self._string_list.append(QtCore.QString(line))
+        self._string_list.append(line)
         self._model.setStringList(self._string_list)
 
 
     def _save(self):
-        file_name = QtGui.QFileDialog.getSaveFileName(self, QtCore.QString('Save File As...'),
-                            QtCore.QDir.homePath(),
-                            'Text (*.txt)', 'Text (*.txt)', QtGui.QFileDialog.DontConfirmOverwrite)
+        cwd = os.getcwd()
+        file_path = QtWidgets.QFileDialog.getSaveFileName(self, 'Save File As...',
+                    cwd,
+                    'Text (*.txt)', 'Text (*.txt)', QtWidgets.QFileDialog.DontConfirmOverwrite)
         try:
-            f = open(QtCore.QDir.toNativeSeparators(file_name), 'w')
+            f = open(QtCore.QDir.toNativeSeparators(file_path[0]), 'w')
             f.writelines(['%s\n' % str(line) for line in self._string_list])
             f.close()
         except:
@@ -96,33 +100,38 @@ class ModSlaveBusMonitorWindow(QtWidgets.QMainWindow):
         self.packets += 1
         self.update_counters.emit()
         if (self.isVisible()):
-            req = str(data[1]).encode('hex')
-            self._add_line("[RTU]>Rx > %s : %s" % (dt.datetime.now().strftime('%H:%M:%S'), self._format_data(req.upper())))
+            dt_now = dt.datetime.now()
+            req = str(codecs.encode(data[1], 'hex').decode('ascii'))
+            self._add_line("[RTU]>Rx > %s:%03d - %s" % (dt_now.strftime('%H:%M:%S'), int(dt_now.microsecond/1000), self._format_data(req.upper())))
 
     def _resp_rtu_data(self, data):
         if (self.isVisible()):
-            resp = str(data[1]).encode('hex')
-            self._add_line("[RTU]>Tx > %s : %s" % (dt.datetime.now().strftime('%H:%M:%S'),  self._format_data(resp.upper())))
+            dt_now = dt.datetime.now()
+            resp = str(codecs.encode(data[1], 'hex').decode('ascii'))
+            self._add_line("[RTU]>Tx > %s:%03d - %s" % (dt_now.strftime('%H:%M:%S'), int(dt_now.microsecond/1000), self._format_data(resp.upper())))
 
     def _req_tcp_data(self, data):
         self.packets += 1
         self.update_counters.emit()
         if (self.isVisible()):
-            req = str(data[2]).encode('hex')
-            self._add_line("[TCP]>Rx > %s : %s" % (dt.datetime.now().strftime('%H:%M:%S'), self._format_data(req.upper())))
+            dt_now = dt.datetime.now()
+            req = str(codecs.encode(data[2], 'hex').decode('ascii'))
+            self._add_line("[TCP]>Rx > %s:%03d - %s" % (dt_now.strftime('%H:%M:%S'), int(dt_now.microsecond/1000), self._format_data(req.upper())))
 
     def _resp_tcp_data(self, data):
         if (self.isVisible()):
-            resp = str(data[2]).encode('hex')
-            self._add_line("[TCP]>Tx > %s : %s" % (dt.datetime.now().strftime('%H:%M:%S'),  self._format_data(resp.upper())))
+            dt_now = dt.datetime.now()
+            resp = str(codecs.encode(data[2], 'hex').decode('ascii'))
+            self._add_line("[TCP]>Tx > %s:%03d - %s" % (dt_now.strftime('%H:%M:%S'), int(dt_now.microsecond/1000), self._format_data(resp.upper())))
 
     def _error_data(self, data):
         self.errors += 1
         self.update_counters.emit()
         if (self.isVisible()):
+            dt_now = dt.datetime.now()
             slave = data[1]
             msg = data[2]
-            self._add_line("Sys > %s : Slave %s - %s" % (dt.datetime.now().strftime('%H:%M:%S'), slave, msg))
+            self._add_line("Sys > %s:%03d : Slave %s - %s" % (dt_now.strftime('%H:%M:%S'), int(dt_now.microsecond/1000), slave, msg))
 
     def _format_data(self, data):
         fmt_data = ''
@@ -136,7 +145,7 @@ class ModSlaveBusMonitorWindow(QtWidgets.QMainWindow):
         self.update_counters.emit()
 
     def _selected_row(self, sel):
-        data = QtCore.QVariant.toPyObject(sel.data())
+        data = sel.data()
         if ('Sys' in data):
             self._parse_Sys_Msg(str(data))
         elif ('Tx' in data):
@@ -150,7 +159,7 @@ class ModSlaveBusMonitorWindow(QtWidgets.QMainWindow):
         self.ui.txtPDU.setPlainText('Type : Tx Message')
         msg = data.split('>')
         try :
-            pdu = msg[2].split(' : ')
+            pdu = msg[2].split(' - ')
             self.ui.txtPDU.appendPlainText('TimeStamp : %s' % pdu[0].strip())
             mb_data = pdu[1].replace(' ', '')
             if ('RTU' in data):
@@ -192,7 +201,7 @@ class ModSlaveBusMonitorWindow(QtWidgets.QMainWindow):
         self.ui.txtPDU.setPlainText('Type : Rx Message')
         msg = data.split('>')
         try :
-            pdu = msg[2].split(' : ')
+            pdu = msg[2].split(' - ')
             self.ui.txtPDU.appendPlainText('TimeStamp : %s' % pdu[0].strip())
             mb_data = pdu[1].replace(' ', '')
             if ('RTU' in data):

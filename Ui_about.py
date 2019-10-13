@@ -1,18 +1,20 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'C:\Projects\python\pyModSlave\ui\about.ui'
+# Form implementation generated from reading ui file '.\about.ui'
 #
-# Created by: PyQt5 UI code generator 5.11.3
+# Created by: PyQt5 UI code generator 5.13.0
 #
 # WARNING! All changes made in this file will be lost!
 
+
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_About(object):
     def setupUi(self, About):
         About.setObjectName("About")
-        About.resize(400, 80)
-        About.setMinimumSize(QtCore.QSize(400, 80))
+        About.resize(400, 96)
+        About.setMinimumSize(QtCore.QSize(400, 96))
         About.setMaximumSize(QtCore.QSize(400, 150))
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(":/img/info16.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -56,5 +58,4 @@ class Ui_About(object):
         self.lblVersion.setText(_translate("About", "pyModSlave"))
         self.lblLibVer.setText(_translate("About", "modbus_tk lib"))
         self.lblURL.setText(_translate("About", "http://"))
-
 import pyModSlaveQt_rc

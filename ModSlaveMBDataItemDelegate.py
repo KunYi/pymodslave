@@ -10,7 +10,7 @@
 #-------------------------------------------------------------------------------
 #!/usr/bin/env python
 
-from PyQt5 import QtGui,QtCore,QtWidgets
+from PyQt5 import QtCore,QtWidgets
 
 import Utils
 
@@ -18,7 +18,7 @@ import Utils
 class ModSlaveMBDataItemDelegate(QtWidgets.QStyledItemDelegate):
     """ Modbus data model items delegate """
     # setup signals
-    update_data = QtCore.pyqtSignal()
+    update_item = QtCore.pyqtSignal()
 
     def __init__(self, discrete=False, data_type=0):#data type > 0 : decimal, 1 : hex
         super(ModSlaveMBDataItemDelegate,self).__init__()
@@ -43,7 +43,7 @@ class ModSlaveMBDataItemDelegate(QtWidgets.QStyledItemDelegate):
 
     def setEditorData(self, editor, index):
         # print("Set editor data")
-        value = (index.model()).data(index, QtCore.Qt.EditRole).toString()
+        value = str((index.model()).data(index, QtCore.Qt.EditRole))
         editor.setText(value)
 
     def setModelData(self, editor, model,index):
@@ -62,7 +62,7 @@ class ModSlaveMBDataItemDelegate(QtWidgets.QStyledItemDelegate):
                 return
         model.setData(index, value, QtCore.Qt.EditRole);
         # emit SIGNAL for updating modbus data
-        self.update_data.emit()
+        self.update_item.emit()
 
     def updateEditorGeometry(self, editor, option, index):
         # print("Update editor geometry")

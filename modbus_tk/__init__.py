@@ -26,12 +26,14 @@ contributors:
 * zerox1212
 * ffreckle
 * Matthew West
+* Vincent Prince
+* kcl93
 
 Please let us know if your name is missing!
 
 """
 
-VERSION = '0.5.8'
+VERSION = '1.0.0'
 
 import logging
 LOGGER = logging.getLogger("modbus_tk")

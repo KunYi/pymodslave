@@ -17,7 +17,7 @@ class ModSlaveMBDataModel(QtCore.QObject):
     """ Modbus data model """
     # setup signals
     update_view = QtCore.pyqtSignal()
-    update_data = QtCore.pyqtSignal()
+    update_data = QtCore.pyqtSignal(list)
 
     def __init__(self, start_addr = 0, no_of_items = 10, data_type = 0):#data type > 0 : decimal, 1 : hex
         super(ModSlaveMBDataModel,self).__init__()
@@ -82,7 +82,7 @@ class ModSlaveMBDataModel(QtCore.QObject):
             col = i % 10
             if (i >= self._offset and i < (self._offset + self._no_of_items)):
                  idx = self.model.index(row, col, QtCore.QModelIndex())
-                 value = str((self.model.data(idx, QtCore.Qt.EditRole)).toString())
+                 value = str(self.model.data(idx, QtCore.Qt.EditRole))
             try:
                 if (self._data_type == 0): # decimal
                      _new_data.append(int(value, 10))

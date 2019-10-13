@@ -15,9 +15,7 @@ from PyQt5 import QtCore
 import RepeatTimer as rt
 import random
 #modbus toolkit
-import modbus_tk
 import modbus_tk.defines as cst
-import modbus_tk.modbus as modbus
 import modbus_tk.modbus_tcp as modbus_tcp
 import modbus_tk.modbus_rtu as modbus_rtu
 from modbus_tk.hooks import install_hook
@@ -42,7 +40,11 @@ def ModSvrFactory(args):
     if args[0]=='-tcp':
         logger.info("Build TCP Server - {0}:{1}".format(args[2],args[1]))
         try :
-            _svr = modbus_tcp.TcpServer(int(args[1]), args[2])
+            # remove extra zeros from ip addr
+            _ip = args[2]
+            _ip = _ip.split('.')
+            _ip = str(int(_ip[0])) + "." + str(int(_ip[1])) + "." + str(int(_ip[2])) + "." + str(int(_ip[3]))
+            _svr = modbus_tcp.TcpServer(int(args[1]), _ip)
         except Exception as err:
             logger.error("Error while building TCP Server : {0}".format(err))
     elif args[0]=='-rtu':
@@ -86,16 +88,12 @@ class ModSlave(QtCore.QObject):
         # data models
         self.coils_data_model = ModSlaveMBDataModel(start_addr_coils, no_coils, 0)
         self.coils_data_model.update_data.connect(self.set_coils_data)
-        #self.connect(self.coils_data_model, QtCore.SIGNAL("update_data"), self.set_coils_data)
         self.dis_inputs_data_model = ModSlaveMBDataModel(start_addr_dis_inputs, no_dis_inputs, 0)
         self.dis_inputs_data_model.update_data.connect(self.set_dis_inputs_data)
-        #self.connect(self.dis_inputs_data_model, QtCore.SIGNAL("update_data"), self.set_dis_inputs_data)
         self.input_regs_data_model = ModSlaveMBDataModel(start_addr_input_regs, no_input_regs, 0)
         self.input_regs_data_model.update_data.connect(self.set_input_regs_data)
-        #self.connect(self.input_regs_data_model, QtCore.SIGNAL("update_data"), self.set_input_regs_data)
         self.hold_regs_data_model = ModSlaveMBDataModel(start_addr_hold_regs, no_hold_regs, 0)
         self.hold_regs_data_model.update_data.connect(self.set_hold_regs_data)
-        #self.connect(self.hold_regs_data_model, QtCore.SIGNAL("update_data"), self.set_hold_regs_data)
         #install hooks
         install_hook(SERVER_HOOKS[1], self._update)
 

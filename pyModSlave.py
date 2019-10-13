@@ -22,7 +22,7 @@ import sys
 import os
 import subprocess
 import webbrowser
-from PyQt5 import QtGui,QtCore,QtWidgets
+from PyQt5 import QtGui,QtWidgets
 import logging # add logging capability
 import configparser # config file parser
 
@@ -38,7 +38,6 @@ from ModSlaveBusMonitor import ModSlaveBusMonitorWindow
 #modbus toolkit
 import modbus_tk
 import ModFactory as modFactory
-from modbus_tk.hooks import install_hook
 import Utils
 
 #-------------------------------------------------------------------------------
@@ -127,7 +126,6 @@ class ModSlaveMainWindow(QtWidgets.QMainWindow):
         self.ui.cmbModbusMode.currentIndexChanged.connect(self._update_status_bar)
         self.ui.spInterval.valueChanged.connect(self._spInterval_value_changed)
         self._bus_monitor_dlg.update_counters.connect(self._update_counters)
-        #self.connect(self._bus_monitor_dlg, QtCore.SIGNAL("update_counters"), self._update_counters)
         self.ui.cmbModbusMode.currentIndexChanged.connect(self._update_modbus_mode)
         #show window
         self._update_status_bar()
@@ -409,17 +407,17 @@ class ModSlaveMainWindow(QtWidgets.QMainWindow):
 
     def _load_session(self):
         cwd = os.getcwd()
-        fname = QtGui.QFileDialog.getOpenFileName(self, "Load Session file", cwd, "Session Files (*.ses);;All Files (*.*)")
-        if (fname != ''):
-            self._logger.info("Load session : " + fname)
-            self._load_params(os.path.abspath(fname))
+        file_path = QtWidgets.QFileDialog.getOpenFileName(self, "Load Session file", cwd, "Session Files (*.ses);;All Files (*.*)")
+        if (file_path[0] != ''):
+            self._logger.info("Load session : " + file_path[0])
+            self._load_params(os.path.abspath(file_path[0]))
 
     def _save_session(self):
         cwd = os.getcwd()
-        fname = QtGui.QFileDialog.getSaveFileName(self, "Save Session file", cwd, "Session Files (*.ses)")
-        if (fname != ''):
-            self._logger.info("Save session : " + fname)
-            self._save_params(os.path.abspath(fname))
+        file_path = QtWidgets.QFileDialog.getSaveFileName(self, "Save Session file", cwd, "Session Files (*.ses)")
+        if (file_path[0] != ''):
+            self._logger.info("Save session : " + file_path[0])
+            self._save_params(os.path.abspath(file_path[0]))
 
     def _reset_counters(self):
         self._bus_monitor_dlg.reset_counters()

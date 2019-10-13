@@ -14,7 +14,7 @@ from PyQt5 import QtGui,QtCore,QtWidgets
 from Ui_about import Ui_About
 
 _VERSION = "0.4.3"
-_LIB_VERSION = "0.5.8"
+_LIB_VERSION = "1.0.0"
 _URL = "<a href = ""http://sourceforge.net/projects/pymodslave"">Sourceforge Project Home Page</a>"
 
 #-------------------------------------------------------------------------------
