@@ -15,7 +15,8 @@ if sys.platform == 'win32':
 options = {
     'build_exe': {
         'includes': ['atexit'],
-        'packages': ['modbus_tk']
+        'packages': ['modbus_tk'],
+        'zip_include_packages': ['PyQt5']
     }
 }
 
@@ -24,7 +25,7 @@ executables = [
 ]
 
 setup(name='pyModSlave',
-      version='0.4.2.1',
+      version='0.4.3',
       description='pyModSlave - Modbus RTU-TCP slave',
       options=options,
       executables=executables
