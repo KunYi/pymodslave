@@ -133,16 +133,25 @@ class ModSlaveMainWindow(QtWidgets.QMainWindow):
 
     def _settings_RTU_show(self):
         """open RTU settings dialog"""
+        self._settingsRTU_dlg.ui.cmbPort.setEnabled(self.svr == None)
+        self._settingsRTU_dlg.ui.cmbDev.setEnabled(self.svr == None)
+        self._settingsRTU_dlg.ui.cmbBaud.setEnabled(self.svr == None)
+        self._settingsRTU_dlg.ui.cmbDataBits.setEnabled(self.svr == None)
+        self._settingsRTU_dlg.ui.cmbParity.setEnabled(self.svr == None)
+        self._settingsRTU_dlg.ui.cmbStopBits.setEnabled(self.svr == None)
         self._settingsRTU_dlg.exec_()
         self._update_status_bar()
 
     def _settings_TCP_show(self):
         """open TCP settings dialog"""
+        self._settingsTCP_dlg.ui.leIP.setEnabled(self.svr == None)
+        self._settingsTCP_dlg.ui.leTCPPort.setEnabled(self.svr == None)
         self._settingsTCP_dlg.exec_()
         self._update_status_bar()
 
     def _settings_show(self):
         """open general settings dialog"""
+        self._settings_dlg.ui.sbMaxNoOfBusMonitorLines.setEnabled(self.svr == None)
         self._settings_dlg.exec_()
         self._bus_monitor_dlg.set_max_no_of_bus_monitor_lines(self._settings_dlg.max_no_of_bus_monitor_lines)
         self._update_status_bar()
@@ -213,9 +222,6 @@ class ModSlaveMainWindow(QtWidgets.QMainWindow):
             self.ui.cmbModbusMode.setEnabled(False)
             self.ui.sbSlaveID.setEnabled(False)
             self.ui.spInterval.setEnabled(False)
-            self.ui.actionSerial_RTU.setEnabled(False)
-            self.ui.actionTCP.setEnabled(False)
-            self.ui.actionSettings.setEnabled(False)
             self.ui.sbNoOfCoils.setEnabled(False)
             self.ui.sbCoilsStartAddr.setEnabled(False)
             self.ui.sbNoOfDigInputs.setEnabled(False)
@@ -230,9 +236,6 @@ class ModSlaveMainWindow(QtWidgets.QMainWindow):
             self.ui.cmbModbusMode.setEnabled(True)
             self.ui.sbSlaveID.setEnabled(True)
             self.ui.spInterval.setEnabled(True)
-            self.ui.actionSerial_RTU.setEnabled(True)
-            self.ui.actionTCP.setEnabled(True)
-            self.ui.actionSettings.setEnabled(True)
             self.ui.sbNoOfCoils.setEnabled(True)
             self.ui.sbCoilsStartAddr.setEnabled(True)
             self.ui.sbNoOfDigInputs.setEnabled(True)

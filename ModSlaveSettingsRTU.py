@@ -43,8 +43,10 @@ class ModSlaveSettingsRTUWindow(QtWidgets.QDialog):
         self.ui.setupUi(self)
         if os.name == 'nt':  # windows
             self.ui.cmbDev.setEnabled(False)
+            self.ui.cmbPort.setMinimum(1)
         else: # linux?
             self.ui.cmbDev.setEnabled(True)
+            self.ui.cmbPort.setMinimum(0)
         #set init values
         self._set_values()
         #signals-slots
