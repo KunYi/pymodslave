@@ -12,9 +12,9 @@ class Ui_BusMonitor(object):
     def setupUi(self, BusMonitor):
         BusMonitor.setObjectName("BusMonitor")
         BusMonitor.setWindowModality(QtCore.Qt.NonModal)
-        BusMonitor.resize(450, 500)
+        BusMonitor.resize(500, 500)
         BusMonitor.setMinimumSize(QtCore.QSize(450, 500))
-        BusMonitor.setMaximumSize(QtCore.QSize(450, 580))
+        BusMonitor.setMaximumSize(QtCore.QSize(500, 580))
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(":/img/view-16.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         BusMonitor.setWindowIcon(icon)
