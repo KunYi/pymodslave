@@ -24,8 +24,12 @@ class ModSlaveSettingsWindow(QtWidgets.QDialog):
         super(ModSlaveSettingsWindow,self).__init__()
         #init values
         self.max_no_of_bus_monitor_lines = 50
+        self.sim_min = 0
+        self.sim_max = 65535
         self._logger = logging.getLogger("modbus_tk")
         self.setupUI()
+        #signals-slots
+        self.ui.sbSimMin.valueChanged.connect(self._set_min_value)
 
     def setupUI(self):
         #create window from ui
@@ -41,11 +45,20 @@ class ModSlaveSettingsWindow(QtWidgets.QDialog):
         """set param values to ui"""
         self._logger.info("Set param values to UI")
         self.ui.sbMaxNoOfBusMonitorLines.setValue(self.max_no_of_bus_monitor_lines)
+        self.ui.sbSimMin.setValue(self.sim_min)
+        self.ui.sbSimMax.setValue(self.sim_max)
+        #self.ui.sbSimMax.setMinimum(self.sim_min + 1)
+
+    def _set_min_value(self, value):
+        """set min value to max simulation value"""
+        self.ui.sbSimMax.setMinimum(value + 1)
 
     def _get_values(self):
         """get param values from ui"""
         self._logger.info("Get param values from UI")
         self.max_no_of_bus_monitor_lines = self.ui.sbMaxNoOfBusMonitorLines.value()
+        self.sim_min = self.ui.sbSimMin.value()
+        self.sim_max = self.ui.sbSimMax.value()
 
     def _OK_pressed(self):
         """new values are accepted"""

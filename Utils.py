@@ -11,7 +11,8 @@
 #!/usr/bin/env python
 
 from PyQt5 import QtGui
-import logging # add logging capability
+from logging import Formatter
+from logging.handlers import RotatingFileHandler
 
 def errorMessageBox(msg):
 
@@ -19,7 +20,7 @@ def errorMessageBox(msg):
 
 def set_up_logger_file(logger,file_name):
 
-    fh = logging.FileHandler(file_name)
-    frm = logging.Formatter("%(asctime)s\t%(levelname)s\t%(module)s.%(funcName)s\t%(threadName)s\t%(message)s")
+    fh = RotatingFileHandler(file_name, 'a', 65536, 7)
+    frm = Formatter("%(asctime)s\t%(levelname)s\t%(module)s.%(funcName)s\t%(threadName)s\t%(message)s")
     fh.setFormatter(frm)
     logger.addHandler(fh)

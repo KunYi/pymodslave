@@ -69,13 +69,15 @@ def ModSvrFactory(args):
 class ModSlave(QtCore.QObject):
     """ modbus slave """
 
-    def __init__(self,modSvr,slaveAddress,timeIntervalSim,
+    def __init__(self, modSvr, slaveAddress, timeIntervalSim, sim_min = 0, sim_max= 65535,
                     start_addr_coils = 0 ,no_coils = 10,
                     start_addr_dis_inputs = 0, no_dis_inputs = 10,
                     start_addr_input_regs = 0, no_input_regs = 10,
-                    start_addr_hold_regs = 0, no_hold_regs = 10):
+                    start_addr_hold_regs = 0, no_hold_regs = 10,):
         super(ModSlave,self).__init__()
         self._sim_interval = timeIntervalSim
+        self._sim_min = sim_min
+        self._sim_max = sim_max
         self._start_addr_coils = start_addr_coils
         self._no_coils = no_coils
         self._start_addr_dis_inputs = start_addr_dis_inputs
@@ -145,13 +147,13 @@ class ModSlave(QtCore.QObject):
         if (self.input_regs_data_model.sim):
             block3 = []  # input registers
             for i in range(0,self._no_input_regs):
-                block3.append(random.randrange(0,65535,1))
+                block3.append(random.randrange(self._sim_min,self._sim_max,1))
             self.set_input_regs_data(block3)
         #holding registers
         if (self.hold_regs_data_model.sim):
             block4 = []  # holding registers
             for i in range(0,self._no_hold_regs):
-                block4.append(random.randrange(0,65535,1))
+                block4.append(random.randrange(self._sim_min,self._sim_max,1))
             self.set_hold_regs_data(block4)
         #update model data
         self.coils_data_model.update_model(self.get_coils_data())

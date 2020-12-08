@@ -152,6 +152,8 @@ class ModSlaveMainWindow(QtWidgets.QMainWindow):
     def _settings_show(self):
         """open general settings dialog"""
         self._settings_dlg.ui.sbMaxNoOfBusMonitorLines.setEnabled(self.svr == None)
+        self._settings_dlg.ui.sbSimMin.setEnabled(self.svr == None)
+        self._settings_dlg.ui.sbSimMax.setEnabled(self.svr == None)
         self._settings_dlg.exec_()
         self._bus_monitor_dlg.set_max_no_of_bus_monitor_lines(self._settings_dlg.max_no_of_bus_monitor_lines)
         self._update_status_bar()
@@ -278,7 +280,8 @@ class ModSlaveMainWindow(QtWidgets.QMainWindow):
                 else:
                     self.svr.start()
                     self.slv = modFactory.ModSlave(self.svr, self.ui.sbSlaveID.value(),
-                                                   self.ui.spInterval.value() / 1000.0,
+                                                   self.ui.spInterval.value() / 1000.0, 
+                                                   self._settings_dlg.sim_min, self._settings_dlg.sim_max,
                                                    self.ui.sbCoilsStartAddr.value(), self.ui.sbNoOfCoils.value(),
                                                    self.ui.sbDigInputsstartAddr.value(), self.ui.sbNoOfDigInputs.value(),
                                                    self.ui.sbInputRegsStartAddr.value(), self.ui.sbNoOfInputRegs.value(),
@@ -315,7 +318,7 @@ class ModSlaveMainWindow(QtWidgets.QMainWindow):
         config_var_defaut = {'Coils':'10', 'CoilsStartAddr':'0', 'DisInputs':'10', 'DisInputsStartAddr':'0',
                              'InputRegs':'10', 'InputRegsStartAddr':'0','HoldRegs':'10', 'HoldRegsStartAddr':'0',
                              'TimeInterval':'1000', 'MaxNoOfBusMonitorLines':'50', 'ModbusMode':'1', 'ModbusSlaveID':'1',
-                             'LoggingLevel':'30'}
+                             'LoggingLevel':'30', 'SimMin':'0', 'SimMax':'65535'}
         config_default = {}
         config_default.update(config_tcp_defaut)
         config_default.update(config_rtu_defaut)
@@ -345,6 +348,8 @@ class ModSlaveMainWindow(QtWidgets.QMainWindow):
         self._hold_regs_start_addr = config.getint('Var', 'HoldRegsStartAddr')
         self._time_interval = config.getint('Var', 'TimeInterval')
         self._settings_dlg.max_no_of_bus_monitor_lines = config.getint('Var', 'MaxNoOfBusMonitorLines')
+        self._settings_dlg.sim_min = config.getint('Var', 'SimMin')
+        self._settings_dlg.sim_max = config.getint('Var', 'SimMax')
         self._bus_monitor_dlg.set_max_no_of_bus_monitor_lines(self._settings_dlg.max_no_of_bus_monitor_lines)
         self._modbus_mode = config.getint('Var', 'ModbusMode')
         self._modbus_slave_ID = config.getint('Var', 'ModbusSlaveID')
@@ -401,6 +406,8 @@ class ModSlaveMainWindow(QtWidgets.QMainWindow):
         config.set('Var','HoldRegsStartAddr', str(self._hold_regs_start_addr))
         config.set('Var','TimeInterval', str(self._time_interval))
         config.set('Var','MaxNoOfBusMonitorLines', str(self._settings_dlg.max_no_of_bus_monitor_lines))
+        config.set('Var','SimMin', str(self._settings_dlg.sim_min))
+        config.set('Var','SimMax', str(self._settings_dlg.sim_max))
         config.set('Var','ModbusMode', str(self._modbus_mode))
         config.set('Var','ModbusSlaveID', str(self._modbus_slave_ID))
         config.set('Var','LoggingLevel', str(self._logging_level))
@@ -473,8 +480,15 @@ class ModSlaveMainWindow(QtWidgets.QMainWindow):
 #-------------------------------------------------------------------------------
 
 #-------------------------------------------------------------------------------
-def main():
+def suppress_qt_warnings():
+    os.environ["QT_DEVICE_PIXEL_RATIO"] = "0"
+    os.environ["QT_AUTO_SCREEN_SCALE_FACTOR"] = "1"
+    os.environ["QT_SCREEN_SCALE_FACTORS"] = "1"
+    os.environ["QT_SCALE_FACTOR"] = "1"
 
+def main():
+    #qt dpi warnings
+    suppress_qt_warnings()
     #logger
     logger = modbus_tk.utils.create_logger("console")
     Utils.set_up_logger_file(logger,'pyModSlave.log')
