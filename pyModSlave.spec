@@ -1,16 +1,14 @@
 # -*- mode: python ; coding: utf-8 -*-
 
-# remove all Qt dlls except : Qt5Core, Qt5Gui, Qt5Widgets
-# remove PyQt5\Qt\bin folder
-
 block_cipher = None
 
-added_files = [('ManModbus','ManModbus')]
 
 a = Analysis(['pyModSlave.py'],
              pathex=['C:\\Projects\\python\\pyModSlave'],
              binaries=[],
-             datas=added_files,
+             datas=[('ManModBus\\*', 'ManModBus'),
+			        ('ManModBus\\READ_ME\\*', 'ManModBus\\READ_ME'),
+					('ManModBus\\style\\*', 'ManModBus\\style')],
              hiddenimports=[],
              hookspath=[],
              runtime_hooks=[],
@@ -30,8 +28,7 @@ exe = EXE(pyz,
           bootloader_ignore_signals=False,
           strip=False,
           upx=True,
-          console=False,
-		  icon='C:\\Projects\\python\\pyModSlave\\ui\\icons\Bus.ico')
+          console=False)
 coll = COLLECT(exe,
                a.binaries,
                a.zipfiles,

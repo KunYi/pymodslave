@@ -333,6 +333,9 @@
            </item>
            <item>
             <widget class="QCheckBox" name="chkSimCoils">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="text">
               <string>Sim</string>
              </property>
@@ -514,6 +517,9 @@
            </item>
            <item>
             <widget class="QCheckBox" name="chkSimDisInputs">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="text">
               <string>Sim</string>
              </property>
@@ -701,6 +707,9 @@
            </item>
            <item>
             <widget class="QCheckBox" name="chkSimInputRegs">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="text">
               <string>Sim</string>
              </property>
@@ -896,6 +905,9 @@
            </item>
            <item>
             <widget class="QCheckBox" name="chkSimHoldRegs">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="text">
               <string>Sim</string>
              </property>

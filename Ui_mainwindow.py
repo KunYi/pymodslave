@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'C:\Projects\python\pyModSlave\ui\mainwindow.ui'
+# Form implementation generated from reading ui file '.\mainwindow.ui'
 #
-# Created by: PyQt5 UI code generator 5.11.3
+# Created by: PyQt5 UI code generator 5.14.0
 #
 # WARNING! All changes made in this file will be lost!
 
+
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -141,6 +143,7 @@ class Ui_MainWindow(object):
         self.sbNoOfCoils.setObjectName("sbNoOfCoils")
         self.horizontalLayout_6.addWidget(self.sbNoOfCoils)
         self.chkSimCoils = QtWidgets.QCheckBox(self.frame)
+        self.chkSimCoils.setEnabled(False)
         self.chkSimCoils.setObjectName("chkSimCoils")
         self.horizontalLayout_6.addWidget(self.chkSimCoils)
         self.verticalLayout.addWidget(self.frame)
@@ -220,6 +223,7 @@ class Ui_MainWindow(object):
         self.sbNoOfDigInputs.setObjectName("sbNoOfDigInputs")
         self.horizontalLayout.addWidget(self.sbNoOfDigInputs)
         self.chkSimDisInputs = QtWidgets.QCheckBox(self.frame_2)
+        self.chkSimDisInputs.setEnabled(False)
         self.chkSimDisInputs.setObjectName("chkSimDisInputs")
         self.horizontalLayout.addWidget(self.chkSimDisInputs)
         self.verticalLayout_2.addWidget(self.frame_2)
@@ -301,6 +305,7 @@ class Ui_MainWindow(object):
         self.sbNoOfInputRegs.setObjectName("sbNoOfInputRegs")
         self.horizontalLayout_2.addWidget(self.sbNoOfInputRegs)
         self.chkSimInputRegs = QtWidgets.QCheckBox(self.frame_3)
+        self.chkSimInputRegs.setEnabled(False)
         self.chkSimInputRegs.setObjectName("chkSimInputRegs")
         self.horizontalLayout_2.addWidget(self.chkSimInputRegs)
         self.cmbInputRegsType = QtWidgets.QComboBox(self.frame_3)
@@ -386,6 +391,7 @@ class Ui_MainWindow(object):
         self.sbNoOfHoldingRegs.setObjectName("sbNoOfHoldingRegs")
         self.horizontalLayout_4.addWidget(self.sbNoOfHoldingRegs)
         self.chkSimHoldRegs = QtWidgets.QCheckBox(self.frame_4)
+        self.chkSimHoldRegs.setEnabled(False)
         self.chkSimHoldRegs.setObjectName("chkSimHoldRegs")
         self.horizontalLayout_4.addWidget(self.chkSimHoldRegs)
         self.cmbHoldRegsType = QtWidgets.QComboBox(self.frame_4)
@@ -413,7 +419,7 @@ class Ui_MainWindow(object):
         self.vericallayout.addWidget(self.tabIOs)
         MainWindow.setCentralWidget(self.centralWidget)
         self.menuBar = QtWidgets.QMenuBar(MainWindow)
-        self.menuBar.setGeometry(QtCore.QRect(0, 0, 500, 18))
+        self.menuBar.setGeometry(QtCore.QRect(0, 0, 500, 21))
         self.menuBar.setObjectName("menuBar")
         self.menuFile = QtWidgets.QMenu(self.menuBar)
         self.menuFile.setObjectName("menuFile")
@@ -583,5 +589,4 @@ class Ui_MainWindow(object):
         self.actionSave_Session.setText(_translate("MainWindow", "Save Session..."))
         self.actionConnect.setText(_translate("MainWindow", "Connect"))
         self.actionHeaders.setText(_translate("MainWindow", "Headers"))
-
 import pyModSlaveQt_rc

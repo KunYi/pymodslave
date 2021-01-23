@@ -10,13 +10,13 @@
 #-------------------------------------------------------------------------------
 #!/usr/bin/env python
 
-from PyQt5 import QtGui
+from PyQt5 import QtWidgets
 from logging import Formatter
 from logging.handlers import RotatingFileHandler
 
 def errorMessageBox(msg):
 
-    QtGui.QMessageBox.critical(None,"Error",msg,QtGui.QMessageBox.Ok,QtGui.QMessageBox.NoButton)
+    QtWidgets.QMessageBox.critical(None,"Error",msg,QtWidgets.QMessageBox.Ok,QtWidgets.QMessageBox.NoButton)
 
 def set_up_logger_file(logger,file_name):
 
