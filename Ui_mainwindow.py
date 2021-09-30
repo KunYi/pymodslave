@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '.\mainwindow.ui'
+# Form implementation generated from reading ui file 'mainwindow.ui'
 #
 # Created by: PyQt5 UI code generator 5.14.0
 #
@@ -56,7 +56,7 @@ class Ui_MainWindow(object):
         self.sbSlaveID = QtWidgets.QSpinBox(self.frame_commands)
         self.sbSlaveID.setMinimumSize(QtCore.QSize(0, 24))
         self.sbSlaveID.setMinimum(1)
-        self.sbSlaveID.setMaximum(247)
+        self.sbSlaveID.setMaximum(255)
         self.sbSlaveID.setObjectName("sbSlaveID")
         self.horizontalLayout_5.addWidget(self.sbSlaveID)
         self.lblSimCycle = QtWidgets.QLabel(self.frame_commands)
