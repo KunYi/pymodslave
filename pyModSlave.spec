@@ -4,7 +4,7 @@ block_cipher = None
 
 
 a = Analysis(['pyModSlave.py'],
-             pathex=['C:\\Projects\\python\\pyModSlave'],
+             pathex=['C:\\Users\\kunic\\pymodslave'],
              binaries=[],
              datas=[('ManModBus\\*', 'ManModBus'),
 			        ('ManModBus\\READ_ME\\*', 'ManModBus\\READ_ME'),
